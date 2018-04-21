@@ -6,5 +6,9 @@
 
 #IncludeRegexTransform: 
 
+../../Source/Runtime/Core/Public/Math/sum.h
+
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp
+Math/sum.h
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/Math/sum.h
 

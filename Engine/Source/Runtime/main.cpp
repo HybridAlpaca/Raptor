@@ -4,6 +4,6 @@
 
 int main() {
 
-	std::cout << "\n";
+	std::cout << sum(1, 2) << "\n";
 
 }

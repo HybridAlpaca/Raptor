@@ -2,7 +2,7 @@
 
 cd ./Engine/Build
 
-mkdir CMake
+mkdir -p CMake
 
 cd ./CMake
 
