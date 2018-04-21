@@ -60,15 +60,15 @@ include CMakeFiles/Raptor.dir/flags.make
 CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o: CMakeFiles/Raptor.dir/flags.make
 CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o: /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o -c /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o -c /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
 
 CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp > CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp > CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.i
 
 CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp -o CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp -o CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.s
 
 CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o.requires:
 

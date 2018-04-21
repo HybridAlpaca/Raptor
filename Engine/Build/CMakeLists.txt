@@ -1,8 +1,10 @@
 cmake_minimum_required (VERSION 3.5)
 
-project (RaptorEngine)
+project (RaptorEngine LANGUAGES CXX)
 
 include (GNUInstallDirs)
+
+set (CMAKE_CXX_COMPILER /usr/bin/g++)
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../../)
 set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/../)
