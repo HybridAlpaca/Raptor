@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../../Source/Runtime/Core/Public/Math/sum.h
+
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
+Core/Public/Math/sum.h
+-
+iostream
+-
+

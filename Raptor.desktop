@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Raptor Engine
+Comment=Launcher for the Raptor game engne. (c) 2018 Hybridalpaca
+Exec=/home/cellman123/Desktop/Raptor/Engine/Binaries/Raptor
+Path=/home/cellman123/Desktop/Raptor
+Icon=/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/raptor-logo-lg.svg
+Terminal=false
+Type=Application
+Categories=Game;
