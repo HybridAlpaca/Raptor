@@ -26,34 +26,46 @@ public:
 	
 	// operators
 	
-	bool operator == (const Vector & rhs) const;
+	bool		operator == (const Vector & rhs) const;
 	
-	bool operator != (const Vector & rhs) const;
+	bool		operator != (const Vector & rhs) const;
 	
-	Vector operator + (const Vector & rhs) const;
+	Vector	operator + (const Vector & rhs) const;
 	
-	Vector operator + (const float & rhs) const;
+	Vector	operator + (const float & rhs) const;
 	
-	Vector operator - (const Vector & rhs) const;
+	Vector	operator - (const Vector & rhs) const;
 	
-	Vector operator - (const float & rhs) const;
+	Vector	operator - (const float & rhs) const;
 	
-	Vector operator * (const float & rhs) const;
+	Vector	operator * (const float & rhs) const;
 
-	Vector operator / (const float & rhs) const;
+	Vector	operator / (const float & rhs) const;
 	
 	// methods
 	
-	float Dot (const Vector & rhs) const;
+	bool		IsZero ();
 	
-	Vector Cross (const Vector & rhs) const;
+	void		MakeZero ();
 	
-	Vector Lerp (const Vector & rhs, float t) const;
+	float		LengthSquared ();
 	
-	void Clamp (float min, float max);
+	float 	Length ();
+	
+	void		Normalize ();
+	
+	bool		IsNormalized ();
+	
+	float 	Dot (const Vector & rhs) const;
+	
+	Vector 	Cross (const Vector & rhs) const;
+	
+	Vector	Lerp (const Vector & rhs, float t) const;
+	
+	void		Clamp (float min, float max);
 	
 	// getters
 	
-	VecType Type () const;
+	VecType	Type () const;
 
 };
