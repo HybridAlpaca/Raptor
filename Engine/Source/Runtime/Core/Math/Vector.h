@@ -1,12 +1,6 @@
 #pragma once
 
-class Vector {
-
-	enum class VecType { VEC2, VEC3, VEC4 };
-	
-	VecType type;
-
-public:
+struct Vector {
 
 	// properties
 
@@ -63,9 +57,5 @@ public:
 	Vector Lerp (const Vector & rhs, float t) const;
 	
 	void Clamp (float min, float max);
-	
-	// getters
-	
-	VecType	Type () const;
 
 };
