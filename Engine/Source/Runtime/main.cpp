@@ -1,9 +1,11 @@
-#include <Core/Math/sum.h>
+#include <Core/Math/Vector.h>
 
 #include <iostream>
 
 int main() {
 
-	std::cout << sum(1, 2) << "\n";
+	Vector v(1.0f, 2.0f);
+
+	std::cout << v.x << "\n";
 
 }

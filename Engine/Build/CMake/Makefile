@@ -180,32 +180,32 @@ Raptor/fast:
 	$(MAKE) -f CMakeFiles/Raptor.dir/build.make CMakeFiles/Raptor.dir/build
 .PHONY : Raptor/fast
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.o
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o
 
 # target to build an object file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.o:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.o
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.o
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.i
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i
 
 # target to preprocess a source file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.i:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.i
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.i
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.s
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s
 
 # target to generate assembly for a file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.s:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.s
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.cpp.s
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 
 home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o
 
@@ -248,9 +248,9 @@ help:
 	@echo "... Raptor"
 	@echo "... edit_cache"
 	@echo "... install/strip"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.o"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.i"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Private/Math/sum.s"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.s"

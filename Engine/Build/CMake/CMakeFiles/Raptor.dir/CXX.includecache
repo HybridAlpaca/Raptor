@@ -6,10 +6,10 @@
 
 #IncludeRegexTransform: 
 
-../../Source/Runtime/Core/Math/sum.h
+../../Source/Runtime/Core/Math/Vector.h
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
-Core/Math/sum.h
+Core/Math/Vector.h
 -
 iostream
 -
