@@ -1,4 +1,4 @@
-#include <Core/Public/Math/sum.h>
+#include <Core/Math/sum.h>
 
 #include <iostream>
 

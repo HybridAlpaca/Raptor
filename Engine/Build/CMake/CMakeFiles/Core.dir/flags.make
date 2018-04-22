@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime/Core/Public 
+CXX_INCLUDES = -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime/Core 
 

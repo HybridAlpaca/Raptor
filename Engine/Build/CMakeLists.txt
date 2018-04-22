@@ -17,7 +17,7 @@ add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Private/Math/sum.cpp
 )
 target_include_directories (
-	Core PRIVATE ${RUNTIME_ROOT_DIR}/Core/Public/
+	Core PRIVATE ${RUNTIME_ROOT_DIR}/Core/
 )
 
 install(TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries/Libraries/Static)
