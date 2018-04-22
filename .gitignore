@@ -31,6 +31,3 @@
 *.out
 *.app
 *.desktop
-
-# Project Specifics
-push.sh
