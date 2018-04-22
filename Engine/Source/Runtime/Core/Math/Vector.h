@@ -26,43 +26,43 @@ public:
 	
 	// operators
 	
-	bool		operator == (const Vector & rhs) const;
+	bool operator == (const Vector & rhs) const;
 	
-	bool		operator != (const Vector & rhs) const;
+	bool operator != (const Vector & rhs) const;
 	
-	Vector	operator + (const Vector & rhs) const;
+	Vector operator + (const Vector & rhs) const;
 	
-	Vector	operator + (const float & rhs) const;
+	Vector operator + (const float & rhs) const;
 	
-	Vector	operator - (const Vector & rhs) const;
+	Vector operator - (const Vector & rhs) const;
 	
-	Vector	operator - (const float & rhs) const;
+	Vector operator - (const float & rhs) const;
 	
-	Vector	operator * (const float & rhs) const;
+	Vector operator * (const float & rhs) const;
 
-	Vector	operator / (const float & rhs) const;
+	Vector operator / (const float & rhs) const;
 	
 	// methods
 	
-	bool		IsZero ();
+	bool IsZero ();
 	
-	void		MakeZero ();
+	void MakeZero ();
 	
-	float		LengthSquared ();
+	float	LengthSquared ();
 	
-	float 	Length ();
+	float Length ();
 	
-	void		Normalize ();
+	void Normalize ();
 	
-	bool		IsNormalized ();
+	bool IsNormalized ();
 	
-	float 	Dot (const Vector & rhs) const;
+	float Dot (const Vector & rhs) const;
 	
-	Vector 	Cross (const Vector & rhs) const;
+	Vector Cross (const Vector & rhs) const;
 	
-	Vector	Lerp (const Vector & rhs, float t) const;
+	Vector Lerp (const Vector & rhs, float t) const;
 	
-	void		Clamp (float min, float max);
+	void Clamp (float min, float max);
 	
 	// getters
 	
