@@ -3,4 +3,6 @@
 
 CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o
  ../../Source/Runtime/Core/Async/Thread.h
+ ../../Source/Runtime/Core/Async/ThreadPool.h
+ ../../Source/Runtime/Core/Misc/CoreTypes.h
  /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp

@@ -1,13 +1,10 @@
-#include <Core/Async/Thread.h>
+#include <Core/Async/ThreadPool.h>
 
 #include <iostream>
-#include <mutex>
 
-void Worker (std::mutex & mutex) {
+void Worker () {
 
 	static int id = 0;
-	
-	std::lock_guard<std::mutex> guard(mutex);
 	
 	std::cout << "Worker " << id++ << "\n";
 
@@ -15,10 +12,24 @@ void Worker (std::mutex & mutex) {
 
 int main () {
 
-	std::mutex mutex;
+	std::cout << "Create thread pool" << "\n";
 
-	Thread thread0(Worker, mutex);
-	Thread thread1(Worker, mutex);
+	ThreadPool thread_pool(4);
+	
+	std::cout << "Schedule jobs" << "\n";
+	
+	thread_pool.Schedule(Worker);
+	thread_pool.Schedule(Worker);
+	thread_pool.Schedule(Worker);
+	thread_pool.Schedule(Worker);
+	thread_pool.Schedule(Worker);
+	thread_pool.Schedule(Worker);
+	thread_pool.Schedule(Worker);
+	thread_pool.Schedule(Worker);
+	
+	thread_pool.WaitAll();
+	
+	std::cout << "Exit" << "\n";
 
 	return 0;
 
