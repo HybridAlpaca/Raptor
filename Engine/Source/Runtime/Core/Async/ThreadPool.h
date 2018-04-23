@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Thread.h"
 #include <Core/Misc/CoreTypes.h>
 
 #include <condition_variable>

@@ -6,15 +6,7 @@
 
 #IncludeRegexTransform: 
 
-../../Source/Runtime/Core/Async/Thread.h
-thread
--
-mutex
--
-
 ../../Source/Runtime/Core/Async/ThreadPool.h
-Thread.h
-../../Source/Runtime/Core/Async/Thread.h
 Core/Misc/CoreTypes.h
 -
 condition_variable
@@ -40,5 +32,7 @@ atomic
 Core/Async/ThreadPool.h
 -
 iostream
+-
+thread
 -
 

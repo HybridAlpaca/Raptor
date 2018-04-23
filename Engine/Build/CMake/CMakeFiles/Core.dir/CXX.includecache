@@ -12,20 +12,6 @@ cstdint
 atomic
 -
 
-/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp
-Thread.h
-/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.h
-thread
--
-mutex
--
-
-/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.h
-thread
--
-mutex
--
-
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp
 ThreadPool.h
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.h
@@ -37,8 +23,6 @@ mutex
 -
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.h
-Thread.h
-/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.h
 Core/Misc/CoreTypes.h
 -
 condition_variable

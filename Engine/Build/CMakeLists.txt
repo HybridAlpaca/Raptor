@@ -16,7 +16,6 @@ set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime/)
 include_directories (${RUNTIME_ROOT_DIR})
 
 add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
 	${RUNTIME_ROOT_DIR}/Core/Async/ThreadPool.cpp
 	${RUNTIME_ROOT_DIR}/Core/Math/Vector.cpp
 )

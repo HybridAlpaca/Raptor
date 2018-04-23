@@ -1,12 +1,11 @@
 #include <Core/Async/ThreadPool.h>
 
 #include <iostream>
+#include <thread>
 
 void Worker () {
-
-	static int id = 0;
 	
-	std::cout << "Worker " << id++ << "\n";
+	std::cout << "Worker " << std::this_thread::get_id() << "\n";
 
 }
 
@@ -22,6 +21,11 @@ int main () {
 	thread_pool.Schedule(Worker);
 	thread_pool.Schedule(Worker);
 	thread_pool.Schedule(Worker);
+	
+	thread_pool.WaitAll();
+	
+	std::cout << "Wait" << "\n";
+	
 	thread_pool.Schedule(Worker);
 	thread_pool.Schedule(Worker);
 	thread_pool.Schedule(Worker);
