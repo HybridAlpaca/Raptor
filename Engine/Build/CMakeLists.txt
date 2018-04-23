@@ -6,6 +6,7 @@ include (GNUInstallDirs)
 
 set (CMAKE_CXX_COMPILER /usr/bin/g++)
 set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../../)
 set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/../)
@@ -15,6 +16,7 @@ set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime/)
 include_directories (${RUNTIME_ROOT_DIR})
 
 add_library (Core STATIC
+	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
 	${RUNTIME_ROOT_DIR}/Core/Math/Vector.cpp
 )
 target_include_directories (

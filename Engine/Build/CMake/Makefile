@@ -180,6 +180,33 @@ Raptor/fast:
 	$(MAKE) -f CMakeFiles/Raptor.dir/build.make CMakeFiles/Raptor.dir/build
 .PHONY : Raptor/fast
 
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.o
+
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.o
+
+# target to build an object file
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.o:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.o
+
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.i
+
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.i
+
+# target to preprocess a source file
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.i:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.i
+
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.s
+
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.s
+
+# target to generate assembly for a file
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.s:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.s
+
 home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o
 
 .PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o
@@ -248,6 +275,9 @@ help:
 	@echo "... Raptor"
 	@echo "... edit_cache"
 	@echo "... install/strip"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.o"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.i"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.s"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s"

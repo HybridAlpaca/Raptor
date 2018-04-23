@@ -1,11 +1,25 @@
-#include <Core/Math/Vector.h>
+#include <Core/Async/Thread.h>
 
 #include <iostream>
+#include <mutex>
 
-int main() {
+void Worker (std::mutex & mutex) {
 
-	Vector v(1.0f, 2.0f);
+	static int id = 0;
+	
+	std::lock_guard<std::mutex> guard(mutex);
+	
+	std::cout << "Worker " << id++ << "\n";
 
-	std::cout << v.x << "\n";
+}
+
+int main () {
+
+	std::mutex mutex;
+
+	Thread thread0(Worker, mutex);
+	Thread thread1(Worker, mutex);
+
+	return 0;
 
 }

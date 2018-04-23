@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp
+Thread.h
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.h
+thread
+-
+mutex
+-
+
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.h
+thread
+-
+mutex
+-
+
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp
 Vector.h
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.h

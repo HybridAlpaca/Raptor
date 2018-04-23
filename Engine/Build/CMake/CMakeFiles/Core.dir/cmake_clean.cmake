@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Thread.cpp.o"
   "CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o"
   "libCore.pdb"
   "libCore.a"
