@@ -12,10 +12,11 @@ class GLFWwindow {};
 
 **/
 
-class Window {
+class Window
+{
 
 	GLFWwindow * window = nullptr;
-
+	
 public:
 
 	Window (uint16 width, uint16 height, const char * title);
@@ -31,5 +32,4 @@ public:
 	// getters & setters
 	
 	bool shouldClose ();
-
 };
