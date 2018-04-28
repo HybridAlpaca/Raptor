@@ -42,19 +42,32 @@ include_directories (${SOURCE_ROOT_DIR}/External)
 # load shared libraries
 ###
 
+# opengl  
+
+find_package (OpenGL REQUIRED)
+if (OPENGL_FOUND)
+	include_directories (${OPENGL_INCLUDE_DIRS})
+	link_libraries (${OPENGL_gl_LIBRARY})
+endif ()
+
+# glew
+
+find_package(GLEW REQUIRED)
+if (GLEW_FOUND)
+	include_directories(${GLEW_INCLUDE_DIRS})
+	link_libraries(${GLEW_LIBRARIES})
+endif()
+
+# glfw
+
 add_library (GLFW SHARED IMPORTED)
 set_target_properties (GLFW PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Binaries/Libraries/Shared/libglfw.so.3.2)
-
-add_library (Glad SHARED
-	${SOURCE_ROOT_DIR}/External/glad/glad.c
-)
-set_target_properties(Glad PROPERTIES LINKER_LANGUAGE CXX)
-
-install (TARGETS Glad DESTINATION ${ENGINE_ROOT_DIR}/Binaries/Libraries/Shared)
 
 ###
 # load static libraries
 ###
+
+# core
 
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Async/ThreadPool.cpp
@@ -64,13 +77,25 @@ target_include_directories (
 	Core PRIVATE ${RUNTIME_ROOT_DIR}/Core/
 )
 
-install (TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries/Libraries/Static)
+# renderer
+
+add_library (Renderer STATIC
+	${RUNTIME_ROOT_DIR}/Renderer/Misc/Window.cpp
+)
+target_include_directories (
+	Core PRIVATE ${RUNTIME_ROOT_DIR}/Renderer/
+)
+target_link_libraries (Renderer GLFW)
+
+# install
+
+install (TARGETS Core Renderer DESTINATION ${ENGINE_ROOT_DIR}/Binaries/Libraries/Static)
 
 ###
 # build the final executable
 ###
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor Core GLFW)
+target_link_libraries (Raptor Core Renderer)
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)

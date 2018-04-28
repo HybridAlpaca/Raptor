@@ -64,6 +64,7 @@ Glad_OBJECTS =
 Glad_EXTERNAL_OBJECTS =
 
 libGlad.so: CMakeFiles/Glad.dir/build.make
+libGlad.so: /usr/lib/arm-linux-gnueabihf/libGL.so
 libGlad.so: CMakeFiles/Glad.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Linking CXX shared library libGlad.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Glad.dir/link.txt --verbose=$(VERBOSE)

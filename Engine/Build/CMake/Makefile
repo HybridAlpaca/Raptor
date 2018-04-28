@@ -78,17 +78,6 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -121,6 +110,17 @@ install/local: preinstall
 install/local/fast: install/local
 
 .PHONY : install/local/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -155,17 +155,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Glad
+# Target rules for targets named Renderer
 
 # Build rule for target.
-Glad: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Glad
-.PHONY : Glad
+Renderer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Renderer
+.PHONY : Renderer
 
 # fast build rule for target.
-Glad/fast:
-	$(MAKE) -f CMakeFiles/Glad.dir/build.make CMakeFiles/Glad.dir/build
-.PHONY : Glad/fast
+Renderer/fast:
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/build
+.PHONY : Renderer/fast
 
 #=============================================================================
 # Target rules for targets named Core
@@ -247,6 +247,33 @@ home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s:
 	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 .PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
+
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.o
+
+# target to build an object file
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o:
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
+
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i
+
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.i
+
+# target to preprocess a source file
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i:
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i
+
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s
+
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.s
+
+# target to generate assembly for a file
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s:
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s
+
 home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o
 
 .PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o
@@ -282,11 +309,11 @@ help:
 	@echo "... depend"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... install/strip"
-	@echo "... Glad"
 	@echo "... install/local"
+	@echo "... rebuild_cache"
+	@echo "... Renderer"
 	@echo "... Core"
 	@echo "... Raptor"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.o"
@@ -295,6 +322,9 @@ help:
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.o"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.i"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.s"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.s"
