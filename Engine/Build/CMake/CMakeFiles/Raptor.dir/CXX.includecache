@@ -12,12 +12,12 @@ cstdint
 atomic
 -
 
-../../Source/Runtime/Renderer/Misc/Window.h
+../../Source/Runtime/Renderer/Utils/Window.h
 Core/Misc/CoreTypes.h
 -
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
-Renderer/Misc/Window.h
+Renderer/Utils/Window.h
 -
 iostream
 -

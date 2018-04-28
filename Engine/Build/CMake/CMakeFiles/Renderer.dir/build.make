@@ -57,38 +57,38 @@ include CMakeFiles/Renderer.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Renderer.dir/flags.make
 
-CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o: CMakeFiles/Renderer.dir/flags.make
-CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o: /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o"
-	/usr/bin/g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o -c /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp
+CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o: CMakeFiles/Renderer.dir/flags.make
+CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o: /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o"
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o -c /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp
 
-CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp > CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i
+CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp > CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i
 
-CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp -o CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s
+CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp -o CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s
 
-CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.requires:
+CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.requires:
 
-.PHONY : CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.requires
+.PHONY : CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.requires
 
-CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.provides: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.requires
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.provides.build
-.PHONY : CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.provides
+CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.provides: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.requires
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.provides.build
+.PHONY : CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.provides
 
-CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.provides.build: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
+CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.provides.build: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
 
 
 # Object files for target Renderer
 Renderer_OBJECTS = \
-"CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o"
+"CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o"
 
 # External object files for target Renderer
 Renderer_EXTERNAL_OBJECTS =
 
-libRenderer.a: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
+libRenderer.a: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
 libRenderer.a: CMakeFiles/Renderer.dir/build.make
 libRenderer.a: CMakeFiles/Renderer.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libRenderer.a"
@@ -100,7 +100,7 @@ CMakeFiles/Renderer.dir/build: libRenderer.a
 
 .PHONY : CMakeFiles/Renderer.dir/build
 
-CMakeFiles/Renderer.dir/requires: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o.requires
+CMakeFiles/Renderer.dir/requires: CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o.requires
 
 .PHONY : CMakeFiles/Renderer.dir/requires
 

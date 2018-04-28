@@ -52,7 +52,7 @@ cstdint
 atomic
 -
 
-/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp
 GL/glew.h
 -
 GLFW/glfw3.h
@@ -60,9 +60,9 @@ GLFW/glfw3.h
 Core/Misc/CoreTypes.h
 -
 Window.h
-/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.h
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.h
 
-/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.h
+/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.h
 Core/Misc/CoreTypes.h
 -
 

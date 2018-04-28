@@ -21,5 +21,15 @@ public:
 	Window (uint16 width, uint16 height, const char * title);
 	
 	~Window ();
+	
+	// methods
+	
+	void Close ();
+	
+	void Update ();
+	
+	// getters & setters
+	
+	bool shouldClose ();
 
 };

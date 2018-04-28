@@ -5,17 +5,17 @@
 
 #include "Window.h"
 
-Window::Window (uint16 width, uint16 height, const char * title) {
-
+Window::Window (uint16 width, uint16 height, const char * title)
+{
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
-	window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	window = glfwCreateWindow(width, height, title, glfwGetPrimaryMonitor(), nullptr);
 	
-	if (window == nullptr) {
-	
+	if (window == nullptr)
+	{
 		// GLFW was unable to open the window
 		// Possible OS failure?
 	
@@ -27,29 +27,34 @@ Window::Window (uint16 width, uint16 height, const char * title) {
 	
 	glewExperimental = true; // tell Glew to use core profile
 	
-	if (glewInit() != GLEW_OK) {
-	
+	if (glewInit() != GLEW_OK)
+	{
 		// Glew was unable to load the OpenGL
 		// extensions.
 	
+		glfwTerminate();
 		return;
 	}
-	
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
-	do {
-	
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-
-	} while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
-
 }
 
-Window::~Window () {
+Window::~Window ()
+{
+	Close();
+}
 
+void Window::Close ()
+{
+	glfwMakeContextCurrent(window);
 	glfwTerminate();
+}
 
+void Window::Update ()
+{
+	glfwSwapBuffers(window);
+	glfwPollEvents();
+}
+
+bool Window::shouldClose ()
+{
+	return glfwWindowShouldClose(window);
 }

@@ -80,7 +80,7 @@ target_include_directories (
 # renderer
 
 add_library (Renderer STATIC
-	${RUNTIME_ROOT_DIR}/Renderer/Misc/Window.cpp
+	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
 )
 target_include_directories (
 	Core PRIVATE ${RUNTIME_ROOT_DIR}/Renderer/

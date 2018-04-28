@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o"
+  "CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o"
   "libRenderer.pdb"
   "libRenderer.a"
 )

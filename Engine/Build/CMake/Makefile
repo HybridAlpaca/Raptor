@@ -247,32 +247,32 @@ home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s:
 	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 .PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o
 
 # target to build an object file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o:
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.o
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o:
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.i
 
 # target to preprocess a source file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i:
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.i
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i:
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.s
 
 # target to generate assembly for a file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s:
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.cpp.s
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s:
+	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s
 
 home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o
 
@@ -322,9 +322,9 @@ help:
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.o"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.i"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Misc/Window.s"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.i"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.s"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.s"
