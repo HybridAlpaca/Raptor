@@ -89,17 +89,6 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: install/local
-
-.PHONY : install/local/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -121,6 +110,17 @@ install/strip: preinstall
 install/strip/fast: install/strip
 
 .PHONY : install/strip/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: install/local
+
+.PHONY : install/local/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -153,6 +153,19 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+#=============================================================================
+# Target rules for targets named Glad
+
+# Build rule for target.
+Glad: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Glad
+.PHONY : Glad
+
+# fast build rule for target.
+Glad/fast:
+	$(MAKE) -f CMakeFiles/Glad.dir/build.make CMakeFiles/Glad.dir/build
+.PHONY : Glad/fast
 
 #=============================================================================
 # Target rules for targets named Core
@@ -270,11 +283,12 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... edit_cache"
+	@echo "... install/strip"
+	@echo "... Glad"
 	@echo "... install/local"
 	@echo "... Core"
 	@echo "... Raptor"
-	@echo "... edit_cache"
-	@echo "... install/strip"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.s"

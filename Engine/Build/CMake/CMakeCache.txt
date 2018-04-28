@@ -213,6 +213,9 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Dependencies for target
 Core_LIB_DEPENDS:STATIC=
 
+//Dependencies for target
+Glad_LIB_DEPENDS:STATIC=
+
 //Value Computed by CMake
 RaptorEngine_BINARY_DIR:STATIC=/home/cellman123/Desktop/Raptor/Engine/Build/CMake
 

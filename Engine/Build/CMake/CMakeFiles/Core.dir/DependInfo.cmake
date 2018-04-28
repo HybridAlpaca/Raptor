@@ -12,6 +12,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../../Source/Runtime"
+  "../../Source/External"
   "../../Source/Runtime/Core"
   )
 

@@ -1,2 +1,3 @@
+/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so
 /home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Static/libCore.a
 /home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor

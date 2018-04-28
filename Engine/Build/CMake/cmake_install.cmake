@@ -33,6 +33,30 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  if(EXISTS "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so")
+    file(RPATH_CHECK
+         FILE "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so"
+         RPATH "")
+  endif()
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared" TYPE SHARED_LIBRARY FILES "/home/cellman123/Desktop/Raptor/Engine/Build/CMake/libGlad.so")
+  if(EXISTS "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared/libGlad.so")
+    endif()
+  endif()
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Static/libCore.a")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
@@ -62,6 +86,10 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
 file(INSTALL DESTINATION "/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries" TYPE EXECUTABLE FILES "/home/cellman123/Desktop/Raptor/Engine/Build/CMake/Raptor")
   if(EXISTS "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor")
+    file(RPATH_CHANGE
+         FILE "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor"
+         OLD_RPATH "/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Shared:"
+         NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor")
     endif()
