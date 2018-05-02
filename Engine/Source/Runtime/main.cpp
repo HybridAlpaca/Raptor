@@ -6,4 +6,9 @@ int main (int argc, char * argv[])
 	
 	WindowController window(640, 480, "sup bae");
 	
+	while (1)
+	{
+		window.Update();
+	}
+	
 }
