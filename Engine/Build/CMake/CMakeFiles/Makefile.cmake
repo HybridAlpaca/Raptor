@@ -47,6 +47,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/Renderer.dir/DependInfo.cmake"
   "CMakeFiles/Core.dir/DependInfo.cmake"
   "CMakeFiles/Raptor.dir/DependInfo.cmake"
   )

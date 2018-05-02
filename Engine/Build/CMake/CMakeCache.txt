@@ -247,7 +247,7 @@ Raptor_BINARY_DIR:STATIC=/home/cellman123/Desktop/Raptor/Engine/Build/CMake
 Raptor_SOURCE_DIR:STATIC=/home/cellman123/Desktop/Raptor/Engine/Build
 
 //Dependencies for the target
-Renderer_LIB_DEPENDS:STATIC=general;/usr/lib/arm-linux-gnueabihf/libGL.so;general;/usr/lib/arm-linux-gnueabihf/libSM.so;general;/usr/lib/arm-linux-gnueabihf/libICE.so;general;/usr/lib/arm-linux-gnueabihf/libX11.so;general;/usr/lib/arm-linux-gnueabihf/libXext.so;general;/usr/lib/arm-linux-gnueabihf/libGLEW.so;general;GLFW;
+Renderer_LIB_DEPENDS:STATIC=general;/usr/lib/arm-linux-gnueabihf/libGL.so;general;/usr/lib/arm-linux-gnueabihf/libSM.so;general;/usr/lib/arm-linux-gnueabihf/libICE.so;general;/usr/lib/arm-linux-gnueabihf/libX11.so;general;/usr/lib/arm-linux-gnueabihf/libXext.so;general;/usr/lib/arm-linux-gnueabihf/libGLEW.so;
 
 //Dependencies for target
 Test_LIB_DEPENDS:STATIC=

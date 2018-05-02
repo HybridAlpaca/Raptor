@@ -80,22 +80,22 @@ target_include_directories (
 
 # renderer
 
-# add_library (Renderer STATIC
-#	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
-# )
-# target_include_directories (
-#	Core PRIVATE ${RUNTIME_ROOT_DIR}/Renderer/
-# )
+add_library (Renderer STATIC
+	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
+)
+target_include_directories (
+	Core PRIVATE ${RUNTIME_ROOT_DIR}/Renderer/
+)
 
 # install
 
-install (TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Core Renderer DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 ###
 # build the final executable
 ###
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor Core)
+target_link_libraries (Raptor Core Renderer)
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)

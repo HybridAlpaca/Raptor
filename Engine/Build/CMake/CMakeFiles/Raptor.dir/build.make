@@ -97,6 +97,7 @@ Raptor: /usr/lib/arm-linux-gnueabihf/libX11.so
 Raptor: /usr/lib/arm-linux-gnueabihf/libXext.so
 Raptor: /usr/lib/arm-linux-gnueabihf/libGLEW.so
 Raptor: libCore.a
+Raptor: libRenderer.a
 Raptor: /usr/lib/arm-linux-gnueabihf/libGL.so
 Raptor: /usr/lib/arm-linux-gnueabihf/libSM.so
 Raptor: /usr/lib/arm-linux-gnueabihf/libICE.so

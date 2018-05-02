@@ -45,6 +45,18 @@ file(INSTALL DESTINATION "/home/cellman123/Desktop/Raptor/Engine/Build/../Binari
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/libRenderer.a")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries" TYPE STATIC_LIBRARY FILES "/home/cellman123/Desktop/Raptor/Engine/Build/CMake/libRenderer.a")
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   if(EXISTS "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor")
     file(RPATH_CHECK

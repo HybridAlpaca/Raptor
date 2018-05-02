@@ -13,18 +13,26 @@ atomic
 -
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp
+GL/gl.h
+-
+GL/glx.h
+-
+X11/X.h
+-
 X11/Xlib.h
--
-X11/Xutil.h
--
-X11/keysymdef.h
--
-Core/Misc/CoreTypes.h
 -
 Window.h
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.h
+Core/Misc/CoreTypes.h
+-
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.h
+GL/gl.h
+-
+GL/glx.h
+-
+X11/X.h
+-
 X11/Xlib.h
 -
 Core/Misc/CoreTypes.h
