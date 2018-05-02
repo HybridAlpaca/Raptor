@@ -73,4 +73,22 @@ void WindowController::Destroy ()
 void WindowController::Update ()
 {
 	XNextEvent(display, & event);
+	
+	switch (event.type)
+	{
+		case Expose:
+			XGetWindowAttributes(display, window, & getAttributes);
+			glViewport(0, 0, getAttributes.width, getAttributes.height);
+			glXSwapBuffers(display, window);
+			break;
+		case KeyPress:
+			Destroy();
+			break;
+		default:
+			// should never happen, since we explicitly
+			// define events to listen for when setting
+			// window attributes.
+			Destroy();
+			break;
+	}
 }
