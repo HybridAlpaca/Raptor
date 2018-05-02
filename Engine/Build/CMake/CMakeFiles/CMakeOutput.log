@@ -909,3 +909,87 @@ make[1]: Leaving directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/C
     Feature record: CXX_FEATURE:0cxx_variable_templates
     Feature record: CXX_FEATURE:0cxx_variadic_macros
     Feature record: CXX_FEATURE:0cxx_variadic_templates
+Determining if the function XOpenDisplay exists in the /usr/lib/arm-linux-gnueabihf/libX11.so;/usr/lib/arm-linux-gnueabihf/libXext.so passed with the following output:
+Change Dir: /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9307f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9307f.dir/build.make CMakeFiles/cmTC_9307f.dir/build
+make[1]: Entering directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9307f.dir/CheckFunctionExists.cxx.o
+/usr/bin/gcc     -pthread -DCHECK_FUNCTION_EXISTS=XOpenDisplay   -o CMakeFiles/cmTC_9307f.dir/CheckFunctionExists.cxx.o -c /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_9307f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9307f.dir/link.txt --verbose=1
+/usr/bin/gcc   -pthread -DCHECK_FUNCTION_EXISTS=XOpenDisplay    CMakeFiles/cmTC_9307f.dir/CheckFunctionExists.cxx.o  -o cmTC_9307f /usr/lib/arm-linux-gnueabihf/libX11.so /usr/lib/arm-linux-gnueabihf/libXext.so 
+make[1]: Leaving directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+
+
+Determining if the function gethostbyname exists passed with the following output:
+Change Dir: /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_01965/fast"
+/usr/bin/make -f CMakeFiles/cmTC_01965.dir/build.make CMakeFiles/cmTC_01965.dir/build
+make[1]: Entering directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_01965.dir/CheckFunctionExists.cxx.o
+/usr/bin/gcc     -pthread -DCHECK_FUNCTION_EXISTS=gethostbyname   -o CMakeFiles/cmTC_01965.dir/CheckFunctionExists.cxx.o -c /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CheckFunctionExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_01965
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_01965.dir/link.txt --verbose=1
+/usr/bin/gcc   -pthread -DCHECK_FUNCTION_EXISTS=gethostbyname    CMakeFiles/cmTC_01965.dir/CheckFunctionExists.cxx.o  -o cmTC_01965 
+make[1]: Leaving directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+
+
+Determining if the function connect exists passed with the following output:
+Change Dir: /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_71a66/fast"
+/usr/bin/make -f CMakeFiles/cmTC_71a66.dir/build.make CMakeFiles/cmTC_71a66.dir/build
+make[1]: Entering directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_71a66.dir/CheckFunctionExists.cxx.o
+/usr/bin/gcc     -pthread -DCHECK_FUNCTION_EXISTS=connect   -o CMakeFiles/cmTC_71a66.dir/CheckFunctionExists.cxx.o -c /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CheckFunctionExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_71a66
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_71a66.dir/link.txt --verbose=1
+/usr/bin/gcc   -pthread -DCHECK_FUNCTION_EXISTS=connect    CMakeFiles/cmTC_71a66.dir/CheckFunctionExists.cxx.o  -o cmTC_71a66 
+make[1]: Leaving directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+
+
+Determining if the function remove exists passed with the following output:
+Change Dir: /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3722b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3722b.dir/build.make CMakeFiles/cmTC_3722b.dir/build
+make[1]: Entering directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_3722b.dir/CheckFunctionExists.cxx.o
+/usr/bin/gcc     -pthread -DCHECK_FUNCTION_EXISTS=remove   -o CMakeFiles/cmTC_3722b.dir/CheckFunctionExists.cxx.o -c /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CheckFunctionExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_3722b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3722b.dir/link.txt --verbose=1
+/usr/bin/gcc   -pthread -DCHECK_FUNCTION_EXISTS=remove    CMakeFiles/cmTC_3722b.dir/CheckFunctionExists.cxx.o  -o cmTC_3722b 
+make[1]: Leaving directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+
+
+Determining if the function shmat exists passed with the following output:
+Change Dir: /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_24df3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_24df3.dir/build.make CMakeFiles/cmTC_24df3.dir/build
+make[1]: Entering directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_24df3.dir/CheckFunctionExists.cxx.o
+/usr/bin/gcc     -pthread -DCHECK_FUNCTION_EXISTS=shmat   -o CMakeFiles/cmTC_24df3.dir/CheckFunctionExists.cxx.o -c /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CheckFunctionExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_24df3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_24df3.dir/link.txt --verbose=1
+/usr/bin/gcc   -pthread -DCHECK_FUNCTION_EXISTS=shmat    CMakeFiles/cmTC_24df3.dir/CheckFunctionExists.cxx.o  -o cmTC_24df3 
+make[1]: Leaving directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+
+
+Determining if the function IceConnectionNumber exists in the ICE passed with the following output:
+Change Dir: /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d42d1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d42d1.dir/build.make CMakeFiles/cmTC_d42d1.dir/build
+make[1]: Entering directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d42d1.dir/CheckFunctionExists.cxx.o
+/usr/bin/gcc     -pthread -DCHECK_FUNCTION_EXISTS=IceConnectionNumber   -o CMakeFiles/cmTC_d42d1.dir/CheckFunctionExists.cxx.o -c /home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_d42d1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d42d1.dir/link.txt --verbose=1
+/usr/bin/gcc   -pthread -DCHECK_FUNCTION_EXISTS=IceConnectionNumber    CMakeFiles/cmTC_d42d1.dir/CheckFunctionExists.cxx.o  -o cmTC_d42d1 -lICE 
+make[1]: Leaving directory '/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles/CMakeTmp'
+
+

@@ -1,3 +1,2 @@
-/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Static/libCore.a
-/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Libraries/Static/libRenderer.a
+/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/libCore.a
 /home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor

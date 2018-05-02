@@ -78,6 +78,28 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: install/local
+
+.PHONY : install/local/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -99,28 +121,6 @@ install/strip: preinstall
 install/strip/fast: install/strip
 
 .PHONY : install/strip/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: install/local
-
-.PHONY : install/local/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -153,19 +153,6 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
-
-#=============================================================================
-# Target rules for targets named Renderer
-
-# Build rule for target.
-Renderer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Renderer
-.PHONY : Renderer
-
-# fast build rule for target.
-Renderer/fast:
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/build
-.PHONY : Renderer/fast
 
 #=============================================================================
 # Target rules for targets named Core
@@ -247,33 +234,6 @@ home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s:
 	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 .PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
-
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o
-
-# target to build an object file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o:
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
-
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i
-
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.i
-
-# target to preprocess a source file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i:
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.i
-
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s
-
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.s
-
-# target to generate assembly for a file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s:
-	$(MAKE) -f CMakeFiles/Renderer.dir/build.make CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.s
-
 home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o
 
 .PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o
@@ -309,22 +269,18 @@ help:
 	@echo "... depend"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... edit_cache"
-	@echo "... install/strip"
-	@echo "... install/local"
 	@echo "... rebuild_cache"
-	@echo "... Renderer"
+	@echo "... install/local"
 	@echo "... Core"
 	@echo "... Raptor"
+	@echo "... edit_cache"
+	@echo "... install/strip"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.s"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.i"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.s"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.s"

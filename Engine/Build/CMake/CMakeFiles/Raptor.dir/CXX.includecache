@@ -6,21 +6,13 @@
 
 #IncludeRegexTransform: 
 
-../../Source/Runtime/Core/Misc/CoreTypes.h
-cstdint
--
-atomic
--
-
-../../Source/Runtime/Renderer/Utils/Window.h
-Core/Misc/CoreTypes.h
--
-
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
-Renderer/Utils/Window.h
+X11/Xlib.h
+-
+X11/Xutil.h
+-
+X11/keysymdef.h
 -
 iostream
--
-thread
 -
 

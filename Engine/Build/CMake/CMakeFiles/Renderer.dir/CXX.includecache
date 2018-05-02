@@ -6,46 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../../Source/External/GLFW/glfw3.h
-stddef.h
--
-stdint.h
--
-OpenGL/gl3.h
--
-OpenGL/gl3ext.h
--
-OpenGL/gl.h
--
-OpenGL/glu.h
--
-GL/glcorearb.h
--
-GLES/gl.h
--
-GLES/glext.h
--
-GLES2/gl2.h
--
-GLES2/gl2ext.h
--
-GLES3/gl3.h
--
-GLES2/gl2ext.h
--
-GLES3/gl31.h
--
-GLES2/gl2ext.h
--
-vulkan/vulkan.h
--
-GL/gl.h
--
-GL/glext.h
--
-GL/glu.h
--
-
 ../../Source/Runtime/Core/Misc/CoreTypes.h
 cstdint
 -
@@ -53,9 +13,11 @@ atomic
 -
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp
-GL/glew.h
+X11/Xlib.h
 -
-GLFW/glfw3.h
+X11/Xutil.h
+-
+X11/keysymdef.h
 -
 Core/Misc/CoreTypes.h
 -
@@ -63,6 +25,8 @@ Window.h
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.h
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.h
+X11/Xlib.h
+-
 Core/Misc/CoreTypes.h
 -
 

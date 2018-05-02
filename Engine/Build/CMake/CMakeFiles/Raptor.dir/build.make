@@ -91,12 +91,18 @@ Raptor_EXTERNAL_OBJECTS =
 Raptor: CMakeFiles/Raptor.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp.o
 Raptor: CMakeFiles/Raptor.dir/build.make
 Raptor: /usr/lib/arm-linux-gnueabihf/libGL.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libSM.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libICE.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libX11.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libXext.so
 Raptor: /usr/lib/arm-linux-gnueabihf/libGLEW.so
 Raptor: libCore.a
-Raptor: libRenderer.a
 Raptor: /usr/lib/arm-linux-gnueabihf/libGL.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libSM.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libICE.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libX11.so
+Raptor: /usr/lib/arm-linux-gnueabihf/libXext.so
 Raptor: /usr/lib/arm-linux-gnueabihf/libGLEW.so
-Raptor: ../../Binaries/Libraries/Shared/libglfw.so.3.2
 Raptor: CMakeFiles/Raptor.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/cellman123/Desktop/Raptor/Engine/Build/CMake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Raptor"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Raptor.dir/link.txt --verbose=$(VERBOSE)

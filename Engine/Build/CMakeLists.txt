@@ -26,10 +26,10 @@ set (CMAKE_CXX_COMPILER /usr/bin/g++)
 set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
 
-set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../../)
-set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/../)
-set (SOURCE_ROOT_DIR ${ENGINE_ROOT_DIR}/Source/)
-set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime/)
+set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
+set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
+set (SOURCE_ROOT_DIR ${ENGINE_ROOT_DIR}/Source)
+set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime)
 
 ###
 # set include and linking directories
@@ -50,6 +50,12 @@ if (OPENGL_FOUND)
 	link_libraries (${OPENGL_gl_LIBRARY})
 endif ()
 
+find_package(X11 REQUIRED)
+if (X11_FOUND)
+	include_directories(${X11_INCLUDE_DIR})
+	link_libraries(${X11_LIBRARIES})
+endif ()
+
 # glew
 
 find_package(GLEW REQUIRED)
@@ -57,11 +63,6 @@ if (GLEW_FOUND)
 	include_directories(${GLEW_INCLUDE_DIRS})
 	link_libraries(${GLEW_LIBRARIES})
 endif()
-
-# glfw
-
-add_library (GLFW SHARED IMPORTED)
-set_target_properties (GLFW PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Binaries/Libraries/Shared/libglfw.so.3.2)
 
 ###
 # load static libraries
@@ -79,23 +80,22 @@ target_include_directories (
 
 # renderer
 
-add_library (Renderer STATIC
-	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
-)
-target_include_directories (
-	Core PRIVATE ${RUNTIME_ROOT_DIR}/Renderer/
-)
-target_link_libraries (Renderer GLFW)
+# add_library (Renderer STATIC
+#	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
+# )
+# target_include_directories (
+#	Core PRIVATE ${RUNTIME_ROOT_DIR}/Renderer/
+# )
 
 # install
 
-install (TARGETS Core Renderer DESTINATION ${ENGINE_ROOT_DIR}/Binaries/Libraries/Static)
+install (TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 ###
 # build the final executable
 ###
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor Core Renderer)
+target_link_libraries (Raptor Core)
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)

@@ -6,5 +6,5 @@ CXX_FLAGS = -pthread   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/External -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime/Core -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime/Renderer 
+CXX_INCLUDES = -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/External -I/home/cellman123/Desktop/Raptor/Engine/Build/../Source/Runtime/Core 
 

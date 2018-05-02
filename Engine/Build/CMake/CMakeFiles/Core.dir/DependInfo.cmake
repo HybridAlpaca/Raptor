@@ -14,7 +14,6 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../../Source/Runtime"
   "../../Source/External"
   "../../Source/Runtime/Core"
-  "../../Source/Runtime/Renderer"
   )
 
 # Targets to which this target links.
