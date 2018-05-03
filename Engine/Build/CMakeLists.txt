@@ -71,8 +71,7 @@ endif()
 # core
 
 add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Async/ThreadPool.cpp
-	${RUNTIME_ROOT_DIR}/Core/Math/Vector.cpp
+	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
 )
 target_include_directories (
 	Core PRIVATE ${RUNTIME_ROOT_DIR}/Core/

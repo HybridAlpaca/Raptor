@@ -193,59 +193,32 @@ Raptor/fast:
 	$(MAKE) -f CMakeFiles/Raptor.dir/build.make CMakeFiles/Raptor.dir/build
 .PHONY : Raptor/fast
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.o
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.o
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.o
-
-# target to build an object file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.o:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.o
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.o
-
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.i
-
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.i
-
-# target to preprocess a source file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.i:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.i
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.i
-
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.s
-
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.s
-
-# target to generate assembly for a file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.s:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.s
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.cpp.s
-
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o
-
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.o
 
 # target to build an object file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.o
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.o:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.o
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.o
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.i: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.i
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.i
 
 # target to preprocess a source file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.i
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.i:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.i
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.i
 
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.s: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.s
 
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.s
 
 # target to generate assembly for a file
-home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s:
-	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
-.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.cpp.s
+home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.s:
+	$(MAKE) -f CMakeFiles/Core.dir/build.make CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.s
+.PHONY : home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp.s
 
 home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o: home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o
 
@@ -316,12 +289,9 @@ help:
 	@echo "... Renderer"
 	@echo "... Core"
 	@echo "... Raptor"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.o"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.i"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/ThreadPool.s"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.o"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.i"
-	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Math/Vector.s"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.o"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.i"
+	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.s"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.o"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.i"
 	@echo "... home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.s"
