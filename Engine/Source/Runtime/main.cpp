@@ -1,4 +1,6 @@
-#include <Core/Async/Scheduler.h>
+#define DEBUG_BUILD
+
+#include <Core/Misc/Required.h>
 #include <Renderer/Utils/Window.h>
 
 #include <iostream>
@@ -8,15 +10,6 @@
 int main (int argc, char * argv[])
 {
 	using Renderer::Utils::WindowController;
-	using Core::Async::Scheduler;
-	
-	// Allocate 16 threads in thread pool
-	Scheduler scheduler(15);
-	
-	scheduler.Schedule([] (void * data)
-	{
-		std::cout << "Hello from thread!" << "\n";
-	});
 	
 	WindowController window(640, 480, "[ dummy display ]");
 	
@@ -28,7 +21,5 @@ int main (int argc, char * argv[])
 	
 		window.Update();
 	}
-	
-	scheduler.WaitAll();
 	
 }
