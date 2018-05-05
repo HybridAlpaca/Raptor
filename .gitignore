@@ -31,3 +31,7 @@
 *.out
 *.app
 *.desktop
+
+# Project Specifics
+CMake/
+Engine/Binaries/Raptor
