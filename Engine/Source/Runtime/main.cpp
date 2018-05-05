@@ -1,20 +1,21 @@
 #include <Core/Async/Scheduler.h>
 #include <Renderer/Utils/Window.h>
 
-#include <thread>
 #include <iostream>
- 
+#include <string>
+#include <thread>
+
 int main (int argc, char * argv[])
 {
 	using Renderer::Utils::WindowController;
 	using Core::Async::Scheduler;
 	
-	// 4 cores, subtract one for main thread
-	Scheduler scheduler(3);
+	// Allocate 16 threads in thread pool
+	Scheduler scheduler(15);
 	
-	scheduler.Schedule([] (void * data) ->
-	void {
-		std::cout << "Hello from thread " << std::this_thread::get_id() << "!" << "\n";
+	scheduler.Schedule([] (void * data, std::string thread_id)
+	{
+		std::cout << "Hello from thread " << thread_id << "!" << "\n";
 	});
 	
 	WindowController window(640, 480, "[ dummy display ]");

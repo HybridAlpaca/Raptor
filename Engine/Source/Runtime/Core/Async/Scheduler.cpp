@@ -2,7 +2,7 @@
 
 #include "Scheduler.h"
 
-#include <iostream>
+#include <string>
 #include <thread>
 
 using Core::Async::Scheduler;
@@ -16,7 +16,7 @@ Scheduler::Scheduler (uint8 num_threads)
 	{
 		// create a worker and tell it to
 		// run WorkerTask
-		workers.emplace_back(& Scheduler::WorkerTask, this);
+		workers.emplace_back(& Scheduler::WorkerTask, this, "Foo Bar");
 	}
 }
 
@@ -64,8 +64,9 @@ void Scheduler::WaitAll ()
 	}
 }
 
-void Scheduler::WorkerTask ()
+void Scheduler::WorkerTask (std::string some_data)
 {
+
 	while (true)
 	{
 		Task task;
@@ -93,7 +94,7 @@ void Scheduler::WorkerTask ()
 			taskQueue.pop();
 		}
 		
-		task(nullptr);
+		task(nullptr, some_data);
 		--task_count;
 	}
 }

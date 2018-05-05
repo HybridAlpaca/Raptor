@@ -6,6 +6,7 @@
 #include <functional>
 #include <mutex>
 #include <queue>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -17,7 +18,7 @@ namespace Async
 class Scheduler
 {
 
-	typedef std::function<void (void * data)> Task;
+	typedef std::function<void (void * data, std::string thread_id)> Task;
 
 	std::condition_variable condition;
 
@@ -34,7 +35,7 @@ class Scheduler
 	uint16 task_count;
 	
 	/// Method for worker threads to run
-	void WorkerTask ();
+	void WorkerTask (std::string some_data);
 
 public:
 
