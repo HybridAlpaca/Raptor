@@ -13,9 +13,9 @@ int main (int argc, char * argv[])
 	// Allocate 16 threads in thread pool
 	Scheduler scheduler(15);
 	
-	scheduler.Schedule([] (void * data, std::string thread_id)
+	scheduler.Schedule([] (void * data)
 	{
-		std::cout << "Hello from thread " << thread_id << "!" << "\n";
+		std::cout << "Hello from thread!" << "\n";
 	});
 	
 	WindowController window(640, 480, "[ dummy display ]");
