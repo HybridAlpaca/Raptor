@@ -1,8 +1,21 @@
+#include <Core/Async/Scheduler.h>
 #include <Renderer/Utils/Window.h>
+
+#include <thread>
+#include <iostream>
  
 int main (int argc, char * argv[])
 {
 	using Renderer::Utils::WindowController;
+	using Core::Async::Scheduler;
+	
+	// 4 cores, subtract one for main thread
+	Scheduler scheduler(3);
+	
+	scheduler.Schedule([] (void * data) ->
+	void {
+		std::cout << "Hello from thread " << std::this_thread::get_id() << "!" << "\n";
+	});
 	
 	WindowController window(640, 480, "[ dummy display ]");
 	
@@ -14,5 +27,7 @@ int main (int argc, char * argv[])
 	
 		window.Update();
 	}
+	
+	scheduler.WaitAll();
 	
 }

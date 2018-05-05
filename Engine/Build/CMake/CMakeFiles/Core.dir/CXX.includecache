@@ -6,20 +6,34 @@
 
 #IncludeRegexTransform: 
 
+../../Source/Runtime/Core/Misc/CoreTypes.h
+cstdint
+-
+atomic
+-
+
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.cpp
+Core/Misc/CoreTypes.h
+-
 Scheduler.h
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.h
-algorithm
+iostream
 -
-string
+thread
 -
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Async/Scheduler.h
+Core/Misc/CoreTypes.h
+-
+condition_variable
+-
 functional
 -
-string
+mutex
 -
-unordered_map
+queue
+-
+thread
 -
 vector
 -

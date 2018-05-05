@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+../../Source/Runtime/Core/Async/Scheduler.h
+Core/Misc/CoreTypes.h
+-
+condition_variable
+-
+functional
+-
+mutex
+-
+queue
+-
+thread
+-
+vector
+-
+
 ../../Source/Runtime/Core/Misc/CoreTypes.h
 cstdint
 -
@@ -25,6 +41,12 @@ Core/Misc/CoreTypes.h
 -
 
 /home/cellman123/Desktop/Raptor/Engine/Source/Runtime/main.cpp
+Core/Async/Scheduler.h
+-
 Renderer/Utils/Window.h
+-
+thread
+-
+iostream
 -
 

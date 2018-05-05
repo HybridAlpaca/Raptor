@@ -1,8 +1,12 @@
 #pragma once
 
+#include <Core/Misc/CoreTypes.h>
+
+#include <condition_variable>
 #include <functional>
-#include <string>
-#include <unordered_map>
+#include <mutex>
+#include <queue>
+#include <thread>
 #include <vector>
 
 namespace Core
@@ -13,32 +17,37 @@ namespace Async
 class Scheduler
 {
 
-	typedef std::function<void (void * data)> Callback;
+	typedef std::function<void (void * data)> Task;
 
-	// map of event ID's to their list of callbacks
-	std::unordered_map<std::string, std::vector<Callback>> callbacks;
+	std::condition_variable condition;
+
+	std::mutex mutex;
+	
+	std::queue<Task> taskQueue;
+	
+	std::vector<std::thread> workers;
+	
+	uint8 numWorkers;
+	
+	bool_a shouldStop;
+	
+	uint16 task_count;
+	
+	/// Method for worker threads to run
+	void WorkerTask ();
 
 public:
 
-	Scheduler ();
+	/// Max of 255 active threads
+	Scheduler (uint8 num_threads);
 	
 	~Scheduler ();
 	
 	void Destroy ();
 	
-	// fire event without data (i.e. notify listeners)
-	void Emit (std::string id);
+	void Schedule (Task task);
 	
-	// fire event with data
-	void Emit (std::string id, void * data);
-	
-	void Subscribe (std::string id, Callback callback);
-	
-	// unsubscribe from all events from this ID
-	void Unsubscribe (std::string id);
-	
-	// unsubscribe from a certain collback from this ID
-	void Unsubscribe (std::string id, Callback callback);
+	void WaitAll ();
 
 };
 
