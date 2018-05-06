@@ -3,9 +3,6 @@
 #include <Core/Misc/Required.h>
 #include <Renderer/Utils/Window.h>
 
-#include <iostream>
-#include <string>
-#include <thread>
 
 int main (int argc, char * argv[])
 {
