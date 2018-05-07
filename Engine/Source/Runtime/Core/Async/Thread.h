@@ -15,17 +15,28 @@ class Thread
 
 	std::mutex mutex;
 
+	bool_a shouldStop;
+
 	std::thread thread;
+	
+	/// function for the thread to run
+	void WorkerFunction ();
+	
+	/// delete copy constructor
+	Thread (const Thread &) = delete;
+
+	/// delete assignment operator
+	Thread & operator= (const Thread &) = delete;
 
 public:
 
-	Thread (Function function, std::mutex & mutex);
+	Thread ();
 	
 	~Thread ();
 	
-	bool Detach ();
+	void Start ();
 	
-	bool Join ();
+	void Stop ();
 
 };
 
