@@ -5,39 +5,119 @@
 
 #include "Window.h"
 
-#include <Core/Misc/CoreTypes.h>
+#include <Core/Misc/Required.h>
 
 using Renderer::Utils::WindowController;
 
-WindowController::WindowController (uint16 width, uint16 height, const char * title)
+WindowController::WindowController (uint16 width, uint16 height, cchar title)
 {
-	display = XOpenDisplay(nullptr);
-	
-	if (display == nullptr)
+	if (!Init())
 	{
-		// Failed to connect to X11 Server
-		return;	
-	}
-	
-	root = DefaultRootWindow(display);
-
-	visualInfo = glXChooseVisual(display, 0, attributes);
-
-	if (visualInfo == nullptr)
-	{
-		// No appropriate visual found
+		// Initialization failed for
+		// some reason or another, so
+		// stop the window creation.
 		return;
 	}
-	// selected visual ID == (void *) vi -> visualid
+
+	if (!CreateFrameBuffers())
+	{
+		// failed to allocate FBO's
+		return;
+	}
+	CreateColorMap();
+	CreateWindow(width, height);
+	CreateContext();
+}
+
+WindowController::~WindowController ()
+{
+	Destroy();
+}
+
+void WindowController::CreateColorMap ()
+{
+	setAttribs.colormap
+		= colormap
+		= XCreateColormap(
+			display,
+			RootWindow(display, visualInfo -> screen),
+			visualInfo -> visual,
+			AllocNone
+		);
+		
+	setAttribs.background_pixmap = None;
+	setAttribs.border_pixel = 0;
+	setAttribs.event_mask = StructureNotifyMask;
+}
+
+bool WindowController::CreateContext ()
+{
+	return true;
+}
+
+bool WindowController::CreateFrameBuffers ()
+{
+	int16 fbCount;
+	GLXFBConfig * fbc = glXChooseFBConfig(
+		display,
+		DefaultScreen(display),
+		visualAttribs,
+		& fbCount
+	);
 	
-	colorMap = XCreateColormap(display, root, visualInfo -> visual, AllocNone);
+	if (!fbc)
+	{
+		// failed to retrieve a framebuffer config
+		return false;
+	}
+	
+	int16
+		bestFbc = -1,
+		worstFbc = -1,
+		bestNumSamples = -1,
+		worstNumSamples = 999;
+		
+	for (int8 i = 0; i < fbCount; i++)
+	{
+		visualInfo = glXGetVisualFromFBConfig(display, fbc[i]);
+		if (visualInfo)
+		{
+			int16 sampleBuffer, samples;
+			glXGetFBConfigAttrib(display, fbc[i], GLX_SAMPLE_BUFFERS, & sampleBuffer);
+			glXGetFBConfigAttrib(display, fbc[i], GLX_SAMPLES, & samples);
+			
+			if (bestFbc < 0 || sampleBuffer && samples > bestNumSamples)
+			{
+				bestFbc = i;
+				bestNumSamples = samples;
+			}
+			if (worstFbc  < 0 || !sampleBuffer || samples < worstNumSamples)
+			{
+				worstFbc = i;
+				worstNumSamples = samples;
+			}
+		}
+		XFree(visualInfo);
+		visualInfo = nullptr;
+	}
+	
+	GLXFBConfig FBC = fbc[bestFbc];
+	
+	// we don't need this list anymore
+	XFree(fbc);
+	
+	visualInfo = glXGetVisualFromFBConfig(display, FBC);
+	
+	// int16 visualID = visualInfo -> visualid
+	
+	return true;
+}
 
-	setAttributes.colormap = colorMap;
-	setAttributes.event_mask = ExposureMask | KeyPressMask;
-
+bool WindowController::CreateWindow (uint16 & width, uint16 & height)
+{
 	window = XCreateWindow(
 		display,
-		root,
+		RootWindow(display, visualInfo -> screen),
 		0,
 		0,
 		width,
@@ -46,49 +126,47 @@ WindowController::WindowController (uint16 width, uint16 height, const char * ti
 		visualInfo -> depth,
 		InputOutput,
 		visualInfo -> visual,
-		CWColormap | CWEventMask,
-		& setAttributes
+		CWBorderPixel | CWColormap | CWEventMask,
+		& setAttribs
 	);
-
-	XMapWindow(display, window);
-	XStoreName(display, window, title);
-
-	context = glXCreateContext(display, visualInfo, nullptr, GL_TRUE);
-	glXMakeCurrent(display, window, context);
+	
+	if (!window)
+	{
+		// window creation failed
+		return false;
+	}
+	
+	return true;
 }
 
-WindowController::~WindowController ()
+bool WindowController::ExtensionSupported (cchar extension_list, cchar extension)
 {
-	Destroy();
+	//
 }
 
 void WindowController::Destroy ()
 {
-	glXMakeCurrent(display, None, nullptr);
-	glXDestroyContext(display, context);
-	XDestroyWindow(display, window);
-	XCloseDisplay(display);
+	//
 }
 
-void WindowController::Update ()
+bool WindowController::Init ()
 {
-	XNextEvent(display, & event);
+	display = XOpenDisplay(nullptr);
 	
-	switch (event.type)
+	if (!display)
 	{
-		case Expose:
-			XGetWindowAttributes(display, window, & getAttributes);
-			glViewport(0, 0, getAttributes.width, getAttributes.height);
-			glXSwapBuffers(display, window);
-			break;
-		case KeyPress:
-			Destroy();
-			break;
-		default:
-			// should never happen, since we explicitly
-			// define events to listen for when setting
-			// window attributes.
-			Destroy();
-			break;
+		// If the display returned NULL,
+		// indicate that creation failed.
+		return false;
 	}
+	
+	if (!glXQueryVersion(display, & glxMajor, &glxMinor) || 
+		((glxMajor == 1) && (glxMinor < 3)) || (glxMajor < 1))
+	{
+		// An invalid GLX version was provided,
+		// not our problem to sort out.
+		return false;
+	}
+	
+	return true;
 }
