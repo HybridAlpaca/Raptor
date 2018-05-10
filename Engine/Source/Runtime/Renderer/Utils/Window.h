@@ -27,12 +27,9 @@ class WindowController
 	static const int16 GLX_VERSION_MAJOR_ARB = 0x2091;
 	static const int16 GLX_VERSION_MINOR_ARB = 0x2092;
 
-	static bool glxError;
-	
-	static int8 glxErrorHandler ();
-
 	Colormap colormap;
 	Display * display;
+	GLXContext * context;
 	Window window;
 	
 	XSetWindowAttributes setAttribs;
@@ -66,7 +63,7 @@ class WindowController
 	
 	bool CreateFrameBuffers ();
 	
-	bool CreateWindow (uint16 & width, uint16 & height);
+	bool CreateWindow (uint16 & width, uint16 & height, cchar title);
 
 	bool ExtensionSupported (cchar extension_list, cchar extension);
 	

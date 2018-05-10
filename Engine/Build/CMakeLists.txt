@@ -47,7 +47,7 @@ include_directories (${SOURCE_ROOT_DIR}/External)
 find_package (OpenGL REQUIRED)
 if (OPENGL_FOUND)
 	include_directories (${OPENGL_INCLUDE_DIRS})
-	link_libraries (${OPENGL_gl_LIBRARY})
+	link_libraries (${OPENGL_gl_LIBRARY} ${OPENGL_LIBRARIES})
 endif ()
 
 find_package(X11 REQUIRED)

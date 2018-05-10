@@ -1,7 +1,7 @@
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
-#include <X11/X.h>
-#include <X11/Xlib.h>
 
 #include "Window.h"
 
@@ -13,19 +13,16 @@ WindowController::WindowController (uint16 width, uint16 height, cchar title)
 {
 	if (!Init())
 	{
-		// Initialization failed for
-		// some reason or another, so
-		// stop the window creation.
+		// failed to initialize
 		return;
 	}
-
 	if (!CreateFrameBuffers())
 	{
 		// failed to allocate FBO's
 		return;
 	}
 	CreateColorMap();
-	CreateWindow(width, height);
+	CreateWindow(width, height, title);
 	CreateContext();
 }
 
@@ -52,6 +49,15 @@ void WindowController::CreateColorMap ()
 
 bool WindowController::CreateContext ()
 {
+	cchar glExts = glXQueryExtensionsString(
+		display,
+		DefaultScreen(display)
+	);
+	
+	glXCreateContextAttribsARBProc glXCreateContextAttribsARB =
+		(glXCreateContextAttribsARBProc)
+		glXGetProcAddressARB((const GLubyte *) "glXCreateContextAttribsARB");
+		
 	return true;
 }
 
@@ -113,7 +119,7 @@ bool WindowController::CreateFrameBuffers ()
 	return true;
 }
 
-bool WindowController::CreateWindow (uint16 & width, uint16 & height)
+bool WindowController::CreateWindow (uint16 & width, uint16 & height, cchar title)
 {
 	window = XCreateWindow(
 		display,
@@ -135,6 +141,10 @@ bool WindowController::CreateWindow (uint16 & width, uint16 & height)
 		// window creation failed
 		return false;
 	}
+	
+	XFree(visualInfo);
+	XStoreName(display, window, title);
+	XMapWindow(display, window);
 	
 	return true;
 }
