@@ -7,14 +7,18 @@
 
 using Renderer::Utils::WindowController;
 
-/***
-* static methods
-***/
+///
+/// static methods
+///
 
 void WindowController::FBResizeCallback (GLFWwindow * window, uint16 width, uint16 height)
 {
 	glViewport(0, 0, width, height);
 }
+
+///
+/// c'tors and d'tors
+///
 
 WindowController::WindowController (uint16 width, uint16 height, cchar title)
 : shouldClose(false)
@@ -51,6 +55,10 @@ WindowController::~WindowController ()
 {
 	Destroy();
 }
+
+///
+/// methods
+///
 
 void WindowController::Destroy ()
 {

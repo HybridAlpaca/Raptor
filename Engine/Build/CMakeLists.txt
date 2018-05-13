@@ -80,6 +80,7 @@ target_include_directories (Core PRIVATE
 # renderer
 
 add_library (Renderer STATIC
+	${RUNTIME_ROOT_DIR}/Renderer/Pipeline/Primitive.cpp
 	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
 )
 target_include_directories (Renderer PRIVATE
