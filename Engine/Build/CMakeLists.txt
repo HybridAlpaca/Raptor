@@ -50,19 +50,18 @@ if (OPENGL_FOUND)
 	link_libraries (${OPENGL_gl_LIBRARY} ${OPENGL_LIBRARIES})
 endif ()
 
-find_package(X11 REQUIRED)
-if (X11_FOUND)
-	include_directories(${X11_INCLUDE_DIR})
-	link_libraries(${X11_LIBRARIES})
-endif ()
-
 # glew
 
-find_package(GLEW REQUIRED)
+find_package (GLEW REQUIRED)
 if (GLEW_FOUND)
-	include_directories(${GLEW_INCLUDE_DIRS})
-	link_libraries(${GLEW_LIBRARIES})
+	include_directories (${GLEW_INCLUDE_DIRS})
+	link_libraries (${GLEW_LIBRARIES})
 endif()
+
+# glfw
+
+add_library (glfw SHARED IMPORTED)
+set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Binaries/libglfw.so.3.2)
 
 ###
 # load static libraries
@@ -74,8 +73,8 @@ add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
 )
-target_include_directories (
-	Core PRIVATE ${RUNTIME_ROOT_DIR}/Core/
+target_include_directories (Core PRIVATE
+	${RUNTIME_ROOT_DIR}/Core/
 )
 
 # renderer
@@ -83,8 +82,11 @@ target_include_directories (
 add_library (Renderer STATIC
 	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
 )
-target_include_directories (
-	Core PRIVATE ${RUNTIME_ROOT_DIR}/Renderer/
+target_include_directories (Renderer PRIVATE
+	${RUNTIME_ROOT_DIR}/Renderer/
+)
+target_link_libraries (Renderer
+	glfw
 )
 
 # install

@@ -28,7 +28,7 @@
 #define DEBUG(x) \
 	do \
 	{ \
-	(x) \
+	(x); \
 	} \
 	while (0)
 
