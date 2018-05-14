@@ -34,7 +34,7 @@ public:
 	
 	void Destroy ();
 	
-	AssetHandle LoadFromDisk (cchar path);
+	ErrCode LoadFromDisk (cchar path);
 	
 	ErrCode Unload (uint16 handle);
 
