@@ -1,8 +1,8 @@
-#define DEBUG_BUILD
-
 #include <Core/Misc/Required.h>
+
 #include <Renderer/Utils/Window.h>
 
+#include <iostream>
 
 int main (int argc, char * argv[])
 {

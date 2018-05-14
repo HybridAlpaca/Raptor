@@ -1,10 +1,12 @@
 #include <Core/Misc/Required.h>
 
 #include "LinearAlloc.h"
+#include "Utils.h"
 
 #include <memory>
 
 using Core::Memory::LinearAllocator;
+using Core::Memory::CalculatePadding;
 
 LinearAllocator::LinearAllocator (size_t buffer_size)
 : bufferSize (buffer_size)
@@ -27,7 +29,9 @@ void * LinearAllocator::Allocate (const size_t allocation_size, const size_t ali
 	
 	if (alignment != 0 && (offset % alignment != 0))
 	{
-		// memory alignment is required; calculate padding
+		// bit padding is required to properly
+		// align data
+		padding = CalculatePadding(currentAddr, alignment);
 	}
 	
 	if (offset + padding + allocation_size > bufferSize)
@@ -55,4 +59,13 @@ void LinearAllocator::Destroy ()
 {
 	free(startPtr);
 	startPtr = nullptr;
+	
+	Reset ();
+}
+
+void LinearAllocator::Reset ()
+{
+	memoryPeak = 0;
+	memoryUsed = 0;
+	offset = 0;
 }

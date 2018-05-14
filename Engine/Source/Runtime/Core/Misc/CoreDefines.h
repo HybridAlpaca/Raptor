@@ -21,7 +21,7 @@
 #define ASSERT(x, y) \
 	do \
 	{ \
-	(x) \
+	(x); \
 	} \
 	while (0)
 

@@ -73,6 +73,7 @@ add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
 	${RUNTIME_ROOT_DIR}/Core/Memory/LinearAlloc.cpp
+	${RUNTIME_ROOT_DIR}/Core/Memory/AssetManager.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
