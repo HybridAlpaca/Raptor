@@ -15,8 +15,7 @@ namespace Memory
 EXAMPLE USAGE
 
 AssetManager manager(2048, "./lib/assets/");
-Foo * theFoo = manager.Load<Foo>();
-Bar * theBar = manager.LoadDisk<Bar>("img/this-is-a-bar.jpg");
+Foo * theFoo = manager.LoadImmediate<>();
 
 manager.Unload(theFoo);
 manager.Unload(theBar);
@@ -32,7 +31,7 @@ class AssetManager
 	
 	std::unordered_map<uint16, void *> assets;
 	
-	std::queue<ErrCode> errors;
+	std::queue<uint16> errors;
 
 public:
 
@@ -40,7 +39,8 @@ public:
 	enum class ErrCode
 	{
 		OK,
-		NOT_LOADED,
+		FILE_NOT_EXIST,
+		ASSET_NOT_LOADED,
 		OUT_OF_MEMORY
 	};
 
@@ -51,6 +51,12 @@ public:
 	void Destroy ();
 	
 	ErrCode GetError ();
+	
+	template <typename AssetType>
+	AssetType * LoadImmediate ();
+	
+	template <typename AssetType>
+	void Unload (AssetType * asset);
 
 };
 
