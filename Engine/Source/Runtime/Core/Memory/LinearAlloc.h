@@ -2,10 +2,22 @@
 
 #include <Core/Misc/Required.h>
 
+#include "Utils.h"
+
 namespace Core
 {
 namespace Memory
 {
+
+/**
+
+USAGE
+
+LinearAllocator allocator(2048);
+Foo * foo = allocator.Allocate<Foo>();
+allocator.Free<Foo>(foo);
+
+**/
 
 class LinearAllocator
 {
@@ -24,7 +36,8 @@ public:
 	
 	~LinearAllocator ();
 	
-	void * Allocate (const size_t allocation_size, const size_t alignment);
+	template <typename Type>
+	Type * Allocate ();
 	
 	void Destroy ();
 	
@@ -35,4 +48,6 @@ public:
 };
 
 }
+
+#include "LinearAlloc.hpp"
 }

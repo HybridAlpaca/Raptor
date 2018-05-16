@@ -2,8 +2,6 @@
 
 #include <Renderer/Utils/Window.h>
 
-#include <iostream>
-
 int main (int argc, char * argv[])
 {
 	using Renderer::Utils::WindowController;
