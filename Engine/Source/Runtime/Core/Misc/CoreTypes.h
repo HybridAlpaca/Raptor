@@ -2,11 +2,13 @@
 
 #include <atomic>
 #include <cstdint>
+#include <string>
 
 // misc
 
 typedef std::size_t size_t;
 typedef std::intptr_t intptr;
+typedef std::string string;
 typedef const char * cchar;
 
 // signed ints

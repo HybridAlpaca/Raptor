@@ -41,7 +41,12 @@ public:
 	
 	void Destroy ();
 	
-	void Free (void * data) { ASSERT(false, "use `LinearAllocator::Reset` instead"); }
+	template <typename Type>
+	void Free (Type * data) { FATAL("use `LinearAllocator::Reset` instead"); }
+	
+	size_t MemoryPeak () const { return memoryPeak; }
+	
+	size_t MemoryUsed () const { return memoryUsed; }
 	
 	void Reset ();
 

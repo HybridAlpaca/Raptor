@@ -2,14 +2,16 @@
 
 #include <Renderer/Utils/Window.h>
 
-int main (int argc, char * argv[])
+int16 main (int16 argc, cchar argv[])
 {
 	using Renderer::Utils::WindowController;
 	
-	WindowController window(640, 480, "[ dummy display ]");
+	WindowController window(640, 480, "Placeholder Window");
 	
 	while (!window.ShouldClose())
 	{
 		window.Update();
 	}
+	
+	return 0;
 }

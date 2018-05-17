@@ -62,6 +62,7 @@ WindowController::~WindowController ()
 
 void WindowController::Destroy ()
 {
+	shouldClose =  true;
 	glfwTerminate();
 }
 

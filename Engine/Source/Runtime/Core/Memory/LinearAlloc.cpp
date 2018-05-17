@@ -21,10 +21,10 @@ LinearAllocator::~LinearAllocator ()
 
 void LinearAllocator::Destroy ()
 {
+	Reset();
+
 	free(startPtr);
 	startPtr = nullptr;
-	
-	Reset ();
 }
 
 void LinearAllocator::Reset ()
