@@ -8,6 +8,7 @@
 
 typedef std::size_t size_t;
 typedef std::intptr_t intptr;
+typedef std::nullptr_t nullptr_t;
 typedef std::string string;
 typedef const char * cchar;
 
