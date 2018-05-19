@@ -1,5 +1,7 @@
 # Raptor Engine
 
+![Raptor Logo](./Engine/Assets/Icons/raptor-logo.png "Raptor Game Engine")
+
 ### Building
 
 To build, simply run the `build.sh` file in the project root directory.
