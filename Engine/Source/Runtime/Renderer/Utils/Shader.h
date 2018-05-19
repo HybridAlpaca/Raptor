@@ -2,7 +2,6 @@
 
 #include <Core/Misc/Required.h>
 
-#include <fstream>
 #include <unordered_map> // use this for shader caches
 
 namespace Renderer
@@ -10,40 +9,38 @@ namespace Renderer
 namespace Utils
 {
 
+enum class ShaderType
+{
+	PROGRAM,
+	VERTEX,
+	FRAGMENT
+};
+
 class ShaderController
 {
+	typedef uint8 Shader; // handle to OpenGL shader
 
-	static uint16 boundShader;
+	static Shader boundShader;
 	
-	std::ifstream VertexFile;
-	std::ifstream FragmentFile;
+	std::unordered_map<cchar, uint16> shaderCache;
 	
-	string vertexCode;
-	string fragmentCode;
+	void CheckCompilerErrors (Shader shader, ShaderType type);
 	
-	void CheckCompilerErrors (uint16 shader, ShaderType type);
-	
-	void ReadFile (cchar file_name);
+	cchar ReadFile (cchar file_name);
 
 public:
-
-	enum class ShaderType
-	{
-		PROGRAM,
-		VERTEX,
-		FRAGMENT
-	};
 
 	ShaderController ();
 	
 	~ShaderController ();
 	
-	uint16 Compile ();
+	const Shader Compile (cchar shader_name);
 	
 	void Destroy ();
 	
+	void Free (Shader shader);
+	
 	void Use ();
-
 };
 
 }
