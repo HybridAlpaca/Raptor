@@ -1,6 +1,6 @@
-# Raptor Engine
-
 ![Raptor Logo](./Engine/Assets/Icons/raptor-logo.png "Raptor Game Engine")
+
+# Raptor Engine
 
 ### Building
 
