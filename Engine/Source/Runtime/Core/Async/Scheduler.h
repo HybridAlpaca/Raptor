@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Misc/CoreTypes.h>
+#include <Core/Common/Required.h>
 
 #include <condition_variable>
 #include <functional>

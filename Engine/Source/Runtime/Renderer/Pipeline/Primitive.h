@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Misc/Required.h>
+#include <Core/Common/Required.h>
 #include <Renderer/Utils/Window.h>
 
 namespace Renderer

@@ -1,6 +1,7 @@
-#include <Core/Misc/Required.h>
+#include <Core/Common/Required.h>
 
 #include <Renderer/Utils/Window.h>
+#include <Core/Memory/AssetManager.h>
 
 int16 main (int16 argc, cchar argv[])
 {

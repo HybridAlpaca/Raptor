@@ -1,5 +1,4 @@
-#include <Core/Misc/CoreTypes.h>
-
+#include <Core/Common/Required.h>
 #include "Scheduler.h"
 
 #include <mutex>

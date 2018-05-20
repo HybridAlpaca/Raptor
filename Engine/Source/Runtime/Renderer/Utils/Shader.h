@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Misc/Required.h>
+#include <Core/Common/Required.h>
 
 #include <unordered_map> // use this for shader caches
 
@@ -22,15 +22,15 @@ class ShaderController
 
 	static Shader boundShader;
 	
+	cchar directory;
+	
 	std::unordered_map<cchar, uint16> shaderCache;
 	
 	void CheckCompilerErrors (Shader shader, ShaderType type);
-	
-	cchar ReadFile (cchar file_name);
 
 public:
 
-	ShaderController ();
+	ShaderController (cchar directory);
 	
 	~ShaderController ();
 	
@@ -39,6 +39,8 @@ public:
 	void Destroy ();
 	
 	void Free (Shader shader);
+	
+	cchar ReadFile (cchar file_name);
 	
 	void Use ();
 };

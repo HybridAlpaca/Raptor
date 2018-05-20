@@ -1,9 +1,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <Core/Common/Required.h>
 #include "Window.h"
-
-#include <Core/Misc/Required.h>
 
 using Renderer::Utils::WindowController;
 
