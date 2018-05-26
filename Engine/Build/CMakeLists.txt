@@ -22,14 +22,18 @@ include (GNUInstallDirs)
 # set parameters and options
 ###
 
-set (CMAKE_CXX_COMPILER /usr/bin/g++-5)
 set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set (CMAKE_CXX_COMPILER /usr/bin/g++)
 set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
 set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
 set (SOURCE_ROOT_DIR ${ENGINE_ROOT_DIR}/Source)
 set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime)
+
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${ENGINE_ROOT_DIR}/Binaries")
 
 ###
 # set include and linking directories
@@ -61,7 +65,7 @@ endif()
 # glfw
 
 add_library (glfw SHARED IMPORTED)
-set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Binaries/libglfw.so.3.2)
+set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Binaries/libglfw.so.3)
 
 ###
 # load static libraries
@@ -72,8 +76,8 @@ set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Bina
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
-	${RUNTIME_ROOT_DIR}/Core/Memory/LinearAlloc.cpp
-	${RUNTIME_ROOT_DIR}/Core/Memory/AssetManager.cpp
+	${RUNTIME_ROOT_DIR}/Core/Memory/BlobLoader.cpp
+	${RUNTIME_ROOT_DIR}/Core/Memory/Cache.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/

@@ -25,24 +25,25 @@
 	
 #else
 
-#define ASSERT(x, y) \
+#define ASSERT(condition, message) \
 	do \
 	{ \
-	(x); \
+	(condition); \
+	(message); \
 	} \
 	while (0)
 
-#define DEBUG(x) \
+#define DEBUG(message) \
 	do \
 	{ \
-	(x); \
+	(message); \
 	} \
 	while (0)
 	
-#define FATAL(x) \
+#define FATAL(message) \
 	do \
 	{ \
-	(x); \
+	(message); \
 	exit(0); \
 	} \
 	while (0)
