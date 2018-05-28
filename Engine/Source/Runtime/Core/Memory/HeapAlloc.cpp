@@ -1,15 +1,15 @@
 #include <Core/Common/Required.h>
-#include "BlobLoader.h"
+#include "HeapAlloc.h"
 #include "Utils.h"
 
 #include <algorithm>
 #include <cstdlib>
 #include <limits>
 
-using Core::Memory::BlobLoader;
+using Core::Memory::HeapAllocator;
 using Core::Memory::OptimizePolicy;
 
-BlobLoader::BlobLoader (size_t bufferSize, OptimizePolicy policy)
+HeapAllocator::HeapAllocator (size_t bufferSize, OptimizePolicy policy)
 : bufferSize(bufferSize), policy(policy)
 {	
 	// Allocate buffer
@@ -19,12 +19,12 @@ BlobLoader::BlobLoader (size_t bufferSize, OptimizePolicy policy)
 	Reset();
 }
 
-BlobLoader::~BlobLoader ()
+HeapAllocator::~HeapAllocator ()
 {
 	Destroy();
 }
 
-void * BlobLoader::Alloc (const size_t size, const size_t alignment = 0)
+void * HeapAllocator::Alloc (const size_t size, const size_t alignment = 0)
 {
 	const size_t allocHeaderSize = sizeof(AllocHeader);
 	const size_t freeHeaderSize = sizeof(FreeHeader);
@@ -68,7 +68,7 @@ void * BlobLoader::Alloc (const size_t size, const size_t alignment = 0)
 	return (void *) dataAddr;
 }
 
-void BlobLoader::Coalescence (Node * previous, Node * free)
+void HeapAllocator::Coalescence (Node * previous, Node * free)
 {
 	if (free -> next != nullptr && (size_t) free + free -> data.blockSize == (size_t) free -> next)
 	{
@@ -83,13 +83,13 @@ void BlobLoader::Coalescence (Node * previous, Node * free)
 	}	
 }
 
-void BlobLoader::Destroy ()
+void HeapAllocator::Destroy ()
 {
 	free(start);
 	start = nullptr;
 }
 
-void BlobLoader::Find (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
+void HeapAllocator::Find (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
 {
 	switch (policy)
 	{
@@ -100,12 +100,12 @@ void BlobLoader::Find (const size_t size, const size_t alignment, size_t & paddi
 			FindBest(size, alignment, padding, previous, found);
 			break;
 		default:
-			FATAL("Unknown BlobLoader optimization policy");
+			FATAL("Unknown HeapAllocator optimization policy");
 			break;
 	}
 }
 
-void BlobLoader::FindBest (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
+void HeapAllocator::FindBest (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
 {
 	size_t smallestDiff = std::numeric_limits<size_t>::max();
 	Node * bestBlock = nullptr;
@@ -129,7 +129,7 @@ void BlobLoader::FindBest (const size_t size, const size_t alignment, size_t & p
 	found = bestBlock;
 }
 
-void BlobLoader::Free (void * data)
+void HeapAllocator::Free (void * data)
 {
 	const size_t currentAddr = (size_t) data;
 	const size_t headerAddr = currentAddr - sizeof(AllocHeader);
@@ -159,7 +159,7 @@ void BlobLoader::Free (void * data)
 	Coalescence(itPrev, free);
 }
 
-void BlobLoader::Reset ()
+void HeapAllocator::Reset ()
 {
 	memoryUsed = 0;
 	memoryPeak = 0;

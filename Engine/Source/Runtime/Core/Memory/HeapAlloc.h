@@ -14,7 +14,7 @@ enum class OptimizePolicy
 	FIRST
 };
 
-class BlobLoader
+class HeapAllocator
 {
 	struct FreeHeader { size_t blockSize; };
 	struct AllocHeader { size_t blockSize; char padding; };
@@ -40,13 +40,13 @@ class BlobLoader
 
 public:
 
-	BlobLoader (size_t bufferSize, OptimizePolicy policy);
+	HeapAllocator (size_t bufferSize, OptimizePolicy policy);
 	
-	BlobLoader (const BlobLoader & copy) = delete;
+	HeapAllocator (const HeapAllocator & copy) = delete;
 	
-	~BlobLoader ();
+	~HeapAllocator ();
 	
-	BlobLoader & operator= (const BlobLoader & copy) = delete;
+	HeapAllocator & operator= (const HeapAllocator & copy) = delete;
 	
 	void * Alloc (const size_t size, const size_t alignment);
 	

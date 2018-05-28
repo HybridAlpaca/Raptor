@@ -10,6 +10,12 @@ GlobalStore::GlobalStore (const size_t bufferSize)
 : bufferSize(bufferSize)
 {
 	start = malloc(bufferSize);
+	if ((start == NULL) || (start == nullptr))
+	{
+		FATAL("Not enough memory!  Requested " << bufferSize << " bytes for GS");
+		return;
+	}
+	DEBUG("GS intial malloc: allocated " << bufferSize << " bytes");
 	Reset();
 }
 
@@ -33,7 +39,7 @@ void * GlobalStore::Alloc (const size_t size, const size_t alignment)
 	
 	if (offset + padding + size > bufferSize)
 	{
-		DEBUG("Not enough memory in global store!");
+		DEBUG("GS out of memory.  Requested: " << (offset + padding + size) << ", actual: " << bufferSize);
 		return nullptr;
 	}
 	
@@ -44,6 +50,10 @@ void * GlobalStore::Alloc (const size_t size, const size_t alignment)
 	memoryUsed = offset;
 	memoryPeak = std::max(memoryPeak, memoryUsed);
 	
+	DEBUG("GS allocation: " << size + padding << " bytes allocated.  USED: "
+	<< memoryUsed << ", FREE: " << (bufferSize - memoryUsed) << ", TOTAL: "
+	<< bufferSize);
+	
 	return (void *) nextAddr;
 }
 
@@ -51,9 +61,12 @@ void GlobalStore::Destroy ()
 {
 	if (start != nullptr)
 	{
+		DEBUG("GS destroy.  Potentially leaked: " << offset << " bytes");
 		free(start);
 		start = nullptr;
 	}
+	
+	Reset();
 	bufferSize = 0;
 }
 

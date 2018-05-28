@@ -76,7 +76,7 @@ set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Bina
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
-	${RUNTIME_ROOT_DIR}/Core/Memory/BlobLoader.cpp
+	${RUNTIME_ROOT_DIR}/Core/Memory/HeapAlloc.cpp
 	${RUNTIME_ROOT_DIR}/Core/Memory/GlobalStore.cpp
 	${RUNTIME_ROOT_DIR}/Core/Containers/SLinkedList.cpp
 )
