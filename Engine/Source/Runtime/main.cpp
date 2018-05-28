@@ -1,16 +1,15 @@
 #include <Core/Common/Required.h>
-#include <Core/Memory/BlobLoader.h>
+#include <Core/Memory/GlobalStore.h>
 #include <Renderer/Utils/Window.h>
 
 int16 main (int16 argc, cchar argv[])
 {
 	using Renderer::Utils::WindowController;
-	using Core::Memory::BlobLoader;
-	using Core::Memory::OptimizePolicy;
+	using Core::Memory::GlobalStore;
 	
-	BlobLoader allocator(2048, OptimizePolicy::BEST);
+	GlobalStore globalMemory(2048);
 	
-	void * buffer = allocator.Alloc(sizeof(WindowController), 8);
+	void * buffer = globalMemory.Alloc(sizeof(WindowController), 0);
 	
 	WindowController * window = new (buffer) WindowController(640, 480, "Placeholder Window");
 	
@@ -21,7 +20,7 @@ int16 main (int16 argc, cchar argv[])
 	
 	window -> Destroy();
 	
-	allocator.Free(buffer);
+	globalMemory.Reset();
 	
 	return 0;
 }

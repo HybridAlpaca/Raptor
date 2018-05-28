@@ -6,20 +6,20 @@
 
 #include <iostream>
 
-#define ASSERT(x, y) \
-	if (!(x)) \
+#define ASSERT(condition, message) \
+	if (!(condition)) \
 	{ \
 		std::cerr << "ERR::ASSERT\t" \
-		<< (y) << "\n\t\t" << __FILE__ << "\n\t\tLine " \
+		<< message << "\n\t\t" << __FILE__ << "\n\t\tLine " \
 		<< __LINE__ << "\n"; \
 		exit(0); \
 	}
 	
-#define DEBUG(x) \
-	std::cout << "SYS::DEBUG\t" << (x) << "\n";
+#define DEBUG(message) \
+	std::cout << "SYS::DEBUG\t" << message << "\n";
 	
-#define FATAL(x) \
-	std::cerr << "ERR::FATAL\t" << (x) << "\n\t\t" \
+#define FATAL(message) \
+	std::cerr << "ERR::FATAL\t" << message << "\n\t\t" \
 	<< __FILE__ << "\n\t\tLine " << __LINE__ << "\n"; \
 	exit(0);
 	
