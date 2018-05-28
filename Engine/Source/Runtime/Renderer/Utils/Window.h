@@ -21,11 +21,13 @@ namespace Utils
 class WindowController
 {
 
+	static void FBResizeCallback (GLFWwindow * window, uint16 width, uint16 height);
+
 	GLFWwindow * window;
 	
 	bool shouldClose;
 	
-	static void FBResizeCallback (GLFWwindow * window, uint16 width, uint16 height);
+	void ProcessInput ();
 
 public:
 

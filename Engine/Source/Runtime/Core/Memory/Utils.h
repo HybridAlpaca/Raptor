@@ -7,6 +7,11 @@ namespace Core
 namespace Memory
 {
 
+// byte conversion utilities
+static const size_t Kilobytes (const size_t bytes) { return bytes * 1000; }
+static const size_t Megabytes (const size_t bytes) { return bytes * 1000 * 1000; }
+static const size_t Gigabytes (const size_t bytes) { return bytes * 1000 * 1000 * 1000; }
+
 static const size_t CalculatePadding (const size_t base_addr, const size_t alignment)
 {
 	const size_t

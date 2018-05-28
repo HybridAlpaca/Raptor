@@ -6,19 +6,6 @@
 
 using Renderer::Utils::WindowController;
 
-///
-/// static methods
-///
-
-void WindowController::FBResizeCallback (GLFWwindow * window, uint16 width, uint16 height)
-{
-	glViewport(0, 0, width, height);
-}
-
-///
-/// c'tors and d'tors
-///
-
 WindowController::WindowController (uint16 width, uint16 height, cchar title)
 : shouldClose(false)
 {
@@ -27,12 +14,13 @@ WindowController::WindowController (uint16 width, uint16 height, cchar title)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     
 	window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	if (window == nullptr)
 	{
-		DEBUG("window creation failed");
 		Destroy();
+		FATAL("Window creation failed");
 		return;
 	}
 	glfwMakeContextCurrent(window);
@@ -40,8 +28,8 @@ WindowController::WindowController (uint16 width, uint16 height, cchar title)
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
-		DEBUG("unable to load OpenGL extensions");
 		Destroy();
+		FATAL("Unable to load OpenGL extensions");
 		return;
 	}
 	
@@ -55,20 +43,34 @@ WindowController::~WindowController ()
 	Destroy();
 }
 
-///
-/// methods
-///
-
 void WindowController::Destroy ()
 {
 	shouldClose =  true;
 	glfwTerminate();
 }
 
+void WindowController::FBResizeCallback (GLFWwindow * window, uint16 width, uint16 height)
+{
+	glViewport(0, 0, width, height);
+}
+
+void WindowController::ProcessInput ()
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		// escape key has been pressed
+		glfwSetWindowShouldClose(window, true);
+	}
+}
+
 void WindowController::Update ()
 {
-	shouldClose = glfwWindowShouldClose(window);
+	ProcessInput();
+	
+	glClearColor(0.3f, 0.2f, 0.6f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+	shouldClose = glfwWindowShouldClose(window);
 }
