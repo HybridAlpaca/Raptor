@@ -19,11 +19,12 @@ class HeapAllocator
 	struct FreeHeader { size_t blockSize; };
 	struct AllocHeader { size_t blockSize; char padding; };
 	
-	typedef Core::Containers::SinglyLinkedList<FreeHeader>::Node Node;
+	typedef Core::Containers::SinglyLinkedList<FreeHeader> FreeList;
+	typedef FreeList::Node Node;
 	
 	OptimizePolicy policy;
 	
-	Core::Containers::SinglyLinkedList<FreeHeader> freeList;
+	FreeList freeList;
 	
 	size_t bufferSize;
 	size_t memoryUsed;
@@ -41,7 +42,6 @@ class HeapAllocator
 public:
 
 	HeapAllocator (size_t bufferSize, OptimizePolicy policy);
-	
 	HeapAllocator (const HeapAllocator & copy) = delete;
 	
 	~HeapAllocator ();

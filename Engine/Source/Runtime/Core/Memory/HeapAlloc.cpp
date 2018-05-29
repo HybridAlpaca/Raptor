@@ -11,11 +11,14 @@ using Core::Memory::OptimizePolicy;
 
 HeapAllocator::HeapAllocator (size_t bufferSize, OptimizePolicy policy)
 : bufferSize(bufferSize), policy(policy)
-{	
-	// Allocate buffer
+{
 	start = malloc(bufferSize);
-	
-	// Reset allocator
+	if (!start)
+	{
+		FATAL("Not enough memory!  Requested " << bufferSize << " bytes for GS");
+		return;
+	}
+	DEBUG("Heap initial malloc: allocated " << bufferSize << " bytes");
 	Reset();
 }
 
@@ -38,7 +41,11 @@ void * HeapAllocator::Alloc (const size_t size, const size_t alignment = 0)
 	
 	Find(size, alignment, padding, previous, affected);
 	
-	ASSERT(affected != nullptr, "Not enough memory");
+	if (!affected)
+	{
+		DEBUG("Hap out of memory.  Requested: " << (padding + size));
+		return nullptr;
+	}
 	
 	const size_t alignPadding = padding - allocHeaderSize;
 	const size_t requiredSize = size + padding;
@@ -65,6 +72,10 @@ void * HeapAllocator::Alloc (const size_t size, const size_t alignment = 0)
 	memoryUsed += requiredSize;
 	memoryPeak = std::max(memoryPeak, memoryUsed);
 	
+	DEBUG("Heap allocation: " << size + padding << " bytes allocated.  USED: "
+	<< memoryUsed << ", FREE: " << (bufferSize - memoryUsed) << ", TOTAL: "
+	<< bufferSize);
+	
 	return (void *) dataAddr;
 }
 
@@ -85,8 +96,13 @@ void HeapAllocator::Coalescence (Node * previous, Node * free)
 
 void HeapAllocator::Destroy ()
 {
-	free(start);
-	start = nullptr;
+	if (start)
+	{
+		DEBUG("Heap destroy.  Potentially leaked: " << memoryUsed << " bytes");
+		free(start);
+		start = nullptr;
+	}
+	bufferSize = 0;
 }
 
 void HeapAllocator::Find (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
@@ -94,7 +110,7 @@ void HeapAllocator::Find (const size_t size, const size_t alignment, size_t & pa
 	switch (policy)
 	{
 		case OptimizePolicy::FIRST:
-			FATAL("Selected policy not yet implemented.  Try using `BEST` instead.");
+			FindFirst(size, alignment, padding, previous, found);
 			break;
 		case OptimizePolicy::BEST:
 			FindBest(size, alignment, padding, previous, found);
@@ -129,8 +145,19 @@ void HeapAllocator::FindBest (const size_t size, const size_t alignment, size_t 
 	found = bestBlock;
 }
 
+void HeapAllocator::FindFirst (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
+{
+	FATAL("Requested memory policy not yet implemented.  Try `BEST` instead");
+}
+
 void HeapAllocator::Free (void * data)
 {
+	if (!data)
+	{
+		DEBUG("Heap requested to free invalid data");
+		return;
+	}
+
 	const size_t currentAddr = (size_t) data;
 	const size_t headerAddr = currentAddr - sizeof(AllocHeader);
 	const AllocHeader * allocHeader{(AllocHeader *) headerAddr};
@@ -155,6 +182,9 @@ void HeapAllocator::Free (void * data)
 	}
 	
 	memoryUsed -= free -> data.blockSize;
+	DEBUG("Heap free: " << (free -> data.blockSize) << " bytes freed. USED: "
+	<< memoryUsed << ", FREE: " << (bufferSize - memoryUsed) << ", TOTAL: "
+	<< bufferSize);
 	
 	Coalescence(itPrev, free);
 }
