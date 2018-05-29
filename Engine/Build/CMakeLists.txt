@@ -77,7 +77,6 @@ add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
 	${RUNTIME_ROOT_DIR}/Core/Memory/HeapAlloc.cpp
-	${RUNTIME_ROOT_DIR}/Core/Memory/GlobalStore.cpp
 	${RUNTIME_ROOT_DIR}/Core/Containers/SLinkedList.cpp
 )
 target_include_directories (Core PRIVATE

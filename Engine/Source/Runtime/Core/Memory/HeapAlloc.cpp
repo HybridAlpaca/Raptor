@@ -15,7 +15,7 @@ HeapAllocator::HeapAllocator (size_t bufferSize, OptimizePolicy policy)
 	start = malloc(bufferSize);
 	if (!start)
 	{
-		FATAL("Not enough memory!  Requested " << bufferSize << " bytes for GS");
+		FATAL("Not enough memory!  Requested " << bufferSize << " bytes for heap");
 		return;
 	}
 	DEBUG("Heap initial malloc: allocated " << bufferSize << " bytes");
@@ -43,7 +43,7 @@ void * HeapAllocator::Alloc (const size_t size, const size_t alignment = 0)
 	
 	if (!affected)
 	{
-		DEBUG("Hap out of memory.  Requested: " << (padding + size));
+		DEBUG("Heap out of memory.  Requested: " << (padding + size));
 		return nullptr;
 	}
 	
@@ -70,7 +70,7 @@ void * HeapAllocator::Alloc (const size_t size, const size_t alignment = 0)
 	((AllocHeader *) headerAddr) -> padding = alignPadding;
 	
 	memoryUsed += requiredSize;
-	memoryPeak = std::max(memoryPeak, memoryUsed);
+	//memoryPeak = std::max(memoryPeak, memoryUsed);
 	
 	DEBUG("Heap allocation: " << size + padding << " bytes allocated.  USED: "
 	<< memoryUsed << ", FREE: " << (bufferSize - memoryUsed) << ", TOTAL: "
@@ -123,7 +123,7 @@ void HeapAllocator::Find (const size_t size, const size_t alignment, size_t & pa
 
 void HeapAllocator::FindBest (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
 {
-	size_t smallestDiff = std::numeric_limits<size_t>::max();
+	size_t smallestDiff = 18446744073709551615;
 	Node * bestBlock = nullptr;
 	Node * it = freeList.head;
 	Node * itPrev = nullptr;
