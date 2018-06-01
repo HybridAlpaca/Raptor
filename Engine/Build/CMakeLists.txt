@@ -25,7 +25,7 @@ include (GNUInstallDirs)
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set (CMAKE_CXX_COMPILER /usr/bin/g++)
+set (CMAKE_CXX_COMPILER /usr/bin/g++-8)
 set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
@@ -76,6 +76,7 @@ set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Bina
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
+	${RUNTIME_ROOT_DIR}/Core/Math/Vec4.cpp
 	${RUNTIME_ROOT_DIR}/Core/Memory/HeapAlloc.cpp
 	${RUNTIME_ROOT_DIR}/Core/Containers/SLinkedList.cpp
 )
