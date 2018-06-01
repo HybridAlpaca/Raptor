@@ -3,43 +3,41 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
-#include <string>
 
 // misc
 
-typedef std::size_t size_t;
-typedef std::intptr_t intptr;
-typedef std::nullptr_t nullptr_t;
-typedef std::string string;
-typedef const char * cchar;
-typedef std::byte byte;
+using size_t = std::size_t;
+using nullptr_t = std::nullptr_t;
+using byte = std::byte;
+using cchar = const char *;
 
 // signed ints
 
-typedef std::int_fast8_t int8;
-typedef std::int_fast16_t int16;
-typedef std::int_fast32_t int32;
-typedef std::int_fast64_t int64;
-typedef std::intmax_t intmax;
+using int8 = std::int_fast8_t;
+using int16 = std::int_fast16_t;
+using int32 = std::int_fast32_t;
+using int64 = std::int_fast64_t;
+using intmax = std::intmax_t;
 
 // unsigned ints
 
-typedef std::int_fast8_t uint8;
-typedef std::int_fast16_t uint16;
-typedef std::int_fast32_t uint32;
-typedef std::int_fast64_t uint64;
-typedef std::uintmax_t uintmax;
+using uint = unsigned int;
+using uint8 = std::uint_fast8_t;
+using uint16 = std::uint_fast16_t;
+using uint32 = std::uint_fast32_t;
+using uint64 = std::uint_fast64_t;
+using uintmax = std::uintmax_t;
 
 // atomics
 
-typedef std::atomic_bool bool_a;
+using bool_a = std::atomic_bool;
 
-typedef std::atomic_int_fast8_t int8_a;
-typedef std::atomic_int_fast16_t int16_a;
-typedef std::atomic_int_fast32_t int32_a;
-typedef std::atomic_int_fast64_t int64_a;
+using int8_a = std::atomic_int_fast8_t;
+using int16_a = std::atomic_int_fast16_t;
+using int32_a = std::atomic_int_fast32_t;
+using int64_a = std::atomic_int_fast64_t;
 
-typedef std::atomic_int_fast8_t uint8_a;
-typedef std::atomic_int_fast16_t uint16_a;
-typedef std::atomic_int_fast32_t uint32_a;
-typedef std::atomic_int_fast64_t uint64_a;
+using uint8_a = std::atomic_int_fast8_t;
+using uint16_a = std::atomic_int_fast16_t;
+using uint32_a = std::atomic_int_fast32_t;
+using uint64_a = std::atomic_int_fast64_t;

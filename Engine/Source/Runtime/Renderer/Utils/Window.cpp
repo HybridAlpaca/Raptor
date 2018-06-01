@@ -49,7 +49,7 @@ void WindowController::Destroy ()
 	glfwTerminate();
 }
 
-void WindowController::FBResizeCallback (GLFWwindow * window, uint16 width, uint16 height)
+void WindowController::FBResizeCallback (GLFWwindow * window, int16 width, int16 height)
 {
 	glViewport(0, 0, width, height);
 }

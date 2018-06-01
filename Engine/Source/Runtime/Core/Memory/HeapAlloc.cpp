@@ -123,7 +123,7 @@ void HeapAllocator::Find (const size_t size, const size_t alignment, size_t & pa
 
 void HeapAllocator::FindBest (const size_t size, const size_t alignment, size_t & padding, Node *& previous, Node *& found)
 {
-	size_t smallestDiff = 18446744073709551615;
+	long long unsigned smallestDiff = 18446744073709551615u;
 	Node * bestBlock = nullptr;
 	Node * it = freeList.head;
 	Node * itPrev = nullptr;
