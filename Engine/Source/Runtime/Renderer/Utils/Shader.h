@@ -7,7 +7,9 @@ namespace Renderer::Utils
 
 class Shader
 {
-	static uint16 boundShader;
+	uint32 id;
+	
+	cchar ReadFile (cchar filePath);
 
 public:
 
