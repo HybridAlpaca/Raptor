@@ -2,9 +2,7 @@
 
 #include <Core/Common/Required.h>
 
-namespace Core
-{
-namespace Memory
+namespace Core::Memory
 {
 
 // byte conversion utilities
@@ -46,5 +44,4 @@ static const size_t CalculatePaddingWithHeader(const size_t baseAddress, const s
 	return padding;
 }
 
-}
 }

@@ -9,9 +9,7 @@
 #include <thread>
 #include <vector>
 
-namespace Core
-{
-namespace Async
+namespace Core::Async
 {
 
 class Scheduler
@@ -51,5 +49,4 @@ public:
 
 };
 
-}
 }

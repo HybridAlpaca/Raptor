@@ -4,9 +4,7 @@
 
 #include <unordered_map> // use this for shader caches
 
-namespace Renderer
-{
-namespace Utils
+namespace Renderer::Utils
 {
 
 enum class ShaderType
@@ -45,5 +43,4 @@ public:
 	void Use ();
 };
 
-}
 }

@@ -4,9 +4,7 @@
 
 class GLFWwindow {};
 
-namespace Renderer
-{
-namespace Utils
+namespace Renderer::Utils
 {
 
 /**
@@ -43,4 +41,4 @@ public:
 
 };
 
-}}
+}

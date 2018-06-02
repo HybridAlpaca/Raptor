@@ -1,8 +1,6 @@
 #pragma once
 
-namespace Core
-{
-namespace Containers
+namespace Core::Containers
 {
 
 template <typename Type>
@@ -24,5 +22,4 @@ struct SinglyLinkedList
 
 #include "SLinkedList.hpp"
 
-}
 }

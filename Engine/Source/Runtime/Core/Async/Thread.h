@@ -5,9 +5,7 @@
 #include <mutex>
 #include <thread>
 
-namespace Core
-{
-namespace Async
+namespace Core::Async
 {
 
 class Thread
@@ -40,5 +38,4 @@ public:
 
 };
 
-}
 }

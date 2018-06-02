@@ -2,9 +2,7 @@
 
 #include <Core/Common/Required.h>
 
-namespace Core
-{
-namespace Math
+namespace Core::Math
 {
 
 struct Vec4
@@ -44,5 +42,4 @@ struct Vec4
 	void a (float val) { values[3] = val; }
 };
 
-}
 }

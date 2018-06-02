@@ -3,9 +3,7 @@
 #include <Core/Common/Required.h>
 #include <Core/Containers/SLinkedList.h>
 
-namespace Core
-{
-namespace Memory
+namespace Core::Memory
 {
 
 enum class OptimizePolicy
@@ -57,5 +55,4 @@ public:
 	void Reset ();
 };
 
-}
 }
