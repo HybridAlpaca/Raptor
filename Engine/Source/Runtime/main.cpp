@@ -7,7 +7,6 @@
 
 int16 main (int16 argc, cchar argv[])
 {
-
 	using namespace Renderer::Utils;
 	using namespace Core::Memory;
 	

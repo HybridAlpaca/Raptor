@@ -17,8 +17,8 @@ class HeapAllocator
 	struct FreeHeader { size_t blockSize; };
 	struct AllocHeader { size_t blockSize; char padding; };
 	
-	typedef Core::Containers::SinglyLinkedList<FreeHeader> FreeList;
-	typedef FreeList::Node Node;
+	using FreeList = Core::Containers::SinglyLinkedList<FreeHeader>;
+	using Node = FreeList::Node;
 	
 	OptimizePolicy policy;
 	
