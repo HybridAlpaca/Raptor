@@ -71,19 +71,6 @@ set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Bina
 # load static libraries
 ###
 
-# core
-
-add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Async/Scheduler.cpp
-	${RUNTIME_ROOT_DIR}/Core/Async/Thread.cpp
-	${RUNTIME_ROOT_DIR}/Core/Math/Vec4.cpp
-	${RUNTIME_ROOT_DIR}/Core/Memory/HeapAlloc.cpp
-	${RUNTIME_ROOT_DIR}/Core/Containers/SLinkedList.cpp
-)
-target_include_directories (Core PRIVATE
-	${RUNTIME_ROOT_DIR}/Core/
-)
-
 # renderer
 
 add_library (Renderer STATIC
@@ -100,13 +87,13 @@ target_link_libraries (Renderer
 
 # install
 
-install (TARGETS Core Renderer DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Renderer DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 ###
 # build the final executable
 ###
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor Core Renderer)
+target_link_libraries (Raptor Renderer)
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
