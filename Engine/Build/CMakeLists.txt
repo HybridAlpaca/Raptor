@@ -71,6 +71,15 @@ set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Bina
 # load static libraries
 ###
 
+# core
+
+add_library (Core STATIC
+	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
+)
+target_include_directories (Core PRIVATE
+	${RUNTIME_ROOT_DIR}/Core/
+)
+
 # graphics
 
 add_library (Graphics STATIC
@@ -87,13 +96,13 @@ target_link_libraries (Graphics
 
 # install
 
-install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 ###
 # build the final executable
 ###
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor Graphics)
+target_link_libraries (Raptor Core Graphics)
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)

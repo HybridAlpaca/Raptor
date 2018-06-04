@@ -1,4 +1,5 @@
 #include <Core/Common/Required.h>
+#include <Core/ECS/Component.h>
 #include <Graphics/Utils/Window.h>
 #include <Graphics/Utils/Shader.h>
 #include <Graphics/Renderer/Primitive.h>
@@ -11,8 +12,11 @@
 
 int16 main (int16 argc, cchar argv[])
 {
+	using namespace Core::ECS;
 	using namespace Graphics::Utils;
 	using namespace Graphics::Renderer;
+
+	DEBUG(FooComponent::ID << ", " << FooComponent::SIZE << ", " << BarComponent::ID);
 	
 	WindowController window(640, 480, "Placeholder Window");
 	
