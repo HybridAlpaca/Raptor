@@ -71,29 +71,29 @@ set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Bina
 # load static libraries
 ###
 
-# renderer
+# graphics
 
-add_library (Renderer STATIC
-	${RUNTIME_ROOT_DIR}/Renderer/Pipeline/Primitive.cpp
-	${RUNTIME_ROOT_DIR}/Renderer/Utils/Window.cpp
-	${RUNTIME_ROOT_DIR}/Renderer/Utils/Shader.cpp
+add_library (Graphics STATIC
+	${RUNTIME_ROOT_DIR}/Graphics/Renderer/Primitive.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Utils/Window.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Utils/Shader.cpp
 )
-target_include_directories (Renderer PRIVATE
-	${RUNTIME_ROOT_DIR}/Renderer/
+target_include_directories (Graphics PRIVATE
+	${RUNTIME_ROOT_DIR}/Graphics/
 )
-target_link_libraries (Renderer
+target_link_libraries (Graphics
 	glfw
 )
 
 # install
 
-install (TARGETS Renderer DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 ###
 # build the final executable
 ###
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor Renderer)
+target_link_libraries (Raptor Graphics)
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)

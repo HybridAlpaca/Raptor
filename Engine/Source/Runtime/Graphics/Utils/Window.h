@@ -4,7 +4,7 @@
 
 class GLFWwindow {};
 
-namespace Renderer::Utils
+namespace Graphics::Utils
 {
 
 /**

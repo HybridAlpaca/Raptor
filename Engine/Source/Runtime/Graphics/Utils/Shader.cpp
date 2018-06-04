@@ -6,7 +6,7 @@
 #include <fstream>
 #include <sstream>
 
-using Renderer::Utils::Shader;
+using Graphics::Utils::Shader;
 
 Shader::Shader (cchar vertPath, cchar fragPath)
 {

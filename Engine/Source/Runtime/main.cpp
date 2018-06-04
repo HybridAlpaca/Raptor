@@ -1,9 +1,9 @@
 #include <Core/Common/Required.h>
-#include <Renderer/Utils/Window.h>
+#include <Graphics/Utils/Window.h>
 
 int16 main (int16 argc, cchar argv[])
 {
-	using namespace Renderer::Utils;
+	using namespace Graphics::Utils;
 	
 	WindowController window(640, 480, "Placeholder Window");
 	

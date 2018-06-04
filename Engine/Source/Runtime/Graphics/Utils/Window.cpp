@@ -4,7 +4,7 @@
 #include <Core/Common/Required.h>
 #include "Window.h"
 
-using Renderer::Utils::WindowController;
+using Graphics::Utils::WindowController;
 
 WindowController::WindowController (uint16 width, uint16 height, cchar title)
 : shouldClose(false)
@@ -14,7 +14,6 @@ WindowController::WindowController (uint16 width, uint16 height, cchar title)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     
 	window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	if (window == nullptr)
@@ -66,9 +65,6 @@ void WindowController::ProcessInput ()
 void WindowController::Update ()
 {
 	ProcessInput();
-	
-	glClearColor(0.3f, 0.2f, 0.6f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glfwSwapBuffers(window);
 	glfwPollEvents();

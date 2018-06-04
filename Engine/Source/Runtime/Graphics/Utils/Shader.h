@@ -2,7 +2,7 @@
 
 #include <Core/Common/Required.h>
 
-namespace Renderer::Utils
+namespace Graphics::Utils
 {
 
 class Shader
