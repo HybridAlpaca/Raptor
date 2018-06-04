@@ -25,9 +25,10 @@ void Primitive::Preprocess ()
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Primitive::Render (uint32 vao, Shader & shader)
+void Primitive::Render (uint32 vao, Shader & shader, uint32 texture = 69)
 {
 	shader.Bind();
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }

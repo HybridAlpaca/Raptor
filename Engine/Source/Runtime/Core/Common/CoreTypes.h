@@ -9,7 +9,11 @@
 using size_t = std::size_t;
 using nullptr_t = std::nullptr_t;
 using byte = std::byte;
+
+// chars
+
 using cchar = const char *;
+using uchar = unsigned char *;
 
 // signed ints
 

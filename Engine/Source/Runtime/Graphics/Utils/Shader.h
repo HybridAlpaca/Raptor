@@ -35,6 +35,9 @@ public:
 	
 	void Bind ();
 	void Destroy ();
+	
+	void Float (cchar name, float val) const;
+	void Int (cchar name, int32 val) const;
 };
 
 }

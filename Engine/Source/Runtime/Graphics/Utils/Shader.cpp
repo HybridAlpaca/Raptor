@@ -71,7 +71,8 @@ void Shader::Compile (cchar vertCode, cchar fragCode)
 	glDeleteShader(fragment);
 }
 
-void Shader::Bind () { glUseProgram(id); }
+void Shader::Bind ()
+{ glUseProgram(id); }
 
 void Shader::Destroy ()
 {
@@ -99,3 +100,9 @@ std::string Shader::ReadFile (cchar path)
 	DEBUG("Shader file " << path << " not found");
 	return std::string("");
 }
+
+void Shader::Float (cchar name, float val) const
+{ glUniform1f(glGetUniformLocation(id, name), val); }
+
+void Shader::Int (cchar name, int32 val) const
+{ glUniform1i(glGetUniformLocation(id, name), val); }
