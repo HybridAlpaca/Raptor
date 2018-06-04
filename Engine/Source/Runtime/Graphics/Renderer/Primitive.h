@@ -20,7 +20,7 @@ public:
 	Primitive & operator= (const Primitive & rhs) = delete;
 	
 	void Preprocess ();
-	void Render (uint32 vao, const Shader & shader);
+	void Render (uint32 vao, Shader & shader);
 	
 	void Destroy ();
 

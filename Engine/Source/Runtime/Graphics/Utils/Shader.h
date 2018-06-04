@@ -2,6 +2,8 @@
 
 #include <Core/Common/Required.h>
 
+#include <string>
+
 namespace Graphics::Utils
 {
 
@@ -17,7 +19,7 @@ class Shader
 
 	uint32 id;
 	
-	cchar ReadFile (cchar filePath);
+	std::string ReadFile (cchar path);
 	
 	void Compile (cchar vertCode, cchar fragCode);
 	

@@ -5,15 +5,16 @@
 
 #include <fstream>
 #include <sstream>
+#include <string>
 
 using Graphics::Utils::Shader;
 
 Shader::Shader (cchar vertPath, cchar fragPath)
 {
-	cchar vertCode = ReadFile(vertPath);
-	cchar fragCode = ReadFile(fragPath);
+	std::string vertCode = ReadFile(vertPath);
+	std::string fragCode = ReadFile(fragPath);
 	
-	Compile(vertCode, fragCode);
+	Compile(vertCode.c_str(), fragCode.c_str());
 }
 
 Shader::~Shader ()
@@ -41,7 +42,7 @@ void Shader::CheckErrors (const uint32 shader, ShaderType type)
 		if (!success)
 		{
 			glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
-			DEBUG("Program linkning error: " << infoLog);
+			DEBUG("Program linking error: " << infoLog);
 		}
 	}
 }
@@ -82,21 +83,19 @@ void Shader::Destroy ()
 	}
 }
 
-cchar Shader::ReadFile (cchar filePath)
+std::string Shader::ReadFile (cchar path)
 {
-	std::ifstream fileStream;
+	std::ifstream fileBuffer;
 	std::stringstream dataBuffer;
 	
-	fileStream.open(filePath);
-	
-	if (fileStream.is_open())
+	fileBuffer.open(path);
+	if (fileBuffer.is_open())
 	{
-		dataBuffer << fileStream.rdbuf();
-		fileStream.close();
-		return dataBuffer.str().c_str();
+		dataBuffer << fileBuffer.rdbuf();
+		fileBuffer.close();
+		return dataBuffer.str();
 	}
-	else
-		DEBUG("Shader file " << filePath << " not found");
-		
-	return nullptr;
+	
+	DEBUG("Shader file " << path << " not found");
+	return std::string("");
 }
