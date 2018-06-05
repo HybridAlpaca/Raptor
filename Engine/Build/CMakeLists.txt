@@ -84,6 +84,7 @@ target_include_directories (Core PRIVATE
 
 add_library (Graphics STATIC
 	${RUNTIME_ROOT_DIR}/Graphics/Renderer/Primitive.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Device/Display.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Utils/Window.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Utils/Shader.cpp
 )
