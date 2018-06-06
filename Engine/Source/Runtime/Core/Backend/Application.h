@@ -6,29 +6,23 @@ namespace Core::Backend
 /*
  * 
  * name: Application
+ * @depends SDL2
  * 
- * @depends Core, SDL2
- * 
- * Instantiates SDL with predefined subsystems.
- * Does nothing on its own, but prepares other
- * engine systems (i.e. Graphics::Display) for
- * use.
+ * Manages SDL subsystems for use in other
+ * engine systems.  Doesn't do much by itself;
+ * but is required for other systems to work.
+ * (i.e. Graphics::Display, etc.)
  * 
  */
-class Application
+struct Application
 {
 	bool running;
-
-public:
-
+	
 	Application ();
 	Application (const Application & copy) = delete;
 	~Application ();
 	
 	Application & operator= (const Application & rhs) = delete;
-	
-	const bool Running () const { return running; }
-	void Running (bool shouldRun) { running = shouldRun; }
 };
 
 }

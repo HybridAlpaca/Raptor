@@ -1,9 +1,11 @@
 #include <Core/Common/Required.h>
+#include <Core/Backend/Application.h>
 #include "Display.h"
 
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 
+using Core::Backend::Application;
 using Graphics::Device::Display;
 
 /*
@@ -15,7 +17,8 @@ using Graphics::Device::Display;
  * context.
  * 
  */
-Display::Display (uint16 width, uint16 height, cchar title)
+Display::Display (Application & application, uint16 width, uint16 height, cchar title)
+: app(application)
 {
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
@@ -94,12 +97,12 @@ void Display::Update ()
 	while (SDL_PollEvent(& e))
 	{
 		if (e.type == SDL_QUIT)
-			closed = true;
+			app.running = false;
 		if (e.type == SDL_KEYDOWN)
 		{
 			if ((e.key.keysym.sym == SDLK_ESCAPE) || (e.key.keysym.sym == SDLK_q))
 			{
-				closed = true;
+				app.running = false;
 			}
 		}
 	}

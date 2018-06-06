@@ -16,17 +16,16 @@
  * function at compile time.
  * 
  */
- 
 int32 main (int32 argc, cchar argv[])
 {
 	using Graphics::Device::Display;
 	using Core::Backend::Application;
 	
-	Application application;
+	Application app;
 	
-	Display display(800, 600, "Hello, World!");
+	Display display(app, 800, 600, "Hello, World!");
 	
-	while (!display.Closed())
+	while (app.running)
 	{
 		display.Clear(1.0f, 0.23f, 1.0f, 1.0f);
 		display.Update();
