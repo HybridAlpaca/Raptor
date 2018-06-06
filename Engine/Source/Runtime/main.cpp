@@ -25,10 +25,10 @@ int32 main (int32 argc, cchar argv[])
 	
 	Application app;
 	
-	Display display(app, 800, 600, "Hello, World!");
 	InputHandler input(app);
+	Display display(app, 800, 600, "Hello, World!");
 	
-	while (app.running)
+	while (app.running) // <-- don't like this syntax
 	{
 		input.Update();
 		display.Clear(1.0f, 0.23f, 1.0f, 1.0f);
