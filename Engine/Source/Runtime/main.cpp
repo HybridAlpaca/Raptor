@@ -1,4 +1,5 @@
 #include <Core/Common/Required.h>
+#include <Core/Backend/Application.h>
 #include <Graphics/Device/Display.h>
 
 /*
@@ -19,6 +20,9 @@
 int32 main (int32 argc, cchar argv[])
 {
 	using Graphics::Device::Display;
+	using Core::Backend::Application;
+	
+	Application application;
 	
 	Display display(800, 600, "Hello, World!");
 	

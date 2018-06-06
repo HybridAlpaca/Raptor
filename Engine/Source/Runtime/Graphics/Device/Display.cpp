@@ -6,10 +6,17 @@
 
 using Graphics::Device::Display;
 
+/*
+ * 
+ * name: Display::Display
+ * @param uint16 width, height; cchar title
+ * 
+ * Handles creation of SDL window and OpenGL
+ * context.
+ * 
+ */
 Display::Display (uint16 width, uint16 height, cchar title)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
@@ -36,11 +43,18 @@ Display::Display (uint16 width, uint16 height, cchar title)
 	}
 }
 
+/*
+ * 
+ * name: Display::~Display
+ * 
+ * Destroys the OpenGL context and the SDL window,
+ * in that order.
+ * 
+ */
 Display::~Display ()
 {
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);
-	SDL_Quit();
 }
 
 /*
