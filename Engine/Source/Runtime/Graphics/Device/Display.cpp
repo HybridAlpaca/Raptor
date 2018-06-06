@@ -2,47 +2,45 @@
 #include "Display.h"
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 
 using Graphics::Device::Display;
 
 Display::Display (uint16 width, uint16 height, cchar title)
 {
-	glfwInit();
+	SDL_Init(SDL_INIT_EVERYTHING);
 	
-	// context hints
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    // buffer hints
-    glfwWindowHint(GLFW_RED_BITS, 8);
-    glfwWindowHint(GLFW_GREEN_BITS, 8);
-    glfwWindowHint(GLFW_BLUE_BITS, 8);
-    glfwWindowHint(GLFW_ALPHA_BITS, 8);
-    glfwWindowHint(GLFW_DEPTH_BITS, 24);
-    glfwWindowHint(GLFW_STENCIL_BITS, 8);
-    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
-	window = glfwCreateWindow(
+	window = SDL_CreateWindow(
+		title,
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
 		width,
 		height,
-		title,
-		nullptr,
-		nullptr
+		SDL_WINDOW_OPENGL
 	);
 	
-	glfwMakeContextCurrent(window);
+	context = SDL_GL_CreateContext(window);
+	
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
+		// OpenGL extensions couldn't be loaded
 		DEBUG("GLEW failed to initialize");
 	}
 }
 
 Display::~Display ()
 {
-	glfwSetWindowShouldClose(window, GLFW_TRUE);
-	glfwTerminate();
+	SDL_GL_DeleteContext(context);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
 }
 
 void Display::Clear (float r, float g, float b, float a)
@@ -53,7 +51,18 @@ void Display::Clear (float r, float g, float b, float a)
 
 void Display::Update ()
 {
-	glfwSwapBuffers(window);
-	glfwPollEvents();
-	closed = glfwWindowShouldClose(window);
+	SDL_GL_SwapWindow(window);
+	
+	SDL_Event e;
+	
+	while (SDL_PollEvent(& e))
+	{
+		if (e.type == SDL_QUIT)
+			closed = true;
+	}
 }
+
+
+
+
+

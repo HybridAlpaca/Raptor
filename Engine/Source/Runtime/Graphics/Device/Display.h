@@ -1,16 +1,19 @@
 #pragma once
 
 #include <Core/Common/Required.h>
+#include <SDL2/SDL.h>
 
-class GLFWwindow {};
+class SDL_Window {};
 
 namespace Graphics::Device
 {
 
 class Display
 {
-	GLFWwindow * window;
-	bool closed;
+	SDL_Window * window = nullptr;
+	SDL_GLContext context;
+	
+	bool closed = false;
 
 public:
 

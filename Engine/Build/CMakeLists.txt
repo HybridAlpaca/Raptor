@@ -33,8 +33,6 @@ set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
 set (SOURCE_ROOT_DIR ${ENGINE_ROOT_DIR}/Source)
 set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime)
 
-set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${ENGINE_ROOT_DIR}/Binaries")
-
 ###
 # set include and linking directories
 ###
@@ -62,10 +60,15 @@ if (GLEW_FOUND)
 	link_libraries (${GLEW_LIBRARIES})
 endif()
 
-# glfw
+# SDL2
 
-add_library (glfw SHARED IMPORTED)
-set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Binaries/libglfw.so.3)
+find_package (SDL2 REQUIRED)
+if (SDL2_FOUND)
+	string (STRIP ${SDL2_INCLUDE_DIRS} SDL2_INCLUDE_DIRS)
+	string (STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
+	include_directories (${SDL2_INCLUDE_DIRS})
+	link_libraries (${SDL2_LIBRARIES})
+endif()
 
 ###
 # load static libraries
@@ -75,6 +78,7 @@ set_target_properties (glfw PROPERTIES IMPORTED_LOCATION ${ENGINE_ROOT_DIR}/Bina
 
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
+	${RUNTIME_ROOT_DIR}/Core/Internal/Application.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
@@ -85,14 +89,13 @@ target_include_directories (Core PRIVATE
 add_library (Graphics STATIC
 	${RUNTIME_ROOT_DIR}/Graphics/Renderer/Primitive.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Device/Display.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/Utils/Window.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Utils/Shader.cpp
 )
 target_include_directories (Graphics PRIVATE
 	${RUNTIME_ROOT_DIR}/Graphics/
 )
 target_link_libraries (Graphics
-	glfw
+	SDL2
 )
 
 # install
