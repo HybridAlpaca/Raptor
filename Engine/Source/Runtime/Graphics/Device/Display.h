@@ -6,6 +6,13 @@
 namespace Graphics::Device
 {
 
+/*
+ * 
+ * name: Display
+ * 
+ * @depends Core, SDL2
+ * 
+ */
 class Display
 {
 	SDL_Window * window = nullptr;
@@ -25,7 +32,6 @@ public:
 	void Update ();
 
 	const bool Closed () const { return closed; }
-
 };
 
 }

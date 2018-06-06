@@ -8,12 +8,22 @@ Application::Application ()
 {
 	const uint32 flags
 		= SDL_INIT_VIDEO
+		| SDL_INIT_AUDIO
 		| SDL_INIT_EVENTS;
 		
 	uint32 currentFlags = SDL_WasInit(flags);
+	
 	if ((currentFlags != flags) && (SDL_Init(flags) != 0))
 	{
-		DEBUG("Could not initialize SDL subsystems: " << SDL_GetError());
+		/* 
+		 * 
+		 * SDL failed for some reason or another.
+		 * Probably a good idea to look under the
+		 * debugger and see what's up.
+		 * 
+		 */
+		
+		FATAL("Could not initialize SDL subsystems: " << SDL_GetError());
 	}
 }
 
