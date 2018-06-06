@@ -83,6 +83,7 @@ endif()
 
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Backend/Application.cpp
+	${RUNTIME_ROOT_DIR}/Core/Backend/InputHandler.cpp
 	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
 )
 target_include_directories (Core PRIVATE

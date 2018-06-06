@@ -91,21 +91,6 @@ void Display::Clear (float r, float g, float b, float a)
 void Display::Update ()
 {
 	SDL_GL_SwapWindow(window);
-	
-	SDL_Event e;
-	
-	while (SDL_PollEvent(& e))
-	{
-		if (e.type == SDL_QUIT)
-			app.running = false;
-		if (e.type == SDL_KEYDOWN)
-		{
-			if ((e.key.keysym.sym == SDLK_ESCAPE) || (e.key.keysym.sym == SDLK_q))
-			{
-				app.running = false;
-			}
-		}
-	}
 }
 
 

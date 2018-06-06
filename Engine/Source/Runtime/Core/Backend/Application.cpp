@@ -34,6 +34,7 @@ Application::Application ()
 		
 		FATAL("Could not initialize SDL subsystems: " << SDL_GetError());
 	}
+	DEBUG("Created application");
 }
 
 /*
@@ -46,5 +47,6 @@ Application::Application ()
  */
 Application::~Application ()
 {
+	DEBUG("Destroying application");
 	SDL_Quit();
 }
