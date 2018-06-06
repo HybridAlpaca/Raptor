@@ -6,7 +6,7 @@ mkdir -p CMake
 
 cd ./CMake
 
-cmake ..
+cmake .. -DCMAKE_BUILD_TYPE=Debug
 
 make
 

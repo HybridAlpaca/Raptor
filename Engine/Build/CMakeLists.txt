@@ -33,6 +33,10 @@ set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
 set (SOURCE_ROOT_DIR ${ENGINE_ROOT_DIR}/Source)
 set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime)
 
+if (NOT CMAKE_BUILD_TYPE) 
+    set (CMAKE_BUILD_TYPE Release)
+endif (NOT CMAKE_BUILD_TYPE)
+
 ###
 # set include and linking directories
 ###

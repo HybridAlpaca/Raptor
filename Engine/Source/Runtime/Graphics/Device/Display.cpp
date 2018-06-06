@@ -43,12 +43,34 @@ Display::~Display ()
 	SDL_Quit();
 }
 
+/*
+ * 
+ * name: Display::Clear
+ * @param float r, g, b, a
+ * @return void
+ * 
+ * Used to clear any opengl buffers during
+ * rendering.
+ * 
+ */
 void Display::Clear (float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
+/*
+ * 
+ * name: Display::Update
+ * @param void
+ * @return void
+ * 
+ * Updates the display, to be called after
+ * any other draw operations are performed.
+ * 
+ * TODO: Move event code into Core::Application
+ * 
+ */
 void Display::Update ()
 {
 	SDL_GL_SwapWindow(window);
@@ -59,6 +81,13 @@ void Display::Update ()
 	{
 		if (e.type == SDL_QUIT)
 			closed = true;
+		if (e.type == SDL_KEYDOWN)
+		{
+			if ((e.key.keysym.sym == SDLK_ESCAPE) || (e.key.keysym.sym == SDLK_q))
+			{
+				closed = true;
+			}
+		}
 	}
 }
 
