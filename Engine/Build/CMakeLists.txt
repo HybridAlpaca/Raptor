@@ -78,7 +78,6 @@ endif()
 
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
-	${RUNTIME_ROOT_DIR}/Core/Internal/Application.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
