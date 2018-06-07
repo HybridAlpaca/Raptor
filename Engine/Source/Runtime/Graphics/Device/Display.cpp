@@ -17,6 +17,7 @@ using Graphics::Device::Display;
  * context.
  * 
  */
+
 Display::Display (Application & application, uint16 width, uint16 height, cchar title)
 : app(application)
 {
@@ -84,8 +85,6 @@ void Display::Clear (float r, float g, float b, float a)
  * 
  * Updates the display, to be called after
  * any other draw operations are performed.
- * 
- * TODO: Move event code into Core::Application
  * 
  */
 void Display::Update ()
