@@ -1,6 +1,4 @@
 #include <Core/Common/Required.h>
-#include <Core/Backend/Application.h>
-#include <Core/Backend/InputHandler.h>
 #include <Core/Backend/Display.h>
 
 /*
@@ -18,23 +16,17 @@
  *
  */
 
-int16 main (int32 argc, cchar argv[])
+int32 main (int32 argc, cchar argv[])
 {
 	using Core::Backend::Display;
-	using Core::Backend::Application;
-	using Core::Backend::AppConfigData;
+	using Core::Backend::DisplayConfig;
 
-	AppConfigData appConfig;
-	
-	Application app(appConfig);
+	DisplayConfig config;
+	Display display(config);
 
-	Display display(app);
-
-	while (app.Running())
+	while (display.Running())
 	{
 		display.Update();
-		//~ display.Clear(1.0f, 0.23f, 1.0f, 1.0f);
-		//~ display.Update();
 	}
 
 	return 0;

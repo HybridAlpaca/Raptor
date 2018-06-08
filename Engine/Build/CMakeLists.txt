@@ -81,7 +81,6 @@ find_library (GLFW3 glfw3 "${ENGINE_ROOT_DIR}/Binaries")
 # core
 
 add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Backend/Application.cpp
 	${RUNTIME_ROOT_DIR}/Core/Backend/InputHandler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Backend/Display.cpp
 	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
@@ -95,7 +94,6 @@ target_include_directories (Core PRIVATE
 
 add_library (Graphics STATIC
 	${RUNTIME_ROOT_DIR}/Graphics/Renderer/Primitive.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/Device/Display.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Utils/Shader.cpp
 )
 target_include_directories (Graphics PRIVATE
