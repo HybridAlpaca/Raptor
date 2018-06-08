@@ -33,5 +33,5 @@
 *.desktop
 
 # Project Specifics
-CMake/
+Temp/
 Engine/Binaries/Raptor

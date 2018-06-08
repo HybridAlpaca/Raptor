@@ -1,32 +1,32 @@
-###
-#
-# CMake AutoBuild v.3.5
-#
-# (c) 2018 HybridAlpaca
-#
-# See README for build instructions
-#
-###
+#####################################
+#                                   #
+#      (c) 2018 HybridAlpaca        #
+#                                   #
+#            CMake v.3.5            #
+#                                   #
+# See README for Build Instructions #
+#                                   #
+#####################################
 
 cmake_minimum_required (VERSION 3.5)
 
 project (RaptorEngine LANGUAGES CXX)
 
-###
-# include external cmake files
-###
+######################
+# Extern CMake Files #
+######################
 
 include (GNUInstallDirs)
 
-###
-# set parameters and options
-###
+######################
+# Options and Params #
+######################
 
-set (CMAKE_CXX_STANDARD 17)
+# set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set (CMAKE_CXX_COMPILER /usr/bin/g++-8)
-set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread -Wl,-R -Wl,/home/cellman123/Desktop/Raptor/Engine/Binaries")
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
 set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
@@ -36,17 +36,25 @@ set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime)
 if (NOT CMAKE_BUILD_TYPE) 
     set (CMAKE_BUILD_TYPE Release)
 endif (NOT CMAKE_BUILD_TYPE)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+endif ()
 
-###
-# set include and linking directories
-###
+######################
+# Inlcudes & Linking #
+######################
 
 include_directories (${RUNTIME_ROOT_DIR})
-include_directories (${SOURCE_ROOT_DIR}/External)
+include_directories ("${SOURCE_ROOT_DIR}/External/Include")
 
-###
-# load shared libraries
-###
+# TODO: Remove this once build system is configured
+include_directories ("${SOURCE_ROOT_DIR}/External")
+
+link_directories ("${ENGINE_ROOT_DIR}/Binaries")
+
+####################
+# Shared Libraries #
+####################
 
 # opengl  
 
@@ -64,6 +72,14 @@ if (GLEW_FOUND)
 	link_libraries (${GLEW_LIBRARIES})
 endif()
 
+# X11
+
+find_package(X11 REQUIRED)
+if (X11_FOUND)
+	include_directories (${X11_INCLUDE_DIRS})
+	link_libraries (${X11_LIBRARIES})
+endif ()
+
 # SDL2
 
 find_package (SDL2 REQUIRED)
@@ -71,15 +87,18 @@ if (SDL2_FOUND)
 	string (STRIP ${SDL2_INCLUDE_DIRS} SDL2_INCLUDE_DIRS)
 	string (STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 	include_directories (${SDL2_INCLUDE_DIRS})
-	link_libraries (${SDL2_LIBRARIES})
+	# link_libraries (${SDL2_LIBRARIES})
 endif()
 
-###
-# load static libraries
-###
+# glfw
+
+find_library (GLFW3 glfw3 "${ENGINE_ROOT_DIR}/Binaries")
+
+####################
+# Static Libraries #
+####################
 
 # core
-
 
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Backend/Application.cpp
@@ -100,19 +119,23 @@ add_library (Graphics STATIC
 target_include_directories (Graphics PRIVATE
 	${RUNTIME_ROOT_DIR}/Graphics/
 )
-target_link_libraries (Graphics
-	SDL2
-)
 
 # install
 
 install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
-###
-# build the final executable
-###
+#####################
+# Create Executable #
+#####################
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor Core Graphics)
+target_link_libraries (Raptor
+	Core
+	Graphics
+	dl
+	util
+	${GLFW3}
+	${SDL2_LIBRARIES}
+)
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
