@@ -17,9 +17,11 @@ namespace Core::Backend
  *
  */
 
-struct InputHandler
+class InputHandler
 {
-	void KeyDown (bool & running, uint32  keyCode);
+public:
+
+	void Process (Application & app);
 };
 
 }

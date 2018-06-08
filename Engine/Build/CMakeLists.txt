@@ -70,16 +70,6 @@ if (GLEW_FOUND)
 	include_directories (${GLEW_INCLUDE_DIRS})
 endif()
 
-# SDL2
-
-find_package (SDL2 REQUIRED)
-if (SDL2_FOUND)
-	string (STRIP ${SDL2_INCLUDE_DIRS} SDL2_INCLUDE_DIRS)
-	string (STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
-	include_directories (${SDL2_INCLUDE_DIRS})
-	link_libraries (${SDL2_LIBRARIES})
-endif()
-
 # glfw
 
 find_library (GLFW3 glfw3 "${ENGINE_ROOT_DIR}/Binaries")
@@ -93,8 +83,10 @@ find_library (GLFW3 glfw3 "${ENGINE_ROOT_DIR}/Binaries")
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Backend/Application.cpp
 	${RUNTIME_ROOT_DIR}/Core/Backend/InputHandler.cpp
+	${RUNTIME_ROOT_DIR}/Core/Backend/Display.cpp
 	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
 )
+set_target_properties (Core PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
 )

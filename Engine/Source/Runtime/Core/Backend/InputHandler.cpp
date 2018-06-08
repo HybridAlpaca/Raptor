@@ -2,21 +2,12 @@
 #include "Application.h"
 #include "InputHandler.h"
 
-#include <SDL2/SDL.h>
+#include <GLFW/glfw3.h>
 
 using Core::Backend::InputHandler;
 using Core::Backend::Application;
 
-void InputHandler::KeyDown (bool & running, uint32 keyCode)
+void InputHandler::Process (Application & app)
 {
-	switch (keyCode)
-	{
-		case SDLK_q:
-		case SDLK_ESCAPE:
-			running = false;
-			break;
-		default:
-			DEBUG("Unknown key pressed");
-			break;
-	}
+	glfwPollEvents();
 }

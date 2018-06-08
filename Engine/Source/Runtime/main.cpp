@@ -1,7 +1,7 @@
 #include <Core/Common/Required.h>
 #include <Core/Backend/Application.h>
 #include <Core/Backend/InputHandler.h>
-#include <Graphics/Device/Display.h>
+#include <Core/Backend/Display.h>
 
 /*
  *
@@ -20,20 +20,21 @@
 
 int16 main (int32 argc, cchar argv[])
 {
-	using Graphics::Device::Display;
+	using Core::Backend::Display;
 	using Core::Backend::Application;
-	using Core::Backend::InputHandler;
+	using Core::Backend::AppConfigData;
 
-	Application app;
+	AppConfigData appConfig;
+	
+	Application app(appConfig);
 
-	InputHandler input;
-	Display display(app, 800, 600, "Hello, World!");
+	Display display(app);
 
-	while (app.running) // <-- don't like this syntax
+	while (app.Running())
 	{
-		app.HandleInput(input);
-		display.Clear(1.0f, 0.23f, 1.0f, 1.0f);
 		display.Update();
+		//~ display.Clear(1.0f, 0.23f, 1.0f, 1.0f);
+		//~ display.Update();
 	}
 
 	return 0;
