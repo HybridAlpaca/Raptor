@@ -1,6 +1,8 @@
 #include <Core/Common/Required.h>
 #include <Core/Backend/Display.h>
 
+#include <GL/glew.h>
+
 /*
  *
  * name: main
@@ -24,8 +26,10 @@ int32 main (int32 argc, cchar argv[])
 	DisplayConfig config;
 	Display display(config);
 
+	glClearColor(0.1f, 0.2f, 0.7f, 1.0f);
 	while (display.Running())
 	{
+		glClear(GL_COLOR_BUFFER_BIT);
 		display.Update();
 	}
 

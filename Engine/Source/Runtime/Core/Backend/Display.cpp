@@ -24,8 +24,8 @@ Display::Display (const DisplayConfig & config)
 		FATAL("Failed to initialize GLFW");
 	}
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, config.glVersionMajor);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, config.glVersionMinor);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	window = glfwCreateWindow(
@@ -69,12 +69,6 @@ Display::~Display ()
  * rendering.
  *
  */
-
-void Display::Clear (float r, float g, float b, float a)
-{
-	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT);
-}
 
 void Display::BindContext ()
 {

@@ -10,7 +10,6 @@ namespace Core::Backend
 /*
  *
  * name: DisplayConfig
- * @depends glfw3
  *
  * Stores basic configuration data that tells
  * a Display how to configure its internal GLfw
@@ -20,9 +19,22 @@ namespace Core::Backend
 
 struct DisplayConfig
 {
-	cchar title = "[ display::title ]";
+	// window hints
+	cchar title	= "[ Lorem Ipsum ]";
 	uint32 width = 640;
 	uint32 height = 480;
+
+	// OpenGL hints
+	uint8 glVersionMajor = 3;
+	uint8 glVersionMinor = 3;
+
+	// buffer hints
+	uint8 redBits	= 8;
+	uint8 blueBits = 8;
+	uint8 greenBits = 8;
+	uint8 alphaBits = 8;
+	uint8 depthBits = 24;
+	uint8 stencilBits = 8;
 };
 
 /*
@@ -32,6 +44,11 @@ struct DisplayConfig
  * @depends GLFW
  *
  * Acts as a wrapper class around a GLFW window.
+ *
+ * TODO: Get rid of `Display::Clear`
+ * I don't want any direct OpenGL calls within
+ * the Display; all of that should be left to
+ * Graphics.
  *
  */
 
@@ -52,7 +69,6 @@ public:
 
 	Display & operator= (const Display & rhs) = delete;
 
-	void Clear (float r, float g, float b, float a);
 	void BindContext ();
 	void Update ();
 
