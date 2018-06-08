@@ -3,8 +3,6 @@
 #include <Core/Backend/InputHandler.h>
 #include <Graphics/Device/Display.h>
 
-#include <GLFW/glfw3.h>
-
 /*
  *
  * name: main
@@ -25,9 +23,6 @@ int16 main (int32 argc, cchar argv[])
 	using Graphics::Device::Display;
 	using Core::Backend::Application;
 	using Core::Backend::InputHandler;
-	
-	glfwInit();
-	glfwTerminate();
 
 	Application app;
 

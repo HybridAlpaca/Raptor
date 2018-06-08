@@ -33,7 +33,7 @@ set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
 set (SOURCE_ROOT_DIR ${ENGINE_ROOT_DIR}/Source)
 set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime)
 
-if (NOT CMAKE_BUILD_TYPE) 
+if (NOT CMAKE_BUILD_TYPE)
     set (CMAKE_BUILD_TYPE Release)
 endif (NOT CMAKE_BUILD_TYPE)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
@@ -56,12 +56,11 @@ link_directories ("${ENGINE_ROOT_DIR}/Binaries")
 # Shared Libraries #
 ####################
 
-# opengl  
+# opengl
 
 find_package (OpenGL REQUIRED)
 if (OPENGL_FOUND)
 	include_directories (${OPENGL_INCLUDE_DIRS})
-	link_libraries (${OPENGL_gl_LIBRARY} ${OPENGL_LIBRARIES})
 endif ()
 
 # glew
@@ -69,16 +68,7 @@ endif ()
 find_package (GLEW REQUIRED)
 if (GLEW_FOUND)
 	include_directories (${GLEW_INCLUDE_DIRS})
-	link_libraries (${GLEW_LIBRARIES})
 endif()
-
-# X11
-
-find_package(X11 REQUIRED)
-if (X11_FOUND)
-	include_directories (${X11_INCLUDE_DIRS})
-	link_libraries (${X11_LIBRARIES})
-endif ()
 
 # SDL2
 
@@ -87,7 +77,7 @@ if (SDL2_FOUND)
 	string (STRIP ${SDL2_INCLUDE_DIRS} SDL2_INCLUDE_DIRS)
 	string (STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 	include_directories (${SDL2_INCLUDE_DIRS})
-	# link_libraries (${SDL2_LIBRARIES})
+	link_libraries (${SDL2_LIBRARIES})
 endif()
 
 # glfw
@@ -132,10 +122,25 @@ add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	Core
 	Graphics
-	dl
-	util
+	${OPENGL_gl_LIBRARY}
+	${OPENGL_LIBRARIES}
+	${GLEW_LIBRARIES}
 	${GLFW3}
-	${SDL2_LIBRARIES}
+	rt
+	m
+	dl
+	Xrandr
+	Xinerama
+	Xxf86vm
+	Xext
+	Xcursor
+	Xrender
+	Xfixes
+	X11
+	pthread
+	xcb
+	Xau
+	Xdmcp
 )
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
