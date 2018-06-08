@@ -22,9 +22,7 @@ $ sudo apt-get install g++-8 cmake
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Once you have your build environment set up, all the rest of the engine software and dependencies will be automagically installed once the engine is built. Just run:
 
 ```
 $ ./Engine/Build/build.sh
