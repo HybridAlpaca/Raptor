@@ -10,7 +10,7 @@ using Core::Backend::Display;
 /*
  *
  * name: Display::Display
- * @param uint16 width, height; cchar title
+ * @param DisplayConfig config
  *
  * Creates a GLFW window object based off of
  * aplication config data.
@@ -36,6 +36,8 @@ Display::Display (const DisplayConfig & config)
 		nullptr
 	);
 
+	// glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
+
 	BindContext();
 
 	glewExperimental = GL_TRUE;
@@ -44,6 +46,8 @@ Display::Display (const DisplayConfig & config)
 		// OpenGL extensions couldn't be loaded
 		DEBUG("GLEW failed to initialize");
 	}
+
+	DEBUG("Created display");
 }
 
 /*
@@ -53,10 +57,12 @@ Display::Display (const DisplayConfig & config)
  * Destroys the internal GFLW window.
  *
  */
+
 Display::~Display ()
 {
 	running = false;
 	glfwDestroyWindow(window);
+	DEBUG("Destroyed display");
 }
 
 /*
@@ -65,7 +71,7 @@ Display::~Display ()
  * @param float r, g, b, a
  * @return void
  *
- * Used to clear any opengl buffers during
+ * Used to clear any OpenGL buffers during
  * rendering.
  *
  */
@@ -75,27 +81,26 @@ void Display::BindContext ()
 	glfwMakeContextCurrent(window);
 }
 
-void Display::ProcessInput ()
+const bool Display::GetKey (int32 key)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+	return glfwGetKey(window, key) == GLFW_PRESS;
 }
 
 /*
  *
  * name: Display::Update
- * @param void
  * @return void
  *
  * Updates the display, to be called after
  * any other draw operations are performed.
  *
  */
+
 void Display::Update ()
 {
 	glfwPollEvents();
-	ProcessInput();
 	if (glfwWindowShouldClose(window)) running = false;
+
 	glfwSwapBuffers(window);
 }
 

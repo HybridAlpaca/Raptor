@@ -81,11 +81,9 @@ find_library (GLFW3 glfw3 "${ENGINE_ROOT_DIR}/Binaries")
 # core
 
 add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Backend/InputHandler.cpp
 	${RUNTIME_ROOT_DIR}/Core/Backend/Display.cpp
 	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
 )
-set_target_properties (Core PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
 )

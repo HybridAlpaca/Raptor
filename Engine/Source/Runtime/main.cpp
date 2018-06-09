@@ -9,7 +9,7 @@
  * @param int32 argc, cchar argv[]]
  * @return int32
  *
- * TODO: Separate platform-dependant implementations
+ * @todo Separate platform-dependant implementations
  * I.E. One file with `main` for *nix OS's, and one
  * with `WinMain` for win32 and win64.  Then, create
  * a separate init file with an entry point specified
@@ -20,17 +20,19 @@
 
 int32 main (int32 argc, cchar argv[])
 {
-	using Core::Backend::Display;
-	using Core::Backend::DisplayConfig;
+	using namespace Core::Backend;
 
 	DisplayConfig config;
 	Display display(config);
 
-	glClearColor(0.1f, 0.2f, 0.7f, 1.0f);
 	while (display.Running())
 	{
+		glClearColor(0.1f, 0.2f, 0.7f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		display.Update();
+
+		if (display.GetKey(256) || display.GetKey(81))
+			display.Running(false);
 	}
 
 	return 0;

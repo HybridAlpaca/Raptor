@@ -45,7 +45,7 @@ struct DisplayConfig
  *
  * Acts as a wrapper class around a GLFW window.
  *
- * TODO: Get rid of `Display::Clear`
+ * @todo Get rid of `Display::Clear`
  * I don't want any direct OpenGL calls within
  * the Display; all of that should be left to
  * Graphics.
@@ -54,12 +54,9 @@ struct DisplayConfig
 
 class Display
 {
-
 	GLFWwindow * window = nullptr;
 
 	bool running = true;
-
-	void ProcessInput ();
 
 public:
 
@@ -72,7 +69,10 @@ public:
 	void BindContext ();
 	void Update ();
 
+	const bool GetKey (int32 key);
+
 	inline const bool Running () const { return running; }
+	inline void Running (bool val) { running = val; }
 };
 
 }
