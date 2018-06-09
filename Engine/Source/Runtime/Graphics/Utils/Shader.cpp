@@ -13,7 +13,7 @@ Shader::Shader (cchar vertPath, cchar fragPath)
 {
 	std::string vertCode = ReadFile(vertPath);
 	std::string fragCode = ReadFile(fragPath);
-	
+
 	Compile(vertCode.c_str(), fragCode.c_str());
 }
 
@@ -44,6 +44,10 @@ void Shader::CheckErrors (const uint32 shader, ShaderType type)
 			glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
 			DEBUG("Program linking error: " << infoLog);
 		}
+		else
+		{
+			DEBUG("Compiling shader");
+		}
 	}
 }
 
@@ -53,18 +57,18 @@ void Shader::Compile (cchar vertCode, cchar fragCode)
 	glShaderSource(vertex, 1, & vertCode, nullptr);
 	glCompileShader(vertex);
 	CheckErrors(vertex, ShaderType::VERTEX);
-	
+
 	uint32 fragment = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment, 1, & fragCode, nullptr);
 	glCompileShader(fragment);
 	CheckErrors(fragment, ShaderType::FRAGMENT);
-	
+
 	id = glCreateProgram();
 	glAttachShader(id, vertex);
 	glAttachShader(id, fragment);
 	glLinkProgram(id);
 	CheckErrors(id, ShaderType::PROGRAM);
-	
+
 	glDetachShader(id, vertex);
 	glDeleteShader(vertex);
 	glDetachShader(id, fragment);
@@ -81,6 +85,7 @@ void Shader::Destroy ()
 	{
 		glDeleteShader(id);
 		id = 0;
+		DEBUG("Destroying shader");
 	}
 }
 
@@ -88,7 +93,7 @@ std::string Shader::ReadFile (cchar path)
 {
 	std::ifstream fileBuffer;
 	std::stringstream dataBuffer;
-	
+
 	fileBuffer.open(path);
 	if (fileBuffer.is_open())
 	{
@@ -96,7 +101,7 @@ std::string Shader::ReadFile (cchar path)
 		fileBuffer.close();
 		return dataBuffer.str();
 	}
-	
+
 	DEBUG("Shader file " << path << " not found");
 	return std::string("");
 }

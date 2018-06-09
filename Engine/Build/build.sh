@@ -22,6 +22,27 @@ cp ./src/libglfw3.a ../../../../Binaries
 cd ../../../../
 
 ##################
+# Compile ASSIMP #
+##################
+
+cd ./Source/External/assimp-4.1.0
+
+mkdir -p Temp
+cd ./Temp
+
+# compile
+
+cmake ..
+make -j4
+
+# install
+
+cp -R ../include/assimp ../../Include
+cp ./code/libassimp.so.4.1.0  ../../../../Binaries
+
+cd ../../../../
+
+##################
 # Compile Raptor #
 ##################
 
