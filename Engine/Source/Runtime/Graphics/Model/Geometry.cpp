@@ -56,31 +56,31 @@ Mesh::~Mesh ()
 
 void Mesh::Draw (const Shader & shader) const
 {
-	uint32 diffuseCount = 0;
-	uint32 normalCount = 0;
-	uint32 specularCount = 0;
-	uint32 heightCount = 0;
+	uint32 diffuseCount = 1;
+	uint32 normalCount = 1;
+	uint32 specularCount = 1;
+	uint32 heightCount = 1;
 
-	for(uint32 i = 0; i < textures.size(); ++i)
+	for (uint32 i = 0; i < textures.size(); ++i)
 	{
 			glActiveTexture(GL_TEXTURE0 + i);
 
 			TextureType type = textures[i].type;
 			if (type == TextureType::DIFFUSE)
 			{
-				shader.Int(("material.diffuse" + std::to_string(++diffuseCount)).c_str(), i);
+				shader.Int(("texture_diffuse" + std::to_string(diffuseCount++)).c_str(), i);
 			}
 			else if (type == TextureType::SPECULAR)
 			{
-				shader.Int(("material.specular" + std::to_string(++specularCount)).c_str(), i);
+				shader.Int(("texture_specular" + std::to_string(specularCount++)).c_str(), i);
 			}
 			else if (type == TextureType::NORMAL)
 			{
-				shader.Int(("material.normal" + std::to_string(++normalCount)).c_str(), i);
+				shader.Int(("texture_normal" + std::to_string(normalCount++)).c_str(), i);
 			}
 			else if (type == TextureType::HEIGHT)
 			{
-				shader.Int(("material.height" + std::to_string(++heightCount)).c_str(), i);
+				shader.Int(("texture_height" + std::to_string(heightCount++)).c_str(), i);
 			}
 
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);

@@ -2,6 +2,7 @@
 #include <Core/Backend/Display.h>
 #include <Graphics/Utils/Shader.h>
 #include <Graphics/Model/Geometry.h>
+#include <Graphics/Utils/TextureLoader.h>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -26,21 +27,42 @@
 int32 main (int32 argc, cchar argv[])
 {
 	using namespace Core::Backend;
-	using Graphics::Utils::Shader;
+	using namespace Graphics::Utils;
 	using namespace Graphics::Model;
 
 	DisplayConfig config;
+	// change any config settings here
+
 	Display display(config);
 
 	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Basic.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Basic.fs");
 
+	uint32 raptorLogo = LoadTexture("/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg");
+
 	Vertex vec0, vec1, vec2, vec3;
+
 	vec0.position = glm::vec3(0.5f, 0.5f, 0.0f);
+	vec0.texCoord = glm::vec2(1.0f, 1.0f);
+
 	vec1.position = glm::vec3(0.5f, -0.5f, 0.0f);
+	vec1.texCoord = glm::vec2(1.0f, 0.0f);
+
 	vec2.position = glm::vec3(-0.5f, -0.5f, 0.0f);
+	vec2.texCoord = glm::vec2(0.0f, 0.0f);
+
 	vec3.position = glm::vec3(-0.5f, 0.5f, 0.0f);
+	vec3.texCoord = glm::vec2(0.0f, 1.0f);
+
 	std::vector<Vertex> vertices = { vec0, vec1, vec2, vec3 };
-	std::vector<Texture> textures;
+
+	Texture tex0;
+
+	tex0.id = raptorLogo;
+	tex0.type = TextureType::DIFFUSE;
+	tex0.path = "/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg";
+
+	std::vector<Texture> textures = { tex0 };
+
 	std::vector<uint32> indices =  { 0, 1, 3, 1, 2, 3 };
 
 	Mesh quad(vertices, indices, textures);
@@ -60,6 +82,8 @@ int32 main (int32 argc, cchar argv[])
 
 		display.Update();
 	}
+
+	FreeTexture(& raptorLogo);
 
 	return 0;
 }
