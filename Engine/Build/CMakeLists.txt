@@ -26,7 +26,7 @@ include (GNUInstallDirs)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set (CMAKE_CXX_COMPILER /usr/bin/g++-8)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread -Wl,-R -Wl,/home/cellman123/Desktop/Raptor/Engine/Binaries")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wl,-R -Wl,/home/cellman123/Desktop/Raptor/Engine/Binaries")
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
 set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
@@ -45,9 +45,6 @@ endif ()
 ######################
 
 include_directories (${RUNTIME_ROOT_DIR})
-include_directories ("${SOURCE_ROOT_DIR}/External/Include")
-
-# TODO: Remove this once build system is configured
 include_directories ("${SOURCE_ROOT_DIR}/External")
 
 link_directories ("${ENGINE_ROOT_DIR}/Binaries")
@@ -69,14 +66,6 @@ find_package (GLEW REQUIRED)
 if (GLEW_FOUND)
 	include_directories (${GLEW_INCLUDE_DIRS})
 endif()
-
-# glfw
-
-find_library (GLFW3 glfw3 "${ENGINE_ROOT_DIR}/Binaries")
-
-# ASSIMP
-
-find_library (ASSIMP assimp "${ENGINE_ROOT_DIR}/Binaries")
 
 ####################
 # Static Libraries #
@@ -116,26 +105,16 @@ add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	Core
 	Graphics
-	${ASSIMP}
+	assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}
-	${GLFW3}
-	rt
-	m
-	dl
-	Xrandr
-	Xinerama
-	Xxf86vm
-	Xext
-	Xcursor
-	Xrender
-	Xfixes
+	glfw
 	X11
 	pthread
-	xcb
-	Xau
-	Xdmcp
+	Xrandr
+	Xi
+	dl
 )
 
 install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
