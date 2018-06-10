@@ -96,6 +96,7 @@ target_include_directories (Core PRIVATE
 
 add_library (Graphics STATIC
 	${RUNTIME_ROOT_DIR}/Graphics/Model/Geometry.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Model/ModelLoader.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Renderer/Primitive.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Utils/Shader.cpp
 )
