@@ -12,6 +12,7 @@
 *.pch
 
 # Compiled Dynamic Libraries
+*.so.4.1.0
 *.so
 *.dylib
 *.dll
