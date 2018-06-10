@@ -12,7 +12,7 @@
 /*
  *
  * name: main
- * @param int32 argc, cchar argv[]]
+ * @param int32 argc, cchar argv[]
  * @return int32
  *
  * @todo Separate platform-dependant implementations
@@ -37,7 +37,8 @@ int32 main (int32 argc, cchar argv[])
 
 	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Basic.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Basic.fs");
 
-	uint32 raptorLogo = LoadTexture("/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg");
+	uint32 src0 = LoadTexture("/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/awesomeface.png");
+	uint32 src1 = LoadTexture("/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg");
 
 	Vertex vec0, vec1, vec2, vec3;
 
@@ -55,13 +56,18 @@ int32 main (int32 argc, cchar argv[])
 
 	std::vector<Vertex> vertices = { vec0, vec1, vec2, vec3 };
 
-	Texture tex0;
+	Texture tex0, tex1;
 
-	tex0.id = raptorLogo;
+	tex0.id = src0;
 	tex0.type = TextureType::DIFFUSE;
-	tex0.path = "/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg";
+	tex0.path = "/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/awesomeface.png";
 
-	std::vector<Texture> textures = { tex0 };
+
+	tex1.id = src1;
+	tex1.type = TextureType::DIFFUSE;
+	tex1.path = "/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg";
+
+	std::vector<Texture> textures = { tex0, tex1 };
 
 	std::vector<uint32> indices =  { 0, 1, 3, 1, 2, 3 };
 
@@ -83,7 +89,8 @@ int32 main (int32 argc, cchar argv[])
 		display.Update();
 	}
 
-	FreeTexture(& raptorLogo);
+	FreeTexture(& src0);
+	FreeTexture(& src1);
 
 	return 0;
 }
