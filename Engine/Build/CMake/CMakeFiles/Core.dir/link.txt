@@ -1,2 +1,0 @@
-/usr/bin/ar qc libCore.a  CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Backend/Application.cpp.o CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/Backend/InputHandler.cpp.o CMakeFiles/Core.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Core/ECS/Component.cpp.o
-/usr/bin/ranlib libCore.a

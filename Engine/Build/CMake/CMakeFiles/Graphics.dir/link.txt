@@ -1,2 +1,0 @@
-/usr/bin/ar qc libGraphics.a  CMakeFiles/Graphics.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Graphics/Renderer/Primitive.cpp.o CMakeFiles/Graphics.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Graphics/Device/Display.cpp.o CMakeFiles/Graphics.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Graphics/Utils/Shader.cpp.o
-/usr/bin/ranlib libGraphics.a
