@@ -15,6 +15,6 @@ rm -f ./libCore.a
 echo "[2/3] Static Graphics"
 rm -f ./libGraphics.a
 echo "[3/3] Binary Raptor"
-rm -rf ./Raptor
+rm -f ./Raptor
 
 echo "Done."
