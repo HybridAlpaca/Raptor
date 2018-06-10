@@ -1,0 +1,2 @@
+/usr/bin/ar qc libRenderer.a  CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Pipeline/Primitive.cpp.o CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Window.cpp.o CMakeFiles/Renderer.dir/home/cellman123/Desktop/Raptor/Engine/Source/Runtime/Renderer/Utils/Shader.cpp.o
+/usr/bin/ranlib libRenderer.a

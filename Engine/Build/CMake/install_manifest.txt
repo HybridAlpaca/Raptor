@@ -1,0 +1,3 @@
+/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/libCore.a
+/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/libGraphics.a
+/home/cellman123/Desktop/Raptor/Engine/Build/../Binaries/Raptor

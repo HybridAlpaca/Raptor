@@ -74,6 +74,10 @@ endif()
 
 find_library (GLFW3 glfw3 "${ENGINE_ROOT_DIR}/Binaries")
 
+# ASSIMP
+
+find_library (ASSIMP assimp "${ENGINE_ROOT_DIR}/Binaries")
+
 ####################
 # Static Libraries #
 ####################
@@ -111,6 +115,7 @@ add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	Core
 	Graphics
+	${ASSIMP}
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}

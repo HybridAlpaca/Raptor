@@ -1,0 +1,1 @@
+/usr/bin/g++  -fPIC -pthread  -shared -Wl,-soname,libGlad.so -o libGlad.so  /usr/lib/arm-linux-gnueabihf/libGL.so 

@@ -18,7 +18,7 @@ rm -rf Temp
 
 cd ../../../
 
-# Raptor 
+# Raptor
 
 echo "[2/2] Raptor"
 
@@ -38,13 +38,15 @@ echo "Preparing to cleanse binaries..."
 
 cd ./Binaries
 
-echo "[1/4] Static Core"
+echo "[1/5] Static Core"
 rm -f ./libCore.a
-echo "[2/4] Static Graphics"
+echo "[2/5] Static Graphics"
 rm -rf ./libGraphics.a
-echo "[3/4] Shared GLFW"
+echo "[3/5] Static GLFW"
 rm -rf ./libglfw3.a
-echo "[4/4] Binary Raptor"
+echo "[4/5] Shared ASSIMP"
+rm -rf ./libassimp.so.4.1.0
+echo "[5/5] Binary Raptor"
 rm -rf ./Raptor
 
 echo "Done."
