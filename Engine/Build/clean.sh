@@ -2,6 +2,20 @@
 
 cd /home/cellman123/Desktop/Raptor
 
+#####################
+# Prune Temporaries #
+#####################
+
+echo "Preparing to remove intermediate assets..."
+
+cd ./Engine/Build
+
+rm -rf ./Temp
+
+echo "Done."
+
+cd ../../
+
 ##################
 # Prune Binaries #
 ##################
