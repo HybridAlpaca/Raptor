@@ -2,7 +2,6 @@
 
 #include <Core/Common/Required.h>
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <STBI/stb_image.h>
 #include <GL/glew.h>
 

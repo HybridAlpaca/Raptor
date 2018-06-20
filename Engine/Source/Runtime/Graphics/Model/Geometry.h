@@ -47,7 +47,6 @@ class Mesh
 public:
 
 	Mesh (const std::vector<Vertex> & vertices, const std::vector<uint32> & indices, const std::vector<Texture> & textures);
-	Mesh (const Mesh & copy) = delete;
 	~Mesh ();
 
 	Mesh & operator= (const Mesh & rhs) = delete;

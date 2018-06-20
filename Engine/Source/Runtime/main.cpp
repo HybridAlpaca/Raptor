@@ -2,6 +2,8 @@
 #include <Core/Backend/Display.h>
 #include <Graphics/Utils/Shader.h>
 #include <Graphics/Model/Geometry.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <Graphics/Model/ModelLoader.h>
 #include <Graphics/Utils/TextureLoader.h>
 
 #include <GL/glew.h>
@@ -37,41 +39,7 @@ int32 main (int32 argc, cchar argv[])
 
 	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Basic.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Basic.fs");
 
-	uint32 src0 = LoadTexture("/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/awesomeface.png");
-	uint32 src1 = LoadTexture("/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg");
-
-	Vertex vec0, vec1, vec2, vec3;
-
-	vec0.position = glm::vec3(0.5f, 0.5f, 0.0f);
-	vec0.texCoord = glm::vec2(1.0f, 1.0f);
-
-	vec1.position = glm::vec3(0.5f, -0.5f, 0.0f);
-	vec1.texCoord = glm::vec2(1.0f, 0.0f);
-
-	vec2.position = glm::vec3(-0.5f, -0.5f, 0.0f);
-	vec2.texCoord = glm::vec2(0.0f, 0.0f);
-
-	vec3.position = glm::vec3(-0.5f, 0.5f, 0.0f);
-	vec3.texCoord = glm::vec2(0.0f, 1.0f);
-
-	std::vector<Vertex> vertices = { vec0, vec1, vec2, vec3 };
-
-	Texture tex0, tex1;
-
-	tex0.id = src0;
-	tex0.type = TextureType::DIFFUSE;
-	tex0.path = "/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/awesomeface.png";
-
-
-	tex1.id = src1;
-	tex1.type = TextureType::DIFFUSE;
-	tex1.path = "/home/cellman123/Desktop/Raptor/Engine/Assets/Icons/container.jpg";
-
-	std::vector<Texture> textures = { tex0, tex1 };
-
-	std::vector<uint32> indices =  { 0, 1, 3, 1, 2, 3 };
-
-	Mesh quad(vertices, indices, textures);
+	ModelLoader model("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/nanosuit/nanosuit.obj");
 
 	glClearColor(0.1f, 0.2f, 0.7f, 1.0f);
 
