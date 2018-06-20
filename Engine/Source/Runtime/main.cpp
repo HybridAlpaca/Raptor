@@ -52,13 +52,10 @@ int32 main (int32 argc, cchar argv[])
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader.Bind();
-		quad.Draw(shader);
+		model.Draw(shader);
 
 		display.Update();
 	}
-
-	FreeTexture(& src0);
-	FreeTexture(& src1);
 
 	return 0;
 }

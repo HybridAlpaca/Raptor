@@ -39,7 +39,7 @@ void ModelLoader::LoadModel (cchar path)
 
 	if (!scene || scene -> mFlags & AI_SCENE_FLAGS_INCOMPLETE || ! scene -> mRootNode)
 	{
-		DEBUG("ASSIMP error: " << import.GetErrorString());
+		DEBUG("! ASSIMP error: " << import.GetErrorString());
 		return;
 	}
 
@@ -52,7 +52,7 @@ void ModelLoader::LoadModel (cchar path)
 std::vector<Texture> ModelLoader::LoadTextures (aiMaterial * mat, aiTextureType type, TextureType typeName)
 {
 	std::vector<Texture> textures;
-	DEBUG("Beginning texture load");
+	DEBUG("+ Load Model Textures");
 
 	for (uint32 i = 0; i < mat -> GetTextureCount(type); ++i)
 	{
@@ -63,7 +63,7 @@ std::vector<Texture> ModelLoader::LoadTextures (aiMaterial * mat, aiTextureType 
 		{
 			if (std::strcmp(textureCache[j].path, str.C_Str()) == 0)
 			{
-				DEBUG("Texture cache hit");
+				DEBUG("* Texture cache hit");
 				textures.push_back(textureCache[j]);
 				skip = true;
 				break;
@@ -71,7 +71,6 @@ std::vector<Texture> ModelLoader::LoadTextures (aiMaterial * mat, aiTextureType 
 		}
 		if (!skip)
 		{
-			DEBUG("Loading uncached texture");
 			// if texture hasn't been loaded already, load it
 			Texture texture;
 			std::string path = std::string(directory) + '/' + str.C_Str();
@@ -83,7 +82,7 @@ std::vector<Texture> ModelLoader::LoadTextures (aiMaterial * mat, aiTextureType 
 		}
 	}
 
-	DEBUG("Finished loading textures");
+	DEBUG("- Load Model Textures");
 	return textures;
 }
 
@@ -105,13 +104,12 @@ void ModelLoader::ProcessNode (aiNode * node, const aiScene * scene)
 Mesh ModelLoader::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 {
 	// data to fill
-	DEBUG("Preparing data buckets");
 	std::vector<Vertex> vertices;
 	std::vector<uint32> indices;
 	std::vector<Texture> textures;
 
 	// Walk through each of the mesh's vertices
-	DEBUG("Extracting vertex data");
+	DEBUG("+ Vertex data extraction");
 	for (uint32 i = 0; i < mesh -> mNumVertices; ++i)
 	{
 		Vertex vertex;
@@ -156,10 +154,10 @@ Mesh ModelLoader::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 
 		vertices.push_back(vertex);
 	}
-	DEBUG("Finished extracting vertex data");
+	DEBUG("- Vertex data extraction");
 
 	// now walk through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-	DEBUG("Extracting face data");
+	DEBUG("+ Face data extraction");
 	for (uint32 i = 0; i < mesh -> mNumFaces; ++i)
 	{
 		aiFace face = mesh -> mFaces[i];
@@ -167,10 +165,10 @@ Mesh ModelLoader::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 		for (uint32 j = 0; j < face.mNumIndices; ++j)
 			indices.push_back(face.mIndices[j]);
 	}
-	DEBUG("Finished extracting face data");
+	DEBUG("- Face data extraction");
 
 	// process materials
-	DEBUG("Processing materials");
+	DEBUG("+ Material processing");
 	aiMaterial * material = scene -> mMaterials[mesh -> mMaterialIndex];
 	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
 	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
@@ -191,9 +189,8 @@ Mesh ModelLoader::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 	// 4. height maps
 	std::vector<Texture> heightMaps = LoadTextures(material, aiTextureType_AMBIENT, TextureType::HEIGHT);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-	DEBUG("Finished processing materials");
+	DEBUG("- Material processing");
 
 	// return a mesh object created from the extracted mesh data
-	DEBUG("Generating mesh");
 	return Mesh(vertices, indices, textures);
 }
