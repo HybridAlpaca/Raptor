@@ -74,28 +74,13 @@ endif()
 # core
 
 add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Backend/Display.cpp
-	${RUNTIME_ROOT_DIR}/Core/ECS/Component.cpp
+	${RUNTIME_ROOT_DIR}/Core/Shader.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
 )
 
-# graphics
-
-add_library (Graphics STATIC
-	${RUNTIME_ROOT_DIR}/Graphics/Model/Geometry.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/Model/ModelLoader.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/Renderer/Primitive.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/Utils/Shader.cpp
-)
-target_include_directories (Graphics PRIVATE
-	${RUNTIME_ROOT_DIR}/Graphics/
-)
-
-# install
-
-install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
@@ -104,7 +89,6 @@ install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	Core
-	Graphics
 	assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
