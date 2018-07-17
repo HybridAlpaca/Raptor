@@ -75,6 +75,7 @@ endif()
 
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Shader.cpp
+	${RUNTIME_ROOT_DIR}/Core/Camera.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
