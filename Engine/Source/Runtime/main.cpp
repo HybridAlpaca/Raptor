@@ -1,4 +1,5 @@
 #include <Core/Shader.h>
+#include <Core/Mesh.h>
 #include <Core/Camera.h>
 
 #include <GL/glew.h>
@@ -10,6 +11,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <vector>
 
 void FBSizeCallback (GLFWwindow * window, int width, int height)
 {
@@ -58,36 +60,25 @@ int main (int argc, char ** argv)
 	
 	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Texture.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Texture.fs");
 	
-	float vertices[] = {
-		 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
-		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f   // top left 
-	};
-	unsigned int indices[] = {  // note that we start from 0!
-		0, 1, 3,  // first Triangle
-		1, 2, 3   // second Triangle
-	};
-	unsigned int VBO, VAO, EBO;
-	glGenVertexArrays(1, & VAO);
-	glGenBuffers(1, & VBO);
-	glGenBuffers(1, & EBO);
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0); 
-
-	glBindVertexArray(0); 
+	std::vector<Vertex> vertices;
+	Vertex v0;
+	v0.position = glm::vec3(0.5f, 0.5f, 0.0f);
+	v0.texcoords = glm::vec2(1.0f, 1.0f);
+	Vertex v1;
+	v1.position = glm::vec3(0.5f, -0.5f, 0.0f);
+	v1.texcoords = glm::vec2(1.0f, 0.0f);
+	Vertex v2;
+	v2.position = glm::vec3(-0.5f, -0.5f, 0.0f);
+	v2.texcoords = glm::vec2(0.0f, 0.0f);
+	Vertex v3;
+	v3.position = glm::vec3(-0.5f, 0.5f, 0.0f);
+	v3.texcoords = glm::vec2(0.0f, 0.1f);
+	vertices.push_back(v0);
+	vertices.push_back(v1);
+	vertices.push_back(v2);
+	vertices.push_back(v3);
+	
+	std::vector<unsigned int> indices = { 0, 1, 3, 1, 2, 3 };
 	
 	unsigned int texture;
 	glGenTextures(1, & texture);
@@ -108,9 +99,17 @@ int main (int argc, char ** argv)
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load texture" << "\n";
 	}
 	stbi_image_free(data);
+	
+	std::vector<Texture> textures;
+	Texture t0;
+	t0.id = texture;
+	t0.type = TextureType::DIFFUSE;
+	textures.push_back(t0);
+	
+	Mesh mesh(vertices, indices, textures);
 	
 	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 	
@@ -120,12 +119,9 @@ int main (int argc, char ** argv)
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		
 		glm::mat4 model(1.0f);
 		glm::mat4 projection(1.0f);
-		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		// model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
 		
 		shader.Bind();
@@ -133,8 +129,7 @@ int main (int argc, char ** argv)
 		shader.Mat4("view", camera.ViewMatrix());
 		shader.Mat4("projection", projection);
 
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		mesh.Draw(shader);
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();    

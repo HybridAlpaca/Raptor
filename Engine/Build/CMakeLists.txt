@@ -49,9 +49,9 @@ include_directories ("${SOURCE_ROOT_DIR}/External")
 
 link_directories ("${ENGINE_ROOT_DIR}/Binaries")
 
-####################
-# Shared Libraries #
-####################
+#######################
+# Dependant Libraries #
+#######################
 
 # opengl
 
@@ -76,6 +76,7 @@ endif()
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Shader.cpp
 	${RUNTIME_ROOT_DIR}/Core/Camera.cpp
+	${RUNTIME_ROOT_DIR}/Core/Mesh.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/

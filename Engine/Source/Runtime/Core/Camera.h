@@ -40,5 +40,4 @@ public:
 	void ProcessMouse (float deltaX, float deltaY, bool constrainPitch = true);
 	
 	glm::mat4 ViewMatrix ();
-
 };
