@@ -47,14 +47,19 @@ int main (int argc, char ** argv)
 	GLFWwindow * window = glfwCreateWindow(640, 480, "Lorum Ipsum", nullptr, nullptr);
 	if (!window)
 	{
-		std::cerr << "Failed to create GLFW window" << "\n";
+		//
 		glfwTerminate();
 		return 1;
 	}
 	glfwMakeContextCurrent(window);
 	
 	glewExperimental = GL_TRUE;
-  glewInit();
+  if (glewInit() != GLEW_OK)
+  {
+		//
+		glfwTerminate();
+		return 1;
+	}
   
   glViewport(0, 0, 640, 480);
   glfwSetFramebufferSizeCallback(window, FBSizeCallback);
@@ -62,7 +67,7 @@ int main (int argc, char ** argv)
 	glClearColor(0.4f, 0.2f, 0.5f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	
-	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Texture.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Texture.fs");
+	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.fs");
 	
 	Model stuff("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/nanosuit/nanosuit.obj");
 	
@@ -76,18 +81,22 @@ int main (int argc, char ** argv)
 		
 		glm::mat4 model(1.0f);
 		glm::mat4 projection(1.0f);
-		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
 		
 		shader.Bind();
 		shader.Mat4("model", model);
 		shader.Mat4("view", camera.ViewMatrix());
 		shader.Mat4("projection", projection);
+		
+		shader.Vec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader.Vec3("lightPos", camera.Position());
+		shader.Vec3("viewPos", camera.Position());
 
 		stuff.Draw(shader);
 		
 		glfwSwapBuffers(window);
-		glfwPollEvents();    
+		glfwPollEvents();
 	}
 
 	glfwTerminate();

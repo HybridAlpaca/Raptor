@@ -28,7 +28,7 @@ struct Texture
 	const char * path;
 };
 
-class Mesh
+struct Mesh
 {
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -37,8 +37,6 @@ class Mesh
 	unsigned int indexCount;
 	
 	void SetupMesh (const std::vector<unsigned int> & indices);
-
-public:
 
 	Mesh (const std::vector<Vertex> & vertices, const std::vector<unsigned int> & indices, const std::vector<Texture> & textures);
 

@@ -21,7 +21,7 @@ public:
 	void Int (const char * name, int val) const;
 	
 	void Vec2 (const char * name) const;
-	void Vec3 (const char * name) const;
+	void Vec3 (const char * name, const glm::vec3 & val) const;
 	void Vec4 (const char * name) const;
 	
 	void Mat3 (const char * name, const glm::mat3 & val) const;

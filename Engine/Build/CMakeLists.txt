@@ -78,6 +78,7 @@ add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Camera.cpp
 	${RUNTIME_ROOT_DIR}/Core/Mesh.cpp
 	${RUNTIME_ROOT_DIR}/Core/Model.cpp
+	${RUNTIME_ROOT_DIR}/Core/Renderer.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/

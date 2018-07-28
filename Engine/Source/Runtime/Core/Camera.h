@@ -40,4 +40,5 @@ public:
 	void ProcessMouse (float deltaX, float deltaY, bool constrainPitch = true);
 	
 	glm::mat4 ViewMatrix ();
+	inline const glm::vec3 & Position () const { return position; }
 };

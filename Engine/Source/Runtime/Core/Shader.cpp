@@ -77,6 +77,8 @@ void Shader::Int (const char * name, int val) const
 void Shader::Float (const char * name, float val) const
 { glUniform1f(glGetUniformLocation(ID, name), val); }
 
+void Shader::Vec3 (const char * name, const glm::vec3 & val) const
+{ glUniform3fv(glGetUniformLocation(ID, name), 1, & val[0]); }
 
 void Shader::Mat3 (const char * name, const glm::mat3 & val) const
 { glUniformMatrix3fv(glGetUniformLocation(ID, name), 1, GL_FALSE, & val[0][0]); }

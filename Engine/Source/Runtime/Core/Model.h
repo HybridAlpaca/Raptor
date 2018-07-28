@@ -21,7 +21,7 @@ class Model
 	
 	std::vector<Texture> LoadTextures (aiMaterial * mat, aiTextureType type, TextureType typeName);
 	
-	unsigned int TextureFromFile (const char * path, std::string directory);
+	unsigned int TextureFromFile (const char * path, std::string directory, bool gamma = true);
 
 public:
 
