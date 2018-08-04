@@ -9,40 +9,38 @@
 #include <string>
 #include <iostream>
 
-Model::Model (const char * path)
+ModelLoader::ModelLoader (const char * directory)
 : directory (directory)
-{
-	//
-	LoadModel(path);
-}
-
-Model::~Model ()
 {}
 
-void Model::Draw (const Shader & shader) const
+ModelLoader::~ModelLoader ()
+{}
+
+std::vector<Mesh> ModelLoader::Load (const char * path)
 {
-	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i].Draw(shader);
+	meshes.clear();
+	LoadModel(path);
+	return meshes;
 }
 
-void Model::LoadModel (const char * path)
+void ModelLoader::LoadModel (const char * path)
 {
 	Assimp::Importer import;
-	const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_OptimizeMeshes | aiProcess_ImproveCacheLocality);	
+	const aiScene * scene = import.ReadFile(directory + '/' + path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_OptimizeMeshes | aiProcess_ImproveCacheLocality);
 
 	if (!scene || scene -> mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene -> mRootNode) 
 	{
-		//
+		std::cout << "Scene failed to load." << "\n";
 		return;
 	}
-
+	
 	std::string pathStr = path;
-	directory = pathStr.substr(0, pathStr.find_last_of('/'));
+	localDir = pathStr.substr(0, pathStr.find_last_of('/'));
 
 	ProcessNode(scene -> mRootNode, scene);
 }
 
-void Model::ProcessNode (aiNode * node, const aiScene * scene)
+void ModelLoader::ProcessNode (aiNode * node, const aiScene * scene)
 {
 	// process each mesh located at the current node
 	for (unsigned int i = 0; i < node -> mNumMeshes; i++)
@@ -59,8 +57,10 @@ void Model::ProcessNode (aiNode * node, const aiScene * scene)
 	}
 }
 
-Mesh Model::ProcessMesh (aiMesh * mesh, const aiScene * scene)
+Mesh ModelLoader::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 {
+	Mesh newMesh;
+	
 	// data to fill
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -82,7 +82,7 @@ Mesh Model::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 		vector.z = mesh -> mNormals[i].z;
 		vertex.normal = vector;
 		// texture coordinates
-		if(mesh -> mTextureCoords[0]) // does the mesh contain texture coordinates?
+		if (mesh -> mTextureCoords[0]) // does the mesh contain texture coordinates?
 		{
 			glm::vec2 vec;
 			// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
@@ -135,11 +135,44 @@ Mesh Model::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 	std::vector<Texture> heightMaps = LoadTextures(material, aiTextureType_AMBIENT, TextureType::HEIGHT);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-	// return a mesh object created from the extracted mesh data
-	return Mesh(vertices, indices, textures);
+	newMesh.vertices = vertices;
+	newMesh.indexCount = indices.size();
+	newMesh.textures = textures;
+	
+	glGenVertexArrays(1, & newMesh.VAO);
+	glGenBuffers(1, & newMesh.VBO);
+	glGenBuffers(1, & newMesh.EBO);
+
+	glBindVertexArray(newMesh.VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, newMesh.VBO);
+
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), & vertices[0], GL_STATIC_DRAW);  
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, newMesh.EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), & indices[0], GL_STATIC_DRAW);
+
+	// vertex positions
+	glEnableVertexAttribArray(0);	
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) 0);
+	// vertex normals
+	glEnableVertexAttribArray(1);	
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, normal));
+	// vertex texture coords
+	glEnableVertexAttribArray(2);	
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, texcoords));
+	// vertex tangent
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, tangent));
+	// vertex bitangent
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, bitangent));
+
+	glBindVertexArray(0);
+	
+	return newMesh;
 }
 
-std::vector<Texture> Model::LoadTextures (aiMaterial * mat, aiTextureType type, TextureType typeName)
+std::vector<Texture> ModelLoader::LoadTextures (aiMaterial * mat, aiTextureType type, TextureType typeName)
 {
 	std::vector<Texture> textures;
 	for (unsigned int i = 0; i < mat -> GetTextureCount(type); i++)
@@ -163,7 +196,7 @@ std::vector<Texture> Model::LoadTextures (aiMaterial * mat, aiTextureType type, 
 			Texture texture;
 			bool gamma = true;
 			if (typeName != TextureType::DIFFUSE) gamma = false;
-			texture.id = TextureFromFile(str.C_Str(), directory, gamma);
+			texture.id = TextureFromFile(str.C_Str(), gamma);
 			texture.type = typeName;
 			texture.path = str.C_Str();
 			textures.push_back(texture);
@@ -173,9 +206,9 @@ std::vector<Texture> Model::LoadTextures (aiMaterial * mat, aiTextureType type, 
 	return textures;
 }
 
-unsigned int Model::TextureFromFile (const char * path, std::string directory, bool gamma)
+unsigned int ModelLoader::TextureFromFile (const char * path, bool gamma)
 {
-	std::string filename = directory + '/' + std::string(path);
+	std::string filename = directory + '/' + localDir + '/' + std::string(path);
 	unsigned int textureID;
 	glGenTextures(1, & textureID);
 
@@ -211,7 +244,7 @@ unsigned int Model::TextureFromFile (const char * path, std::string directory, b
 	}
 	else
 	{
-		//
+		std::cout << "Texture failed to load" << "\n";
 		stbi_image_free(data);
 	}
 

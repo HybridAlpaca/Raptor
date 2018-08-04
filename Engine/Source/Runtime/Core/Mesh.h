@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Shader.h"
 
 #include <glm/glm.hpp>
@@ -35,10 +37,4 @@ struct Mesh
 	
 	unsigned int VAO, VBO, EBO;
 	unsigned int indexCount;
-	
-	void SetupMesh (const std::vector<unsigned int> & indices);
-
-	Mesh (const std::vector<Vertex> & vertices, const std::vector<unsigned int> & indices, const std::vector<Texture> & textures);
-
-	void Draw (const Shader & shader) const;
 };

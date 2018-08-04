@@ -26,7 +26,7 @@ include (GNUInstallDirs)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set (CMAKE_CXX_COMPILER /usr/bin/g++-8)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wl,-R -Wl,/home/cellman123/Desktop/Raptor/Engine/Binaries")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -fno-exceptions")
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
 set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
@@ -76,9 +76,9 @@ endif()
 add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Shader.cpp
 	${RUNTIME_ROOT_DIR}/Core/Camera.cpp
-	${RUNTIME_ROOT_DIR}/Core/Mesh.cpp
 	${RUNTIME_ROOT_DIR}/Core/Model.cpp
 	${RUNTIME_ROOT_DIR}/Core/Renderer.cpp
+	${RUNTIME_ROOT_DIR}/Core/Display.cpp
 )
 target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/

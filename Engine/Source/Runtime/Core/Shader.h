@@ -12,7 +12,7 @@ public:
 	Shader (const Shader & copy) = delete;
 	~Shader ();
 	
-	Shader & operator= (const Shader & copy) = delete;
+	Shader & operator= (const Shader & rhs) = delete;
 	
 	void Bind ();
 	

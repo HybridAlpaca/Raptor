@@ -9,11 +9,12 @@
 #include <vector>
 #include <string>
 
-class Model
+class ModelLoader
 {
 	std::vector<Mesh> meshes;
 	std::vector<Texture> textureCache;
 	std::string directory;
+	std::string localDir;
 	
 	void LoadModel (const char * path);
 	void ProcessNode (aiNode * node, const aiScene * scene);
@@ -21,16 +22,15 @@ class Model
 	
 	std::vector<Texture> LoadTextures (aiMaterial * mat, aiTextureType type, TextureType typeName);
 	
-	unsigned int TextureFromFile (const char * path, std::string directory, bool gamma = true);
+	unsigned int TextureFromFile (const char * path, bool gamma = true);
 
 public:
 
-	Model (const char * path);
-	Model (const Model & copy) = delete;
-	~Model ();
+	ModelLoader (const char * directory);
+	ModelLoader (const ModelLoader & copy) = delete;
+	~ModelLoader ();
 	
-	Model & operator= (const Model & copy) = delete;
+	ModelLoader & operator= (const ModelLoader & copy) = delete;
 	
-	void Draw (const Shader & shader) const;
-
+	std::vector<Mesh> Load (const char * path);
 };

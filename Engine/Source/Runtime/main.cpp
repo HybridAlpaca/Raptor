@@ -1,6 +1,8 @@
 #include <Core/Shader.h>
 #include <Core/Model.h>
 #include <Core/Camera.h>
+#include <Core/Renderer.h>
+#include <Core/Display.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -12,11 +14,6 @@
 
 #include <iostream>
 #include <vector>
-
-void FBSizeCallback (GLFWwindow * window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
 
 void ProcessInput (GLFWwindow * window, Camera & camera)
 {
@@ -39,50 +36,48 @@ void ProcessInput (GLFWwindow * window, Camera & camera)
 
 int main (int argc, char ** argv)
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
-	GLFWwindow * window = glfwCreateWindow(640, 480, "Lorum Ipsum", nullptr, nullptr);
-	if (!window)
-	{
-		//
-		glfwTerminate();
-		return 1;
-	}
-	glfwMakeContextCurrent(window);
-	
-	glewExperimental = GL_TRUE;
-  if (glewInit() != GLEW_OK)
-  {
-		//
-		glfwTerminate();
-		return 1;
-	}
-  
-  glViewport(0, 0, 640, 480);
-  glfwSetFramebufferSizeCallback(window, FBSizeCallback);
-	
-	glClearColor(0.4f, 0.2f, 0.5f, 1.0f);
-	glEnable(GL_DEPTH_TEST);
+	Display display;
 	
 	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.fs");
 	
-	Model stuff("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/nanosuit/nanosuit.obj");
+	ModelLoader loader("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/");
+	std::vector<Mesh> nanosuit = loader.Load("nanosuit/nanosuit.obj");
 	
 	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 	
-	while (!glfwWindowShouldClose(window))
+	Renderer renderer;
+	
+	unsigned int framebuffer;
+    glGenFramebuffers(1, &framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    // create a color attachment texture
+    unsigned int textureColorbuffer;
+    glGenTextures(1, &textureColorbuffer);
+    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+    // create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
+    unsigned int rbo;
+    glGenRenderbuffers(1, &rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 640, 480); // use a single renderbuffer object for both a depth AND stencil buffer.
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
+    // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << "\n";
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	while (!display.ShouldClose())
 	{
-		ProcessInput(window, camera);
+		ProcessInput(display.Window(), camera);
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		glm::mat4 model(1.0f);
-		glm::mat4 projection(1.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
 		
 		shader.Bind();
 		shader.Mat4("model", model);
@@ -93,13 +88,13 @@ int main (int argc, char ** argv)
 		shader.Vec3("lightPos", camera.Position());
 		shader.Vec3("viewPos", camera.Position());
 
-		stuff.Draw(shader);
+		for (unsigned int i = 0; i < nanosuit.size(); i++)
+		{
+			renderer.Render(nanosuit[i], shader);
+		}
 		
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		display.Update();
 	}
-
-	glfwTerminate();
 	
 	return 0;
 }
