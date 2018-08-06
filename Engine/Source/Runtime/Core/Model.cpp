@@ -152,7 +152,7 @@ Mesh ModelLoader::ProcessMesh (aiMesh * mesh, const aiScene * scene)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), & indices[0], GL_STATIC_DRAW);
 
 	// vertex positions
-	glEnableVertexAttribArray(0);	
+	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) 0);
 	// vertex normals
 	glEnableVertexAttribArray(1);	

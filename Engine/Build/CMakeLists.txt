@@ -84,7 +84,14 @@ target_include_directories (Core PRIVATE
 	${RUNTIME_ROOT_DIR}/Core/
 )
 
-install (TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+add_library (Graphics STATIC
+	${RUNTIME_ROOT_DIR}/Graphics/OpenGL/RenderContext.cpp
+)
+target_include_directories (Graphics PRIVATE
+	${RUNTIME_ROOT_DIR}/Graphics/
+)
+
+install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
@@ -93,6 +100,7 @@ install (TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	Core
+	Graphics
 	assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}

@@ -38,3 +38,9 @@ struct Mesh
 	unsigned int VAO, VBO, EBO;
 	unsigned int indexCount;
 };
+
+struct Material
+{
+	unsigned int shader;
+	std::vector<Texture> textures;
+};
