@@ -85,7 +85,7 @@ target_include_directories (Core PRIVATE
 )
 
 add_library (Graphics STATIC
-	${RUNTIME_ROOT_DIR}/Graphics/OpenGL/RenderContext.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/CommandBuffer.cpp
 )
 target_include_directories (Graphics PRIVATE
 	${RUNTIME_ROOT_DIR}/Graphics/
