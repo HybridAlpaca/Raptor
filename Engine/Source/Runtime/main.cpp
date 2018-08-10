@@ -16,11 +16,11 @@
 #include <vector>
 
 /**
- * 
+ *
  * @mainpage Raptor Public Documentation
- * 
+ *
  * Not much to see here.  Start looking around!
- * 
+ *
  **/
 
 void ProcessInput (GLFWwindow * window, Camera & camera)

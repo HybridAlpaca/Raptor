@@ -9,11 +9,11 @@
 /**
  *
  * @struct Vertex
- * @headerfile Mesh.h <Core/Mesh.h> 
- * 
+ * @headerfile Mesh.h <Core/Mesh.h>
+ *
  * @brief Contains data on how each vertex is to be uploaded to the GPU
  * @todo Factor this class out, somehow support a more configurable vertex layout with the upcoming rendering engine?
- * 
+ *
  **/
 
 struct Vertex
@@ -28,10 +28,10 @@ struct Vertex
 /**
  *
  * @enum TextureType
- * @headerfile Mesh.h <Core/Mesh.h> 
- * 
+ * @headerfile Mesh.h <Core/Mesh.h>
+ *
  * @brief Identifies the various BSDF texture types supported by the rendering engine
- * 
+ *
  **/
 
 enum class TextureType
@@ -43,12 +43,12 @@ enum class TextureType
 };
 
 /**
- * 
+ *
  * @struct Texture
  * @headerfile Mesh.h <Core/Mesh.h>
- * 
+ *
  * @brief Weak abstraction over OpenGL texture resource
- * 
+ *
  **/
 
 struct Texture
@@ -58,11 +58,25 @@ struct Texture
 	const char * path;	///< Path to this texture (for caching purposes)
 };
 
+/**
+ *
+ * @struct Mesh
+ * @headerfile Mesh.h <Core/Mesh.h>
+ *
+ * @brief Simple mesh structure containing all data required to render a physial 3D object
+ *
+ * @todo Get rid of OpenGL-specific data and abstract this over the new rendering engine.  At most, this should contain an index or pointer to a rendering resource; everything else should be library agnostic
+ *
+ **/
+
 struct Mesh
 {
-	std::vector<Vertex> vertices;
-	std::vector<Texture> textures;
-	
-	unsigned int VAO, VBO, EBO;
-	unsigned int indexCount;
+	std::vector<Vertex> vertices;		///< List of all vertices in a mesh
+	std::vector<Texture> textures;	///< List of all textures in a mesh
+
+	unsigned int VAO;								///< Vertex array object (OpenGL)
+	unsigned int VBO;								///< Vertex buffer object (OpenGL)
+	unsigned int EBO;								///< Element (index) buffer object (OpenGL)
+
+	unsigned int indexCount;				///< Number of indices in mesh, if any
 };
