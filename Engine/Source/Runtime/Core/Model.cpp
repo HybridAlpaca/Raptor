@@ -217,22 +217,23 @@ unsigned int ModelLoader::TextureFromFile (const char * path, bool gamma)
 	if (data)
 	{
 		GLenum format = GL_RED;
-		GLenum sformat = GL_RED;
+		GLenum internalFormat = GL_R8;
 		if (channelCount == 3)
 		{
 			format = GL_RGB;
-			if (gamma) sformat = GL_SRGB;
-			else sformat = format;
+			if (gamma) internalFormat = GL_SRGB8;
+			else internalFormat = GL_RGB8;
 		}
 		else if (channelCount == 4)
 		{
 			format = GL_RGBA;
-			if (gamma) sformat = GL_SRGB_ALPHA;
-			else sformat = format;
+			if (gamma) internalFormat = GL_SRGB8_ALPHA8;
+			else internalFormat = GL_RGBA8;
 		}
 		
 		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, sformat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glTexStorage2D(GL_TEXTURE_2D, 5, internalFormat, width, height);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

@@ -3,6 +3,7 @@
 #include <Core/Camera.h>
 #include <Core/Renderer.h>
 #include <Core/Display.h>
+#include <Graphics/RenderDevice.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -47,6 +48,7 @@ int main (int argc, char ** argv)
 	Display display;
 
 	Renderer renderer;
+	Graphics::RenderDevice renderDevice;
 
 	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.fs");
 
