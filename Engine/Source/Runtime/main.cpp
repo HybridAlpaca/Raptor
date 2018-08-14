@@ -1,9 +1,8 @@
 #include <Core/Shader.h>
 #include <Core/Model.h>
 #include <Core/Camera.h>
-#include <Core/Renderer.h>
 #include <Core/Display.h>
-#include <Graphics/RenderDevice.h>
+#include <Graphics/RenderBackend.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -47,8 +46,7 @@ int main (int argc, char ** argv)
 {
 	Display display;
 
-	Renderer renderer;
-	Graphics::RenderDevice renderDevice;
+	Graphics::Backend::RenderDevice renderDevice;
 
 	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.fs");
 
@@ -78,7 +76,44 @@ int main (int argc, char ** argv)
 
 		for (unsigned int i = 0; i < nanosuit.size(); i++)
 		{
-			renderer.Render(nanosuit[i], shader);
+			unsigned int diffuseNr = 1;
+			unsigned int specularNr = 1;
+			unsigned int heightNr = 1;
+			unsigned int normalNr = 1;
+			for (unsigned int j = 0; j < nanosuit[i].textures.size(); j++)
+			{
+				glActiveTexture(GL_TEXTURE0 + j); // activate proper texture unit before binding
+				// retrieve texture number (the N in diffuse_textureN)
+				std::string name;
+				std::string number;
+				TextureType type = nanosuit[i].textures[j].type;
+				if (type == TextureType::DIFFUSE)
+				{
+					name = "diffuse";
+					number = std::to_string(diffuseNr++);
+				}
+				else if (type == TextureType::SPECULAR)
+				{
+					name = "specular";
+					number = std::to_string(specularNr++);
+				}
+				else if (type == TextureType::NORMAL)
+				{
+					name = "normal";
+					number = std::to_string(normalNr++);
+				}
+				else if (type == TextureType::HEIGHT)
+				{
+					name = "height";
+					number = std::to_string(heightNr++);
+				}
+
+				shader.Int(("texture_" + name + number).c_str(), j);
+				glBindTexture(GL_TEXTURE_2D, nanosuit[i].textures[j].id);
+			}
+
+			// draw mesh
+			renderDevice.Dispatch(nanosuit[i].VAO, nanosuit[i].indexCount);
 		}
 
 		display.Update();

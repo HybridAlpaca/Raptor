@@ -11,7 +11,7 @@ Display::Display ()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
+
 	window = glfwCreateWindow(640, 480, "Lorum Ipsum", nullptr, nullptr);
 	if (!window)
 	{
@@ -19,20 +19,17 @@ Display::Display ()
 		return;
 	}
 	glfwMakeContextCurrent(window);
-	
+
 	glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK)
   {
 		glfwTerminate();
 		return;
 	}
-  
+
   glViewport(0, 0, 640, 480);
   glfwSetFramebufferSizeCallback(window, FBSizeCallback);
   glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
-  
-  glClearColor(0.4f, 0.2f, 0.5f, 1.0f);
-	glEnable(GL_DEPTH_TEST);
 }
 
 Display::~Display ()

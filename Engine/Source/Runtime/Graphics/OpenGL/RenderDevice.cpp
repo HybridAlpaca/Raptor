@@ -1,14 +1,26 @@
-#include "../RenderDevice.h"
+#include "RenderDevice.h"
+#include "../RenderResource.h"
 
-using Graphics::RenderDevice;
+#include <GL/glew.h>
 
-RenderDevice::RenderDevice ()
-{}
+using Graphics::Backend::GLRenderDevice;
 
-RenderDevice::~RenderDevice ()
-{}
-
-void RenderDevice::Draw ()
+GLRenderDevice::GLRenderDevice ()
 {
-	// Look at me, I'm a draw call!
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+}
+
+GLRenderDevice::~GLRenderDevice ()
+{}
+
+void GLRenderDevice::Dispatch (unsigned int VAO, unsigned int indexCount)
+{
+	if (boundVAO != VAO)
+	{
+		// the additional branch is less expensive than the API call
+		glBindVertexArray(VAO);
+		boundVAO = VAO;
+	}
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }
