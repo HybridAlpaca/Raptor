@@ -14,13 +14,13 @@ GLRenderDevice::GLRenderDevice ()
 GLRenderDevice::~GLRenderDevice ()
 {}
 
-void GLRenderDevice::Dispatch (unsigned int VAO, unsigned int indexCount)
+void GLRenderDevice::Dispatch (const Commands::CommandPackage & package)
 {
-	if (boundVAO != VAO)
+	switch (package.type)
 	{
-		// the additional branch is less expensive than the API call
-		glBindVertexArray(VAO);
-		boundVAO = VAO;
+		case Commands::DRAW_INDEXED:
+			glBindVertexArray(package.data.drawIndexed.vertexArray);
+			glDrawElements(GL_TRIANGLES, package.data.drawIndexed.indexCount, GL_UNSIGNED_INT, 0);
+			break;
 	}
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }

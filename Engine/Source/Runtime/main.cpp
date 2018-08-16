@@ -112,8 +112,13 @@ int main (int argc, char ** argv)
 				glBindTexture(GL_TEXTURE_2D, nanosuit[i].textures[j].id);
 			}
 
-			// draw mesh
-			renderDevice.Dispatch(nanosuit[i].VAO, nanosuit[i].indexCount);
+			Graphics::Commands::CommandPackage package;
+			package.type = Graphics::Commands::DRAW_INDEXED;
+			package.data.drawIndexed.vertexArray = nanosuit[i].VAO;
+			package.data.drawIndexed.indexCount = nanosuit[i].indexCount;
+			package.sortKey = 0b00000000000000000000000000000000;
+
+			renderDevice.Dispatch(package);
 		}
 
 		display.Update();

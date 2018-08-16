@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Commands.h"
+
 namespace Graphics::Backend
 {
 
@@ -12,7 +14,10 @@ public:
 	GLRenderDevice ();
 	~GLRenderDevice ();
 
-	void Dispatch (unsigned int VAO, unsigned int indexCount);
+	void Dispatch (const Commands::CommandPackage & package);
+
+	VertexArrayHandle CreateVertexArray ();
+	void DestroyVertexArray (VertexArrayHandle vertexArray);
 };
 
 }
