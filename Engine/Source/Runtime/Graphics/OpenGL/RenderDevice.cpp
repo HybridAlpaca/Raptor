@@ -14,13 +14,19 @@ GLRenderDevice::GLRenderDevice ()
 GLRenderDevice::~GLRenderDevice ()
 {}
 
-void GLRenderDevice::Dispatch (const Commands::CommandPackage & package)
+void GLRenderDevice::Dispatch (const RenderContext & ctx)
 {
-	switch (package.type)
+	for (unsigned int i = 0; i < ctx.CommandCount(); ++i)
 	{
-		case Commands::DRAW_INDEXED:
-			glBindVertexArray(package.data.drawIndexed.vertexArray);
-			glDrawElements(GL_TRIANGLES, package.data.drawIndexed.indexCount, GL_UNSIGNED_INT, 0);
-			break;
+		Commands::CommandPackage package = ctx.commandBuffer[i];
+		switch (package.type)
+		{
+			case Commands::NOP:
+				break;
+			case Commands::DRAW_INDEXED:
+				glBindVertexArray(package.data.drawIndexed.vertexArray);
+				glDrawElements(GL_TRIANGLES, package.data.drawIndexed.indexCount, GL_UNSIGNED_INT, 0);
+				break;
+		}
 	}
 }

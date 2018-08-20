@@ -3,6 +3,7 @@
 #include <Core/Camera.h>
 #include <Core/Display.h>
 #include <Graphics/RenderBackend.h>
+#include <Graphics/RenderContext.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -112,13 +113,13 @@ int main (int argc, char ** argv)
 				glBindTexture(GL_TEXTURE_2D, nanosuit[i].textures[j].id);
 			}
 
-			Graphics::Commands::CommandPackage package;
-			package.type = Graphics::Commands::DRAW_INDEXED;
+			Graphics::RenderContext ctx;
+
+			Graphics::Commands::CommandPackage & package = ctx.AllocateCommand(Graphics::Commands::DRAW_INDEXED);
 			package.data.drawIndexed.vertexArray = nanosuit[i].VAO;
 			package.data.drawIndexed.indexCount = nanosuit[i].indexCount;
-			package.sortKey = 0b00000000000000000000000000000000;
 
-			renderDevice.Dispatch(package);
+			renderDevice.Dispatch(ctx);
 		}
 
 		display.Update();

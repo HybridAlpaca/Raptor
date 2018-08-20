@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Commands.h"
+#include "../RenderContext.h"
 
 namespace Graphics::Backend
 {
@@ -14,7 +14,7 @@ public:
 	GLRenderDevice ();
 	~GLRenderDevice ();
 
-	void Dispatch (const Commands::CommandPackage & package);
+	void Dispatch (const RenderContext & ctx);
 
 	VertexArrayHandle CreateVertexArray ();
 	void DestroyVertexArray (VertexArrayHandle vertexArray);
