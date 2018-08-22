@@ -5,9 +5,12 @@
 namespace Graphics::Commands
 {
 
-struct CreateVertexArray
+struct Clear
 {
-	// the thing goes here
+	float r;
+	float g;
+	float b;
+	float a;
 };
 
 struct DrawIndexed
@@ -16,15 +19,16 @@ struct DrawIndexed
 	unsigned int indexCount;
 };
 
-enum CommandType
+enum CommandType : unsigned int
 {
 	NOP,
+	CLEAR,
 	DRAW_INDEXED
 };
 
 union CommandData
 {
-	CreateVertexArray vertexArray;
+	Clear clear;
 	DrawIndexed drawIndexed;
 };
 

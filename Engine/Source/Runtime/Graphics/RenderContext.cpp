@@ -12,25 +12,20 @@ RenderContext::~RenderContext ()
 	// @todo: revert something
 }
 
-void RenderContext::IncWrite ()
+void RenderContext::Clear (float r, float g, float b, float a)
 {
-	writeIndex = (writeIndex + 1) & (MAX_RENDER_COMMANDS - 1);
-
-	/// @todo figure out why the fuck this is necessary...
-	++commandCount;
-	++commandCount;
+	Commands::CommandPackage & command = stream.AllocateCommand();
+	command.type = Commands::CLEAR;
+	command.data.clear.r = r;
+	command.data.clear.g = g;
+	command.data.clear.b = b;
+	command.data.clear.a = a;
 }
 
-Commands::CommandPackage & RenderContext::AllocateCommand (Commands::CommandType type)
+void RenderContext::DrawIndexed (unsigned int vertexArray, unsigned int indexCount)
 {
-	IncWrite();
-	commandBuffer[writeIndex].type = type;
-	commandBuffer[writeIndex].resourceSlot = 0x000000;
-	return commandBuffer[writeIndex];
-}
-
-void RenderContext::Clear ()
-{
-	commandCount = 0;
-	writeIndex = 0;
+	Commands::CommandPackage & command = stream.AllocateCommand();
+	command.type = Commands::DRAW_INDEXED;
+	command.data.drawIndexed.vertexArray = vertexArray;
+	command.data.drawIndexed.indexCount = indexCount;
 }

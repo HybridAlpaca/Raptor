@@ -77,7 +77,6 @@ add_library (Core STATIC
 	${RUNTIME_ROOT_DIR}/Core/Shader.cpp
 	${RUNTIME_ROOT_DIR}/Core/Camera.cpp
 	${RUNTIME_ROOT_DIR}/Core/Model.cpp
-	${RUNTIME_ROOT_DIR}/Core/Renderer.cpp
 	${RUNTIME_ROOT_DIR}/Core/Display.cpp
 )
 target_include_directories (Core PRIVATE
@@ -88,6 +87,7 @@ target_include_directories (Core PRIVATE
 
 add_library (Graphics STATIC
 	${RUNTIME_ROOT_DIR}/Graphics/OpenGL/RenderDevice.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/CommandBufferStream.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/RenderContext.cpp
 )
 target_include_directories (Graphics PRIVATE

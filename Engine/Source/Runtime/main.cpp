@@ -56,11 +56,13 @@ int main (int argc, char ** argv)
 
 	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
+	Graphics::RenderContext ctx;
+
 	while (!display.ShouldClose())
 	{
 		ProcessInput(display.Window(), camera);
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		ctx.Clear(1.0f, 0.0f, 1.0f);
 
 		glm::mat4 model(1.0f);
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
@@ -74,6 +76,9 @@ int main (int argc, char ** argv)
 		shader.Vec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader.Vec3("lightPos", camera.Position());
 		shader.Vec3("viewPos", camera.Position());
+
+		renderDevice.Dispatch(ctx.InternalStream());
+		ctx.InternalStream().Clear();
 
 		for (unsigned int i = 0; i < nanosuit.size(); i++)
 		{
@@ -113,13 +118,12 @@ int main (int argc, char ** argv)
 				glBindTexture(GL_TEXTURE_2D, nanosuit[i].textures[j].id);
 			}
 
-			Graphics::RenderContext ctx;
-
-			Graphics::Commands::CommandPackage & package = ctx.AllocateCommand(Graphics::Commands::DRAW_INDEXED);
-			package.data.drawIndexed.vertexArray = nanosuit[i].VAO;
-			package.data.drawIndexed.indexCount = nanosuit[i].indexCount;
-
-			renderDevice.Dispatch(ctx);
+			{
+				Graphics::RenderContext meshCtx;
+				meshCtx.DrawIndexed(nanosuit[i].VAO, nanosuit[i].indexCount);
+				renderDevice.Dispatch(meshCtx.InternalStream());
+				meshCtx.InternalStream().Clear();
+			}
 		}
 
 		display.Update();
