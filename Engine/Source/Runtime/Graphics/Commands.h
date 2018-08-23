@@ -7,23 +7,22 @@ namespace Graphics::Commands
 
 struct Clear
 {
-	float r;
-	float g;
-	float b;
-	float a;
+	float r; ///< Normalized red value
+	float g; ///< Normalized green value
+	float b; ///< Normalized blue value
+	float a; ///< Normalized alpha value
 };
 
 struct DrawIndexed
 {
-	unsigned int vertexArray;
 	unsigned int indexCount;
 };
 
 enum CommandType : unsigned int
 {
-	NOP,
 	CLEAR,
-	DRAW_INDEXED
+	DRAW_INDEXED,
+	NOP
 };
 
 union CommandData

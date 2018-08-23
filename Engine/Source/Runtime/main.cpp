@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 /**
  *
@@ -77,8 +78,8 @@ int main (int argc, char ** argv)
 		shader.Vec3("lightPos", camera.Position());
 		shader.Vec3("viewPos", camera.Position());
 
-		renderDevice.Dispatch(ctx.InternalStream());
-		ctx.InternalStream().Clear();
+		renderDevice.Dispatch(ctx);
+		ctx.ClearBuffer();
 
 		for (unsigned int i = 0; i < nanosuit.size(); i++)
 		{
@@ -121,8 +122,8 @@ int main (int argc, char ** argv)
 			{
 				Graphics::RenderContext meshCtx;
 				meshCtx.DrawIndexed(nanosuit[i].VAO, nanosuit[i].indexCount);
-				renderDevice.Dispatch(meshCtx.InternalStream());
-				meshCtx.InternalStream().Clear();
+				renderDevice.Dispatch(meshCtx);
+				meshCtx.ClearBuffer();
 			}
 		}
 

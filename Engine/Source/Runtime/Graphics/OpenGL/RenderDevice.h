@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CommandBufferStream.h"
+#include "../RenderContext.h"
 
 namespace Graphics::Backend
 {
@@ -14,10 +14,7 @@ public:
 	GLRenderDevice ();
 	~GLRenderDevice ();
 
-	void Dispatch (const CommandBufferStream & stream);
-
-	VertexArrayHandle CreateVertexArray ();
-	void DestroyVertexArray (VertexArrayHandle vertexArray);
+	void Dispatch (const RenderContext & ctx);
 };
 
 }

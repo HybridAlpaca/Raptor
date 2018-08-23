@@ -1,13 +1,19 @@
 #pragma once
 
-#include "CommandBufferStream.h"
+#include "Commands.h"
 
 namespace Graphics
 {
 
 class RenderContext
 {
-	CommandBufferStream stream;
+	static const int MAX_RENDER_COMMANDS = 256;
+
+	Commands::CommandPackage commandBuffer [MAX_RENDER_COMMANDS];
+
+	unsigned int indexWrite;
+
+	Commands::CommandPackage & AllocateCommand ();
 
 public:
 
@@ -21,10 +27,17 @@ public:
 	/// Temporarily non-copyable
 	RenderContext & operator= (const RenderContext & rhs) = delete;
 
+	/// Clear the framebuffer with the specified color
 	void Clear (float r, float g, float b, float a = 1.0f);
+
+	/// Perform an indexed draw call
 	void DrawIndexed (unsigned int vertexArray, unsigned int indexCount);
 
-	CommandBufferStream & InternalStream () { return stream; }
+	/// Access the internal CommandBufferStream
+	inline const Commands::CommandPackage * InternalBuffer () const { return commandBuffer; }
+
+	inline unsigned int BufferSize () const { return indexWrite; }
+	inline void ClearBuffer () { indexWrite = 0; }
 };
 
 }
