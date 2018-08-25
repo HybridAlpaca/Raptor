@@ -3,7 +3,7 @@
 #include <Core/Camera.h>
 #include <Core/Display.h>
 #include <Graphics/RenderBackend.h>
-#include <Graphics/RenderContext.h>
+#include <Graphics/DrawContext.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -15,7 +15,6 @@
 
 #include <iostream>
 #include <vector>
-#include <string>
 
 /**
  *
@@ -44,7 +43,7 @@ void ProcessInput (GLFWwindow * window, Camera & camera)
 		camera.ProcessKeyboard(CameraControl::DOWN, 0.16f);
 }
 
-int main (int argc, char ** argv)
+int32 main (int32 argc, cchar * argv)
 {
 	Display display;
 
@@ -57,7 +56,7 @@ int main (int argc, char ** argv)
 
 	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-	Graphics::RenderContext ctx;
+	Graphics::DrawContext ctx;
 
 	while (!display.ShouldClose())
 	{
@@ -87,6 +86,7 @@ int main (int argc, char ** argv)
 			unsigned int specularNr = 1;
 			unsigned int heightNr = 1;
 			unsigned int normalNr = 1;
+
 			for (unsigned int j = 0; j < nanosuit[i].textures.size(); j++)
 			{
 				glActiveTexture(GL_TEXTURE0 + j); // activate proper texture unit before binding
@@ -120,7 +120,7 @@ int main (int argc, char ** argv)
 			}
 
 			{
-				Graphics::RenderContext meshCtx;
+				Graphics::DrawContext meshCtx;
 				meshCtx.DrawIndexed(nanosuit[i].VAO, nanosuit[i].indexCount);
 				renderDevice.Dispatch(meshCtx);
 				meshCtx.ClearBuffer();

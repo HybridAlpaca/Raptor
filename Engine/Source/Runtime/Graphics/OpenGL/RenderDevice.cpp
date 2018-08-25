@@ -1,47 +1,48 @@
 #include "RenderDevice.h"
+#include <Core/Common/Required.h>
 
 #include <GL/glew.h>
 
 using namespace Graphics;
-using Graphics::Backend::GLRenderDevice;
+using Graphics::Backend::GL::RenderDevice;
 
-GLRenderDevice::GLRenderDevice ()
+RenderDevice::RenderDevice ()
 {
 	glEnable(GL_DEPTH_TEST);
 }
 
-GLRenderDevice::~GLRenderDevice ()
+RenderDevice::~RenderDevice ()
 {}
 
-void GLRenderDevice::Dispatch (const RenderContext & ctx)
+void RenderDevice::Dispatch (const DrawContext & ctx)
 {
-	const Commands::CommandPackage * commands = ctx.InternalBuffer();
+	const Commands::DrawPackage * commands = ctx.InternalBuffer();
 
-	for (unsigned int i = 0; i < ctx.BufferSize(); ++i)
+	for (psize i = 0; i < ctx.BufferSize(); ++i)
 	{
-		const Commands::CommandPackage & command = commands[i];
+		const Commands::DrawPackage & command = commands[i];
 		switch (command.type)
 		{
 			// Clear screen
-			case Commands::CLEAR:
+			case Commands::Draw::CLEAR:
 			{
 				glClearColor(command.data.clear.r, command.data.clear.g, command.data.clear.b, command.data.clear.a);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 				break;
 			}
 			// Indexed draw
-			case Commands::DRAW_INDEXED:
+			case Commands::Draw::DRAW_INDEXED:
 			{
-				if (boundVAO != command.resourceSlot)
+				if (state.boundVAO != command.resourceSlot)
 				{
 					glBindVertexArray(command.resourceSlot);
-					boundVAO = command.resourceSlot;
+					state.boundVAO = command.resourceSlot;
 				}
 				glDrawElements(GL_TRIANGLES, command.data.drawIndexed.indexCount, GL_UNSIGNED_INT, 0);
 				break;
 			}
 			// No operation
-			case Commands::NOP:
+			case Commands::Draw::NOP:
 			default:
 				break;
 		}

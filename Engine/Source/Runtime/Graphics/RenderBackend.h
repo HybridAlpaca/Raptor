@@ -5,6 +5,6 @@
 namespace Graphics::Backend
 {
 
-typedef GLRenderDevice RenderDevice;
+typedef GL::RenderDevice RenderDevice;
 
 }

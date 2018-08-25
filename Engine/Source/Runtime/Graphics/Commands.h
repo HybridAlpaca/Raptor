@@ -5,6 +5,9 @@
 namespace Graphics::Commands
 {
 
+namespace Draw
+{
+
 struct Clear
 {
 	float r; ///< Normalized red value
@@ -31,10 +34,12 @@ union CommandData
 	DrawIndexed drawIndexed;
 };
 
-struct CommandPackage
+}
+
+struct DrawPackage
 {
-	CommandType type = CommandType::NOP;
-	CommandData data;
+	Draw::CommandType type = Draw::CommandType::NOP;
+	Draw::CommandData data;
 
 	unsigned int resourceSlot = 0;
 	unsigned int sortKey = 0;

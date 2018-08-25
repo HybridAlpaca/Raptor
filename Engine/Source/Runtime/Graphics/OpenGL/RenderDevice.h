@@ -1,20 +1,21 @@
 #pragma once
 
-#include "../RenderContext.h"
+#include "DeviceState.h"
+#include "../DrawContext.h"
 
-namespace Graphics::Backend
+namespace Graphics::Backend::GL
 {
 
-class GLRenderDevice
+class RenderDevice
 {
-	unsigned int boundVAO;
+	DeviceState state;
 
 public:
 
-	GLRenderDevice ();
-	~GLRenderDevice ();
+	RenderDevice ();
+	~RenderDevice ();
 
-	void Dispatch (const RenderContext & ctx);
+	void Dispatch (const DrawContext & ctx);
 };
 
 }

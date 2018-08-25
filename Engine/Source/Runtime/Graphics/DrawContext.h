@@ -1,31 +1,31 @@
 #pragma once
 
 #include "Commands.h"
+#include "Constants.h"
+#include <Core/Common/Required.h>
 
 namespace Graphics
 {
 
-class RenderContext
+class DrawContext
 {
-	static const int MAX_RENDER_COMMANDS = 256;
+	Commands::DrawPackage commandBuffer [MAX_RENDER_DRAW_COMMANDS];
 
-	Commands::CommandPackage commandBuffer [MAX_RENDER_COMMANDS];
+	uint16 indexWrite;
 
-	unsigned int indexWrite;
-
-	Commands::CommandPackage & AllocateCommand ();
+	Commands::DrawPackage & AllocateCommand ();
 
 public:
 
-	RenderContext ();
+	DrawContext ();
 
 	/// Temporarily non-copyable
-	RenderContext (const RenderContext & copy) = delete;
+	DrawContext (const DrawContext & copy) = delete;
 
-	~RenderContext ();
+	~DrawContext ();
 
 	/// Temporarily non-copyable
-	RenderContext & operator= (const RenderContext & rhs) = delete;
+	DrawContext & operator= (const DrawContext & rhs) = delete;
 
 	/// Clear the framebuffer with the specified color
 	void Clear (float r, float g, float b, float a = 1.0f);
@@ -34,7 +34,7 @@ public:
 	void DrawIndexed (unsigned int vertexArray, unsigned int indexCount);
 
 	/// Access the internal CommandBufferStream
-	inline const Commands::CommandPackage * InternalBuffer () const { return commandBuffer; }
+	inline const Commands::DrawPackage * InternalBuffer () const { return commandBuffer; }
 
 	inline unsigned int BufferSize () const { return indexWrite; }
 	inline void ClearBuffer () { indexWrite = 0; }
