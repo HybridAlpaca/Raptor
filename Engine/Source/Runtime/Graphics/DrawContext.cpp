@@ -12,9 +12,9 @@ DrawContext::~DrawContext ()
 	// @todo: revert something
 }
 
-Commands::DrawPackage & DrawContext::AllocateCommand ()
+DrawPacket & DrawContext::AllocateCommand ()
 {
-	Commands::DrawPackage & command = commandBuffer[indexWrite];
+	DrawPacket & command = commandBuffer[indexWrite];
 
 	/// This wonderful little snippet of code you're looking at
 	/// uses a bit of Modulus magic to increment the write index
@@ -25,11 +25,10 @@ Commands::DrawPackage & DrawContext::AllocateCommand ()
 	return command;
 }
 
-
 void DrawContext::Clear (float r, float g, float b, float a)
 {
-	Commands::DrawPackage & command = AllocateCommand();
-	command.type = Commands::Draw::CLEAR;
+	DrawPacket & command = AllocateCommand();
+	command.type = Commands::CLEAR;
 	command.data.clear.r = r;
 	command.data.clear.g = g;
 	command.data.clear.b = b;
@@ -38,8 +37,8 @@ void DrawContext::Clear (float r, float g, float b, float a)
 
 void DrawContext::DrawIndexed (unsigned int vertexArray, unsigned int indexCount)
 {
-	Commands::DrawPackage & command = AllocateCommand();
-	command.type = Commands::Draw::DRAW_INDEXED;
+	DrawPacket & command = AllocateCommand();
+	command.type = Commands::DRAW_INDEXED;
 	command.resourceSlot = vertexArray;
 	command.data.drawIndexed.indexCount = indexCount;
 }

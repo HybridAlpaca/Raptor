@@ -1,12 +1,19 @@
 #pragma once
 
 #include "RenderResource.h"
+#include <Core/Common/Required.h>
 
-namespace Graphics::Commands
+namespace Graphics
 {
 
-namespace Draw
+namespace Commands
 {
+
+/*
+ *
+ * Draw comands & data structures
+ *
+ */
 
 struct Clear
 {
@@ -21,28 +28,42 @@ struct DrawIndexed
 	unsigned int indexCount;
 };
 
-enum CommandType : unsigned int
+enum DrawCommandType : uint8
 {
 	CLEAR,
-	DRAW_INDEXED,
-	NOP
+	DRAW_INDEXED
 };
 
-union CommandData
+union DrawCommandData
 {
 	Clear clear;
 	DrawIndexed drawIndexed;
 };
 
+/*
+ *
+ * Resource commands and data structures
+ *
+ */
+
+enum ResourceCommandType : uint8
+{
+	VERTEX_ARRAY,
+	TEXTURE_2D,
+	SHADER
+};
+
 }
 
-struct DrawPackage
+struct DrawPacket
 {
-	Draw::CommandType type = Draw::CommandType::NOP;
-	Draw::CommandData data;
+	Commands::DrawCommandType type;
+	Commands::DrawCommandData data;
 
-	unsigned int resourceSlot = 0;
-	unsigned int sortKey = 0;
+	// On second thought, is a resource slot even necessary?
+	uint32 resourceSlot = 0;
+
+	uint32 sortKey = 0;
 };
 
 }

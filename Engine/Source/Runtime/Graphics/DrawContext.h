@@ -9,11 +9,11 @@ namespace Graphics
 
 class DrawContext
 {
-	Commands::DrawPackage commandBuffer [MAX_RENDER_DRAW_COMMANDS];
+	DrawPacket commandBuffer [MAX_RENDER_DRAW_COMMANDS];
 
 	uint16 indexWrite;
 
-	Commands::DrawPackage & AllocateCommand ();
+	DrawPacket & AllocateCommand ();
 
 public:
 
@@ -34,7 +34,7 @@ public:
 	void DrawIndexed (unsigned int vertexArray, unsigned int indexCount);
 
 	/// Access the internal CommandBufferStream
-	inline const Commands::DrawPackage * InternalBuffer () const { return commandBuffer; }
+	inline const DrawPacket * InternalBuffer () const { return commandBuffer; }
 
 	inline unsigned int BufferSize () const { return indexWrite; }
 	inline void ClearBuffer () { indexWrite = 0; }
