@@ -73,27 +73,27 @@ endif()
 
 # core
 
-add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Shader.cpp
-	${RUNTIME_ROOT_DIR}/Core/Camera.cpp
-	${RUNTIME_ROOT_DIR}/Core/Model.cpp
-	${RUNTIME_ROOT_DIR}/Core/Display.cpp
-)
-target_include_directories (Core PRIVATE
-	${RUNTIME_ROOT_DIR}/Core/
-)
+#add_library (Core STATIC
+	#${RUNTIME_ROOT_DIR}/Core/Shader.cpp
+	#${RUNTIME_ROOT_DIR}/Core/Camera.cpp
+	#${RUNTIME_ROOT_DIR}/Core/Model.cpp
+	#${RUNTIME_ROOT_DIR}/Core/Display.cpp
+#)
+#target_include_directories (Core PRIVATE
+	#${RUNTIME_ROOT_DIR}/Core/
+#)
 
 # graphics
 
-add_library (Graphics STATIC
-	${RUNTIME_ROOT_DIR}/Graphics/OpenGL/RenderDevice.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/DrawContext.cpp
-)
-target_include_directories (Graphics PRIVATE
-	${RUNTIME_ROOT_DIR}/Graphics/
-)
+#add_library (Graphics STATIC
+	#${RUNTIME_ROOT_DIR}/Graphics/OpenGL/RenderDevice.cpp
+	#${RUNTIME_ROOT_DIR}/Graphics/DrawContext.cpp
+#)
+#target_include_directories (Graphics PRIVATE
+	#${RUNTIME_ROOT_DIR}/Graphics/
+#)
 
-install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+#install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
@@ -101,8 +101,8 @@ install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
-	Core
-	Graphics
+	#Core
+	#Graphics
 	assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
