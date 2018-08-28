@@ -20,7 +20,7 @@
  *
  * @mainpage Raptor Public Documentation
  *
- * Not much to see here.  Start looking around!
+ * This is the new expiremental renderer branch.  Start looking around!
  *
  **/
 
