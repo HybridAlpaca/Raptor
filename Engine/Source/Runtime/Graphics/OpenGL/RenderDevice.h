@@ -31,7 +31,7 @@
  * - Much more versatile rendering system; allows for user-defined data execution
  *
  * CONS:
- * - Higher overhead; each packet stores an additional pointer
+ * - Higher overhead; each packet stores an additional 4-8 bytes
  * - Slightly slower execution due to function pointer calls
  *
  */
@@ -46,8 +46,12 @@ class RenderDevice
 public:
 
 	RenderDevice ();
+	RenderDevice (const RenderDevice & copy) = delete;
 	~RenderDevice ();
 
+	RenderDevice & operator= (const RenderDevice & rhs) = delete;
+
+	/// Executes OpenGL draw calls based on information in draw context
 	void Dispatch (const DrawContext & ctx);
 };
 
