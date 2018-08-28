@@ -44,7 +44,6 @@ endif ()
 # Inlcudes & Linking #
 ######################
 
-include_directories (${RUNTIME_ROOT_DIR})
 include_directories ("${SOURCE_ROOT_DIR}/External")
 
 link_directories ("${ENGINE_ROOT_DIR}/Binaries")
@@ -82,18 +81,19 @@ endif()
 #target_include_directories (Core PRIVATE
 	#${RUNTIME_ROOT_DIR}/Core/
 #)
+include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
 
 # graphics
 
-#add_library (Graphics STATIC
-	#${RUNTIME_ROOT_DIR}/Graphics/OpenGL/RenderDevice.cpp
-	#${RUNTIME_ROOT_DIR}/Graphics/DrawContext.cpp
-#)
-#target_include_directories (Graphics PRIVATE
-	#${RUNTIME_ROOT_DIR}/Graphics/
-#)
+add_library (Graphics STATIC
+	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/RenderDevice.cpp
+)
+target_include_directories (Graphics PRIVATE
+	${RUNTIME_ROOT_DIR}/Graphics/Private
+)
+include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 
-#install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
