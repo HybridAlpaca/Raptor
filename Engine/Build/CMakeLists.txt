@@ -88,7 +88,7 @@ include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
 add_library (Graphics STATIC
 	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/RenderDevice.cpp
 )
-target_include_directories (Graphics PRIVATE
+target_include_directories (Graphics PUBLIC
 	${RUNTIME_ROOT_DIR}/Graphics/Private
 )
 include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
@@ -102,7 +102,7 @@ install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	#Core
-	#Graphics
+	Graphics
 	assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}

@@ -1,25 +1,31 @@
 #pragma once
 
-#if __GNUC__
-#	if __x86_64__ || __ppc64__
-#		define RPTR_ENV_64
-		using psize = unsigned long;
-#	else
-#		define RPTR_ENV_32
-		using psize = unsigned int;
-#	endif
+#include "Platform.h"
+
+// pointer types
+
+#if RPTR_ENV_64
+using uintptr		= unsigned long;	///< max value of pointer (64-bit)
+#else
+using uintptr		= unsigned int;		///< max value of pointer (32-bit)
 #endif
 
-using cchar		= const char *;
-using byte		= signed char;
-using ubyte		= unsigned char;
+// miscellaneous
 
-using int8		= signed char;
-using int16		= signed short;
-using int32		= signed int;
-using int64		= signed long;
+using cchar		= const char *;		///< pointer to const char
+using byte		= signed char;		///< byte
+using ubyte		= unsigned char;	///< unsigned byte
 
-using uint8		= unsigned char;
-using uint16	= unsigned short;
-using uint32	= unsigned int;
-using uint64	= unsigned long;
+// ints
+
+using int8		= signed char;		///< 8-bit int
+using int16		= signed short;		///< 16-bit int
+using int32		= signed int;			///< 32-bit int
+using int64		= signed long;		///< 64-bit int
+
+// unsigned ints
+
+using uint8		= unsigned char;	///< 8-bit unsigned int
+using uint16	= unsigned short;	///< 16-bit unsigned int
+using uint32	= unsigned int;		///< 32-bit unsigned int
+using uint64	= unsigned long;	///< 64-bit unsigned int
