@@ -1,8 +1,10 @@
 #pragma once
 
 #include "RenderState.h"
+
+#include <Display.h>
+#include <RenderResource.h>
 #include <Core/Common/Required.h>
-#include <GL/glew.h>
 
 namespace Graphics::GL
 {
@@ -13,7 +15,7 @@ namespace Graphics::GL
 
 	public:
 
-		RenderDevice ();
+		RenderDevice (const Display & display);
 
 		/// Non-copyable
 		RenderDevice (const RenderDevice & copy) = delete;
@@ -23,7 +25,7 @@ namespace Graphics::GL
 		/// Non-copyable
 		RenderDevice & operator= (const RenderDevice & rhs) = delete;
 
-		void Init ();
+		void Clear (float r, float g, float b, float a);
 	};
 
 }

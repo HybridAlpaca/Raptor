@@ -87,9 +87,11 @@ include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
 
 add_library (Graphics STATIC
 	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/RenderDevice.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/Display.cpp
 )
 target_include_directories (Graphics PUBLIC
 	${RUNTIME_ROOT_DIR}/Graphics/Private
+	${RUNTIME_ROOT_DIR}/Graphics/Public/Graphics
 )
 include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 
