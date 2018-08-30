@@ -14,7 +14,7 @@ RenderDevice::RenderDevice (const Display & display)
 
 RenderDevice::~RenderDevice ()
 {
-	// destructor
+	// Destructor
 }
 
 void RenderDevice::Clear (float r, float g, float b, float a)
