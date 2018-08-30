@@ -2,9 +2,10 @@
 
 #include "RenderState.h"
 
-#include <Display.h>
 #include <RenderResource.h>
 #include <Core/Common/Required.h>
+
+namespace Graphics { class Display; }
 
 namespace Graphics::GL
 {
@@ -26,6 +27,7 @@ namespace Graphics::GL
 		RenderDevice & operator= (const RenderDevice & rhs) = delete;
 
 		void Clear (float r, float g, float b, float a);
+		void Present (const Display & display);
 	};
 
 }

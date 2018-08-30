@@ -26,6 +26,9 @@ Display::Display (const DisplayParams & params)
 
 Display::~Display ()
 {
+	glfwDestroyWindow(window);
+	window = nullptr;
+
 	glfwTerminate();
 }
 

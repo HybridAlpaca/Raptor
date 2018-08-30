@@ -15,8 +15,8 @@ namespace Graphics
 		uint32 height = 600;
 
 		// OpenGL specific
-		uint32 glVersionMajor = 3;
-		uint32 glVersionMinor = 3;
+		uint8 glVersionMajor = 3;
+		uint8 glVersionMinor = 3;
 	};
 
 	class Display
