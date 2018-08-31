@@ -13,4 +13,6 @@ namespace Graphics
 		FRAGMENT,
 		COMPUTE
 	};
+
+	using ResourceHandle = uint32;
 }

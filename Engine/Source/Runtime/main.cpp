@@ -3,19 +3,36 @@
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
 
-cchar vertex = "#version 330 core\n"
-"void main () {\n"
-"return 0;\n"
-"}\n";
+#include <iostream>
 
-cchar fragment = "#version 330 core\n"
-"void main () {\n"
-"return 0;\n"
-"}\n";
+cchar vertex =
+	"#version 330 core\n"
+	"layout (location = 0) in vec3 aPos;\n"
+	"void main()\n"
+	"{\n"
+	"  gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+	"}\0";
+
+cchar fragment =
+	"#version 330 core\n"
+	"out vec4 FragColor;\n"
+	"void main()\n"
+	"{\n"
+	"  FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+	"}\n\0";
+
+float vertices [] =
+	{
+		-0.5f, -0.5f, 0.0f, // left
+		0.5f, -0.5f, 0.0f, // right
+		0.0f,  0.5f, 0.0f  // top
+	};
 
 int32 main (int32 argc, cchar * argv)
 {
-	Graphics::Display display
+	using namespace Graphics;
+
+	Display display
 	({
 		"Hello, Raptor!",
 		800,
@@ -24,20 +41,23 @@ int32 main (int32 argc, cchar * argv)
 		3
 	});
 
-	Graphics::Backend::Init();
-	Graphics::Backend::Resize(display.FrameWidth(), display.FrameHeight());
+	Backend::Init();
+	Backend::Resize(display.FrameWidth(), display.FrameHeight());
 
-	uint32 shader = Graphics::Backend::AllocateShaderProgram(vertex, fragment);
+	ResourceHandle shader = Backend::AllocateShaderProgram(vertex, fragment);
+	ResourceHandle vertexArray = Backend::AllocateVertexArray(vertices);
 
 	while (!display.Closed())
 	{
 		display.PollEvents();
 
-		Graphics::Backend::Clear(1.0f, 0.0f, 0.5f, 1.0f);
-		Graphics::Backend::Present(display);
+		Backend::Clear(1.0f, 0.0f, 0.5f, 1.0f);
+		Backend::Draw(shader, vertexArray, 3);
+		Backend::Present(display);
 	}
 
-	Graphics::Backend::DestroyShaderProgram(shader);
+	Backend::DestroyVertexArray(vertexArray);
+	Backend::DestroyShaderProgram(shader);
 
 	return 0;
 }

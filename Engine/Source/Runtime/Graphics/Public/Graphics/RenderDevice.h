@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Core/Common/Required.h>
+#include <Constants.h>
 
 namespace Graphics { class Display; }
 
@@ -15,15 +16,22 @@ namespace Graphics::Backend
 
 	/// Creates a shader program object with a vertex shader and a fragment shader
 	/// @todo Create a more customizable shader pipeline with geometry & tess shaders
-	uint32 AllocateShaderProgram (cchar vertexCode, cchar fragmentCode);
+	ResourceHandle AllocateShaderProgram (cchar vertexCode, cchar fragmentCode);
 
-	void DestroyShaderProgram (uint32 program);
+	/// Destroys a shader program object
+	void DestroyShaderProgram (ResourceHandle resource);
+
+	ResourceHandle AllocateVertexArray (float * vertices);
+
+	void DestroyVertexArray (ResourceHandle resource);
 
 	// Drawing Operations
 
 	/// Clears the framebuffer
 	/// @todo Allow DSA-esque framebuffer specification
 	void Clear (float r, float g, float b, float a);
+
+	void Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount);
 
 	// Windowing Utilities
 
