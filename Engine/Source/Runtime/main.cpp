@@ -13,14 +13,14 @@ int32 main (int32 argc, cchar * argv)
 		3
 	});
 
-	Graphics::RenderDevice device(display);
+	Graphics::Backend::Resize(display.FrameWidth(), display.FrameHeight());
 
 	while (!display.Closed())
 	{
 		display.PollEvents();
 
-		device.Clear(1.0f, 0.0f, 0.5f, 1.0f);
-		device.Present(display);
+		Graphics::Backend::Clear(1.0f, 0.0f, 0.5f, 1.0f);
+		Graphics::Backend::Present(display);
 	}
 
 	return 0;

@@ -1,35 +1,30 @@
 #include "RenderDevice.h"
+#include "RenderState.h"
 #include <Display.h>
 
 #include <GL/glew.h>
 
-using namespace Graphics::GL;
+using namespace Graphics;
 
-RenderDevice::RenderDevice (const Display & display)
+namespace
 {
-	glewExperimental = GL_TRUE;
+	// file-local private information
 
-	if (glewInit() != GLEW_OK)
-	{
-		/// @todo Log error
-		return;
-	}
-
-	glViewport(0, 0, display.FrameWidth(), display.FrameHeight());
+	GL::RenderState state;
 }
 
-RenderDevice::~RenderDevice ()
-{
-	// destructor
-}
-
-void RenderDevice::Clear (float r, float g, float b, float a)
+void Backend::Clear (float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenderDevice::Present (const Display & display)
+void Backend::Present (const Display & display)
 {
 	display.SwapBuffers();
+}
+
+void Backend::Resize (uint32 width, uint32 height)
+{
+	glViewport(0, 0, width, height);
 }

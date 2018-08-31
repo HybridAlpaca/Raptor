@@ -1,33 +1,21 @@
 #pragma once
 
-#include "RenderState.h"
-
-#include <RenderResource.h>
+#include <Constants.h>
 #include <Core/Common/Required.h>
 
 namespace Graphics { class Display; }
 
-namespace Graphics::GL
+namespace Graphics::Backend
 {
 
-	class RenderDevice
-	{
-		RenderState state;
+	// Drawing Functions
 
-	public:
+	void Clear (float r, float g, float b, float a);
 
-		RenderDevice (const Display & display);
+	// Windowing Utilities
 
-		/// Non-copyable
-		RenderDevice (const RenderDevice & copy) = delete;
+	void Present (const Display & display);
 
-		~RenderDevice ();
-
-		/// Non-copyable
-		RenderDevice & operator= (const RenderDevice & rhs) = delete;
-
-		void Clear (float r, float g, float b, float a);
-		void Present (const Display & display);
-	};
+	void Resize (uint32 width, uint32 height);
 
 }
