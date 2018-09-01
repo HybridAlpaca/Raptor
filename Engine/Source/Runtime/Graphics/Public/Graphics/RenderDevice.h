@@ -2,6 +2,7 @@
 
 #include <Core/Common/Required.h>
 #include <Constants.h>
+#include <RenderStats.h>
 
 namespace Graphics { class Display; }
 
@@ -20,6 +21,8 @@ namespace Graphics::Backend
 	/// @fn Init
 	/// @brief Initializes the render device for drawing
 	void Init ();
+
+	FrameStats CurrentFrameStats ();
 
 	// Resource Operations
 

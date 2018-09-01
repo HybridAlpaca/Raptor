@@ -3,7 +3,7 @@
 
 #include <Display.h>
 
-#include <iostream>
+// #include <iostream>
 
 // <GL/glew.h> is included in RenderState
 
@@ -14,6 +14,7 @@ using namespace Graphics;
 namespace
 {
 	GL::RenderState state;
+	FrameStats frameStats;
 
 	GLuint resourceBuffer [4096];
 	uint32 resourceIndex = 0;
@@ -25,6 +26,7 @@ namespace
 
 		while ((err = glGetError()) != GL_NO_ERROR)
 		{
+			++frameStats.APICallErrors;
 			switch (err)
 			{
 				case GL_INVALID_OPERATION:
@@ -46,13 +48,14 @@ namespace
 					text = "UNKNOWN_ERROR";
 					break;
 			}
-			std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
+			// std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
 		}
 	}
 
 	#define GL_CALL(stmt) do \
 	{ \
 		stmt; \
+		++frameStats.APICallCount; \
 		GLErrorCheck(#stmt, __FILE__, __LINE__); \
 	} while (0);
 }
@@ -69,6 +72,16 @@ void Backend::Init ()
 	{
 		// Sometimes GLEW Experimental Initialization causes unknown errors at runtime, perhaps due to unsupported driver features
 	}
+}
+
+FrameStats Backend::CurrentFrameStats ()
+{
+	FrameStats temp = frameStats;
+
+	// Now that we've returned the current stats, we can reset them
+	frameStats.Reset();
+
+	return temp;
 }
 
 ResourceHandle Backend::AllocateShaderProgram (cchar vertexCode, cchar fragmentCode)
@@ -155,13 +168,17 @@ void Backend::Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 in
 		// If the shader program is not bound, bind it
 		GL_CALL(glUseProgram(resourceBuffer[shader]));
 		state.boundProgram = resourceBuffer[shader];
+		++frameStats.drawCacheMisses;
 	}
+	++frameStats.drawCacheAccesses;
 	if (state.boundVAO != resourceBuffer[vertexArray])
 	{
 		// If the vertex array is not bound, bind it
 		GL_CALL(glBindVertexArray(resourceBuffer[vertexArray]));
 		state.boundVAO = resourceBuffer[vertexArray];
+		++frameStats.drawCacheMisses;
 	}
+	++frameStats.drawCacheAccesses;
 
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, indexCount));
 }

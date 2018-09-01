@@ -17,6 +17,8 @@ namespace Graphics
 		// OpenGL specific
 		uint8 glVersionMajor = 3;
 		uint8 glVersionMinor = 3;
+
+		uint32 vsync = 1;
 	};
 
 	class Display

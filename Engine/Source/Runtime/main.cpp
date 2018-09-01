@@ -38,7 +38,8 @@ int32 main (int32 argc, cchar * argv)
 		800,
 		600,
 		3,
-		3
+		3,
+		1
 	});
 
 	Backend::Init();
@@ -47,12 +48,28 @@ int32 main (int32 argc, cchar * argv)
 	ResourceHandle shader = Backend::AllocateShaderProgram(vertex, fragment);
 	ResourceHandle vertexArray = Backend::AllocateVertexArray(vertices, sizeof(vertices));
 
+	uint32 frameCount = 0;
+
 	while (!display.Closed())
 	{
 		display.PollEvents();
 
 		Backend::Clear(1.0f, 0.0f, 0.5f, 1.0f);
 		Backend::Draw(shader, vertexArray, 3);
+
+		if ((++frameCount) == 60)
+		{
+			frameCount = 0;
+
+			// Dump render device debug info
+			FrameStats frameStats = Backend::CurrentFrameStats();
+			std::cout << "CALLS: " << (frameStats.APICallCount) << ", ";
+			std::cout << "ERRORS: " << (frameStats.APICallErrors) << ", ";
+			std::cout << "HITS: " << frameStats.CalcDrawCacheHits() << ", ";
+			std::cout << "MISSES: " << (frameStats.drawCacheMisses) << ", ";
+			std::cout << "TOTAL: " << (frameStats.drawCacheAccesses) << '\n';
+		}
+
 		Backend::Present(display);
 	}
 

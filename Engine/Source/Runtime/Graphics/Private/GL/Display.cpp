@@ -6,13 +6,16 @@ using namespace Graphics;
 
 Display::Display (const DisplayParams & params)
 {
-	glfwInit();
+	if (!glfwInit())
+	{
+		return;
+	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, params.glVersionMajor);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, params.glVersionMinor);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(params.width, params.height, params.title, nullptr, nullptr);
+	window = glfwCreateWindow(params.width, params.height, params.title, glfwGetPrimaryMonitor(), nullptr);
 
 	if (window == nullptr)
 	{
@@ -22,6 +25,7 @@ Display::Display (const DisplayParams & params)
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(params.vsync);
 }
 
 Display::~Display ()
