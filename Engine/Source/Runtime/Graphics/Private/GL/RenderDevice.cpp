@@ -3,7 +3,7 @@
 
 #include <Display.h>
 
-// #include <iostream>
+#include <iostream>
 
 // <GL/glew.h> is included in RenderState
 
@@ -50,7 +50,7 @@ namespace
 					break;
 			}
 
-			// std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
+			std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
 		}
 	}
 
@@ -148,10 +148,13 @@ ResourceHandle Backend::AllocateVertexArray (const VertexArrayDescription & desc
 	// Fill the buffer with our data
 	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, GL_STATIC_DRAW));
 
+	// The current vertex layout assumes an interleaved approach to filling the buffer.  This means that of the three vertex attributes (P, N, T), the buffer will look like (PNTPNTPNTPNTPNTPNT...)
+	// There are many approaches to filling the vertex buffer, and we will likely use many variations of them depending on the type of mesh being uploaded.
 	for (uint32 i = 0; i < desc.bufferDescCount; ++i)
 	{
 		// Retrieve the buffer attribute description
 		VertexAttribute & bufferDesc = desc.vertexAttributes[i];
+		bufferDesc.offset = (i > 0) ? (desc.vertexAttributes[i - 1].elementCount + desc.vertexAttributes[i - 1].offset) : 0;
 
 		// Inform OpenGL of how to read the data
 		GL_CALL(glVertexAttribPointer(i, bufferDesc.elementCount, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float), (void *) (bufferDesc.offset * sizeof(float))));

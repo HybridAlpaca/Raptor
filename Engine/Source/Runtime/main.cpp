@@ -27,9 +27,9 @@ cchar fragment =
 
 float vertices [] =
 	{
-		-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // left
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // right
-		0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f  // top
+		-0.5f, -0.5f,	0.0f, 1.0f, 0.0f, 0.0f, // left
+		0.5f,	-0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // right
+		0.0f,	0.5f,	0.0f, 0.0f, 0.0f, 1.0f  // top
 	};
 
 int32 main (int32 argc, cchar * argv)
@@ -53,10 +53,10 @@ int32 main (int32 argc, cchar * argv)
 
 	VertexAttribute vertexAttributes [] =
 	{{
-		3, 6, 0
+		3, 6 // position
 	},
 	{
-		3, 6, 3
+		3, 6 // color
 	}};
 
 	VertexArrayDescription desc;
