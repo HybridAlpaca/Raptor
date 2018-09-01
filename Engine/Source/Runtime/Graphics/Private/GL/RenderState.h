@@ -6,6 +6,7 @@
 namespace Graphics::GL
 {
 
+	/// @internal
 	struct RenderState
 	{
 		GLuint boundVAO = 0;
@@ -13,6 +14,9 @@ namespace Graphics::GL
 
 		GLuint programs [4096] = { 0 };
 		uint32 numPrograms = 0;
+
+		uint32 internalWidth = 0;
+		uint32 internalHeight = 0;
 	};
 
 }

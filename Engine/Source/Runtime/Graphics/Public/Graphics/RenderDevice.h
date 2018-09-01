@@ -5,11 +5,20 @@
 
 namespace Graphics { class Display; }
 
+/**
+ *
+ * @namespace Graphics::Backend
+ * @headerfile <Graphics/RenderDevice.h>
+ *
+ **/
+
 namespace Graphics::Backend
 {
 
 	// Device Operations
 
+	/// @fn Init
+	/// @brief Initializes the render device for drawing
 	void Init ();
 
 	// Resource Operations
@@ -21,8 +30,11 @@ namespace Graphics::Backend
 	/// Destroys a shader program object
 	void DestroyShaderProgram (ResourceHandle resource);
 
-	ResourceHandle AllocateVertexArray (float * vertices);
+	/// Creates a vertex array object for storing vertices to be uploaded to the GPU
+	/// @todo Create a more customizable vertex pipeline with support for more attributes, etc.
+	ResourceHandle AllocateVertexArray (float * vertices, uint32 size);
 
+	/// Destroys a vertex array object
 	void DestroyVertexArray (ResourceHandle resource);
 
 	// Drawing Operations
@@ -31,6 +43,8 @@ namespace Graphics::Backend
 	/// @todo Allow DSA-esque framebuffer specification
 	void Clear (float r, float g, float b, float a);
 
+	/// Draws the specified vertex array with a given shader program
+	/// Since this command is non-indexed, the index buffer is not used
 	void Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount);
 
 	// Windowing Utilities

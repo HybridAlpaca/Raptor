@@ -9,10 +9,10 @@
 
 using namespace Graphics;
 
+// file-local private information
+
 namespace
 {
-	// file-local private information
-
 	GL::RenderState state;
 
 	GLuint resourceBuffer [4096];
@@ -27,11 +27,24 @@ namespace
 		{
 			switch (err)
 			{
-				case GL_INVALID_OPERATION: text = "INVALID_OPERATION"; break;
-				case GL_INVALID_ENUM: text = "INVALID_ENUM"; break;
-				case GL_INVALID_VALUE: text = "INVALID_VALUE"; break;
-				case GL_OUT_OF_MEMORY: text = "OUT_OF_MEMORY"; break;
-				case GL_INVALID_FRAMEBUFFER_OPERATION: text = "INVALID_FRAMEBUFFER_OPERATION"; break;
+				case GL_INVALID_OPERATION:
+					text = "INVALID_OPERATION";
+					break;
+				case GL_INVALID_ENUM:
+					text = "INVALID_ENUM";
+					break;
+				case GL_INVALID_VALUE:
+					text = "INVALID_VALUE";
+					break;
+				case GL_OUT_OF_MEMORY:
+					text = "OUT_OF_MEMORY";
+					break;
+				case GL_INVALID_FRAMEBUFFER_OPERATION:
+					text = "INVALID_FRAMEBUFFER_OPERATION";
+					break;
+				default:
+					text = "UNKNOWN_ERROR";
+					break;
 			}
 			std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
 		}
@@ -43,6 +56,8 @@ namespace
 		GLErrorCheck(#stmt, __FILE__, __LINE__); \
 	} while (0);
 }
+
+// Backend code
 
 void Backend::Init ()
 {
@@ -70,24 +85,6 @@ ResourceHandle Backend::AllocateShaderProgram (cchar vertexCode, cchar fragmentC
 	GL_CALL(glCompileShader(vertexShader));
 	GL_CALL(glCompileShader(fragmentShader));
 
-	// Check compilation status
-	GLint success;
-	char infoLog [512];
-
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, & success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-		std::cout << "ERR::SHADER " << infoLog << std::endl;
-	}
-
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, & success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-		std::cout << "ERR::SHADER " << infoLog << std::endl;
-	}
-
 	// Create shader program
 	GLuint shaderProgram = glCreateProgram();
 
@@ -97,14 +94,6 @@ ResourceHandle Backend::AllocateShaderProgram (cchar vertexCode, cchar fragmentC
 
 	// Link shaders together inside program
 	GL_CALL(glLinkProgram(shaderProgram));
-
-	// Check linking status
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, & success);
-	if (!success)
-	{
-		glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-		std::cout << "ERROR::PROGRAM " << infoLog << std::endl;
-	}
 
 	// Clean up
 	GL_CALL(glDetachShader(shaderProgram, vertexShader));
@@ -123,7 +112,7 @@ void Backend::DestroyShaderProgram (ResourceHandle resource)
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
-ResourceHandle Backend::AllocateVertexArray (float * vertices)
+ResourceHandle Backend::AllocateVertexArray (float * vertices, uint32 size)
 {
 	GLuint VAO;
 	GLuint VBO;
@@ -134,7 +123,7 @@ ResourceHandle Backend::AllocateVertexArray (float * vertices)
 	GL_CALL(glBindVertexArray(VAO));
 
 	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, VBO));
-	GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW));
+	GL_CALL(glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW));
 
 	GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0));
 	GL_CALL(glEnableVertexAttribArray(0));
@@ -161,18 +150,36 @@ void Backend::Clear (float r, float g, float b, float a)
 
 void Backend::Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount)
 {
-	GL_CALL(glUseProgram(resourceBuffer[shader]));
-	GL_CALL(glBindVertexArray(resourceBuffer[vertexArray]));
+	if (state.boundProgram != resourceBuffer[shader])
+	{
+		// If the shader program is not bound, bind it
+		GL_CALL(glUseProgram(resourceBuffer[shader]));
+		state.boundProgram = resourceBuffer[shader];
+	}
+	if (state.boundVAO != resourceBuffer[vertexArray])
+	{
+		// If the vertex array is not bound, bind it
+		GL_CALL(glBindVertexArray(resourceBuffer[vertexArray]));
+		state.boundVAO = resourceBuffer[vertexArray];
+	}
+
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, indexCount));
 }
 
 void Backend::Present (const Display & display)
 {
+	// Forward the Present command
 	display.SwapBuffers();
 }
 
 void Backend::Resize (uint32 width, uint32 height)
 {
-	/// @todo cache resolution to avoid uneccessary draw calls
-	GL_CALL(glViewport(0, 0, width, height));
+	// Cache the internal device resolution to avoid uneccessary draw calls
+	if ((width != state.internalWidth) && (height != state.internalHeight))
+	{
+		state.internalWidth = width;
+		state.internalHeight = height;
+
+		GL_CALL(glViewport(0, 0, width, height));
+	}
 }

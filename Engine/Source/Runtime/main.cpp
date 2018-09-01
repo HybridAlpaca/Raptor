@@ -45,7 +45,7 @@ int32 main (int32 argc, cchar * argv)
 	Backend::Resize(display.FrameWidth(), display.FrameHeight());
 
 	ResourceHandle shader = Backend::AllocateShaderProgram(vertex, fragment);
-	ResourceHandle vertexArray = Backend::AllocateVertexArray(vertices);
+	ResourceHandle vertexArray = Backend::AllocateVertexArray(vertices, sizeof(vertices));
 
 	while (!display.Closed())
 	{
