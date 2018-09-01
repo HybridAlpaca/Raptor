@@ -27,6 +27,7 @@ namespace
 		while ((err = glGetError()) != GL_NO_ERROR)
 		{
 			++frameStats.APICallErrors;
+
 			switch (err)
 			{
 				case GL_INVALID_OPERATION:
@@ -48,6 +49,7 @@ namespace
 					text = "UNKNOWN_ERROR";
 					break;
 			}
+
 			// std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
 		}
 	}
@@ -127,27 +129,36 @@ void Backend::DestroyShaderProgram (ResourceHandle resource)
 
 ResourceHandle Backend::AllocateVertexArray (const VertexArrayDescription & desc)
 {
+	// Create handles to buffers
 	GLuint VAO;
 	GLuint VBO;
 
+	// Create the buffers and populate handles
 	GL_CALL(glGenVertexArrays(1, & VAO));
 	GL_CALL(glGenBuffers(1, & VBO));
 
+	// Bind the vertex array buffer
 	GL_CALL(glBindVertexArray(VAO));
+	state.boundVAO = VAO;
 
+	// Bind the vertex buffer object
+	// IMPORTANT: VBO's are never unbound, so make sure you set the right one before use
 	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+
+	// Fill the buffer with our data
 	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, GL_STATIC_DRAW));
 
 	for (uint32 i = 0; i < desc.bufferDescCount; ++i)
 	{
-		VertexBufferDescription & bufferDesc = desc.vertexBufferDesc[i];
+		// Retrieve the buffer attribute description
+		VertexAttribute & bufferDesc = desc.vertexAttributes[i];
 
-		GL_CALL(glVertexAttribPointer(bufferDesc.slot, bufferDesc.elementCount, GL_FLOAT, GL_FALSE, bufferDesc.elementCount * sizeof(float), (void *) bufferDesc.offset));
-		GL_CALL(glEnableVertexAttribArray(bufferDesc.slot));
+		// Inform OpenGL of how to read the data
+		GL_CALL(glVertexAttribPointer(i, bufferDesc.elementCount, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float), (void *) (bufferDesc.offset * sizeof(float))));
+
+		// Enable the vertex attribute
+		GL_CALL(glEnableVertexAttribArray(i));
 	}
-
-	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
-	GL_CALL(glBindVertexArray(0));
 
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = VAO;
