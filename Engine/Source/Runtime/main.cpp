@@ -42,11 +42,24 @@ int32 main (int32 argc, cchar * argv)
 		1
 	});
 
-	Backend::Init();
+	Backend::Initialize();
 	Backend::Resize(display.FrameWidth(), display.FrameHeight());
 
 	ResourceHandle shader = Backend::AllocateShaderProgram(vertex, fragment);
-	ResourceHandle vertexArray = Backend::AllocateVertexArray(vertices, sizeof(vertices));
+
+	VertexBufferDescription bufferDesc =
+	{
+		0,
+		3,
+		0
+	};
+	VertexArrayDescription desc;
+	desc.data = vertices;
+	desc.size = sizeof(vertices);
+	desc.vertexBufferDesc = & bufferDesc;
+	desc.bufferDescCount = 1;
+
+	ResourceHandle vertexArray = Backend::AllocateVertexArray(desc);
 
 	uint32 frameCount = 0;
 

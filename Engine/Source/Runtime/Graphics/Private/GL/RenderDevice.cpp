@@ -62,7 +62,7 @@ namespace
 
 // Backend code
 
-void Backend::Init ()
+void Backend::Initialize ()
 {
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -125,7 +125,7 @@ void Backend::DestroyShaderProgram (ResourceHandle resource)
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
-ResourceHandle Backend::AllocateVertexArray (float * vertices, uint32 size)
+ResourceHandle Backend::AllocateVertexArray (const VertexArrayDescription & desc)
 {
 	GLuint VAO;
 	GLuint VBO;
@@ -136,10 +136,15 @@ ResourceHandle Backend::AllocateVertexArray (float * vertices, uint32 size)
 	GL_CALL(glBindVertexArray(VAO));
 
 	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, VBO));
-	GL_CALL(glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW));
+	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, GL_STATIC_DRAW));
 
-	GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0));
-	GL_CALL(glEnableVertexAttribArray(0));
+	for (uint32 i = 0; i < desc.bufferDescCount; ++i)
+	{
+		VertexBufferDescription & bufferDesc = desc.vertexBufferDesc[i];
+
+		GL_CALL(glVertexAttribPointer(bufferDesc.slot, bufferDesc.elementCount, GL_FLOAT, GL_FALSE, bufferDesc.elementCount * sizeof(float), (void *) bufferDesc.offset));
+		GL_CALL(glEnableVertexAttribArray(bufferDesc.slot));
+	}
 
 	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	GL_CALL(glBindVertexArray(0));

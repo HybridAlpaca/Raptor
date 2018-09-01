@@ -14,5 +14,21 @@ namespace Graphics
 		COMPUTE
 	};
 
+	struct VertexBufferDescription
+	{
+		uint32 slot;
+		uint32 elementCount;
+		uint32 offset;
+	};
+
+	struct VertexArrayDescription
+	{
+		float * data;
+		uint32 size;
+
+		VertexBufferDescription * vertexBufferDesc;
+		uint32 bufferDescCount;
+	};
+
 	using ResourceHandle = uint32;
 }

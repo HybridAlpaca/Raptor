@@ -15,7 +15,7 @@ Display::Display (const DisplayParams & params)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, params.glVersionMinor);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(params.width, params.height, params.title, glfwGetPrimaryMonitor(), nullptr);
+	window = glfwCreateWindow(params.width, params.height, params.title, nullptr, nullptr);
 
 	if (window == nullptr)
 	{
