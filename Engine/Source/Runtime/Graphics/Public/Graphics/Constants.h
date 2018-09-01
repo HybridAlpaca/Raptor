@@ -8,7 +8,7 @@ namespace Graphics
 	{
 		uint32 elementCount; ///< Number of components (i.e. position has 3, {x y z})
 		uint32 stride; ///< Distance between each appearance of this attribute
-		uint32 offset;
+		uint32 offset; ///< Used internally, shouldn't be set
 	};
 
 	struct VertexArrayDescription

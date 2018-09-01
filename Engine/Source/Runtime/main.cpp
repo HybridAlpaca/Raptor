@@ -8,7 +8,8 @@
 cchar vertex =
 	"#version 330 core\n"
 	"layout (location = 0) in vec3 aPos;\n"
-	"layout (location = 1) in vec3 aColor;\n"
+	"layout (location = 1) in vec2 aUV;\n"
+	"layout (location = 2) in vec3 aColor;\n"
 	"out vec3 ourColor;\n"
 	"void main()\n"
 	"{\n"
@@ -23,13 +24,13 @@ cchar fragment =
 	"void main()\n"
 	"{\n"
 	"  FragColor = vec4(ourColor, 1.0);\n"
-	"}\n\0";
+	"}\0";
 
 float vertices [] =
 	{
-		-0.5f, -0.5f,	0.0f, 1.0f, 0.0f, 0.0f, // left
-		0.5f,	-0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // right
-		0.0f,	0.5f,	0.0f, 0.0f, 0.0f, 1.0f  // top
+		-0.5f, -0.5f,	0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // left
+		0.5f,	-0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // right
+		0.0f,	0.5f,	0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // top
 	};
 
 int32 main (int32 argc, cchar * argv)
@@ -53,10 +54,13 @@ int32 main (int32 argc, cchar * argv)
 
 	VertexAttribute vertexAttributes [] =
 	{{
-		3, 6 // position
+		3, 8 // position
 	},
 	{
-		3, 6 // color
+		2, 8
+	},
+	{
+		3, 8 // color
 	}};
 	uint32 indices [] =
 	{
@@ -69,7 +73,7 @@ int32 main (int32 argc, cchar * argv)
 	desc.indices = indices;
 	desc.indicesSize = sizeof(indices);
 	desc.vertexAttributes = vertexAttributes;
-	desc.bufferDescCount = 2;
+	desc.bufferDescCount = 3;
 
 	ResourceHandle vertexArray = Backend::AllocateVertexArray(desc);
 
