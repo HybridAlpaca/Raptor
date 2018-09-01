@@ -46,8 +46,11 @@ namespace Graphics::Backend
 	void Clear (float r, float g, float b, float a);
 
 	/// @brief Draws the specified vertex array with a given shader program
-	/// @note Since this command is non-indexed, the index buffer is not used
+	/// @note Since this command is non-indexed, the index buffer is not used.  See DrawIndexed for more
 	void Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount);
+
+	/// @brief Draws a vertex array by its indices with a provided shader program
+	void DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount);
 
 	// Windowing Utilities
 

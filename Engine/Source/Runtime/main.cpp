@@ -58,10 +58,16 @@ int32 main (int32 argc, cchar * argv)
 	{
 		3, 6 // color
 	}};
+	uint32 indices [] =
+	{
+		0, 1, 2
+	};
 
 	VertexArrayDescription desc;
-	desc.data = vertices;
-	desc.size = sizeof(vertices);
+	desc.vertices = vertices;
+	desc.verticesSize = sizeof(vertices);
+	desc.indices = indices;
+	desc.indicesSize = sizeof(indices);
 	desc.vertexAttributes = vertexAttributes;
 	desc.bufferDescCount = 2;
 
@@ -71,10 +77,16 @@ int32 main (int32 argc, cchar * argv)
 
 	while (!display.Closed())
 	{
+		// Listen
+
 		display.PollEvents();
 
+		// Draw
+
 		Backend::Clear(1.0f, 0.0f, 0.5f, 1.0f);
-		Backend::Draw(shader, vertexArray, 3);
+		Backend::DrawIndexed(shader, vertexArray, 3);
+
+		// Debug
 
 		if ((++frameCount) == 60)
 		{
@@ -88,6 +100,8 @@ int32 main (int32 argc, cchar * argv)
 			std::cout << "MISSES: " << (frameStats.drawCacheMisses) << ", ";
 			std::cout << "TOTAL: " << (frameStats.drawCacheAccesses) << '\n';
 		}
+
+		// Present
 
 		Backend::Present(display);
 	}

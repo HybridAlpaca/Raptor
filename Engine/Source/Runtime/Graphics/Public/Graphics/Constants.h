@@ -13,8 +13,11 @@ namespace Graphics
 
 	struct VertexArrayDescription
 	{
-		float * data; ///< A float array or similar containing data to be uploaded and drawn
-		uint32 size; ///< The number of elements / vertices in the data buffer
+		float * vertices; ///< A float array or similar containing data to be uploaded and drawn
+		uint32 verticesSize; ///< The number of elements / vertices in the data buffer
+
+		uint32 * indices;
+		uint32 indicesSize;
 
 		VertexAttribute * vertexAttributes; ///< Array of vertex buffer attribute descriptions
 		uint32 bufferDescCount; ///< Number of vertex attributes in the attribute buffer

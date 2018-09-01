@@ -132,21 +132,25 @@ ResourceHandle Backend::AllocateVertexArray (const VertexArrayDescription & desc
 	// Create handles to buffers
 	GLuint VAO;
 	GLuint VBO;
+	GLuint EBO;
 
 	// Create the buffers and populate handles
 	GL_CALL(glGenVertexArrays(1, & VAO));
+	/// @todo Combine these two calls
 	GL_CALL(glGenBuffers(1, & VBO));
+	GL_CALL(glGenBuffers(1, & EBO));
 
-	// Bind the vertex array buffer
+	// Bind the vertex array
 	GL_CALL(glBindVertexArray(VAO));
 	state.boundVAO = VAO;
 
-	// Bind the vertex buffer object
-	// IMPORTANT: VBO's are never unbound, so make sure you set the right one before use
+	// Fill the vertex buffer
 	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.verticesSize, desc.vertices, GL_STATIC_DRAW));
 
-	// Fill the buffer with our data
-	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, GL_STATIC_DRAW));
+	// Fill the index buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize, desc.indices, GL_STATIC_DRAW);
 
 	// The current vertex layout assumes an interleaved approach to filling the buffer.  This means that of the three vertex attributes (P, N, T), the buffer will look like (PNTPNTPNTPNTPNTPNT...)
 	// There are many approaches to filling the vertex buffer, and we will likely use many variations of them depending on the type of mesh being uploaded.
@@ -200,6 +204,28 @@ void Backend::Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 in
 	++frameStats.drawCacheAccesses;
 
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, indexCount));
+}
+
+void Backend::DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount)
+{
+	if (state.boundProgram != resourceBuffer[shader])
+	{
+		// If the shader program is not bound, bind it
+		GL_CALL(glUseProgram(resourceBuffer[shader]));
+		state.boundProgram = resourceBuffer[shader];
+		++frameStats.drawCacheMisses;
+	}
+	++frameStats.drawCacheAccesses;
+	if (state.boundVAO != resourceBuffer[vertexArray])
+	{
+		// If the vertex array is not bound, bind it
+		GL_CALL(glBindVertexArray(resourceBuffer[vertexArray]));
+		state.boundVAO = resourceBuffer[vertexArray];
+		++frameStats.drawCacheMisses;
+	}
+	++frameStats.drawCacheAccesses;
+
+	GL_CALL(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0));
 }
 
 void Backend::Present (const Display & display)
