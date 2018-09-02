@@ -86,7 +86,7 @@ int32 main (int32 argc, cchar * argv)
 
 		// Draw
 
-		Commands::Clear clear = {1.0f, 0.4f, 0.5f, 1.0f};
+		Commands::Clear clear = {0.2f, 0.2f, 0.2f, 1.0f};
 		Commands::Clear::Dispatch(clear);
 
 		Commands::DrawIndexed draw = {shader, vertexArray, 6, 0};
@@ -100,11 +100,9 @@ int32 main (int32 argc, cchar * argv)
 
 			// Dump render device debug info
 			RenderStats stats = RenderDevice::Stats();
-			std::cout << "RENDERER " << stats.width << "x" << stats.height << "\n\t";
-			std::cout << stats.APICallCount << " Call, " << stats.APICallErrors << " Err\n\t";
-			std::cout << stats.drawCacheMisses << " / " << stats.drawCacheAccesses << " Cache Miss\n\t";
-			std::cout << stats.vertexArrayCount << " Vertex Array\n\t";
-			std::cout << stats.shaderProgramCount << " Shader Program\n";
+			std::cout << "RenderStats (" << stats.width << "x" << stats.height << ") ";
+			std::cout << (stats.drawCalls + stats.resourceCalls) << " Total Calls, " << stats.APICallErrors << " Errors, (";
+			std::cout << stats.drawCacheMisses << " / " << stats.drawCacheAccesses << ") Cache Miss\n";
 		}
 
 		// Present

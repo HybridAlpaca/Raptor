@@ -8,16 +8,12 @@ namespace Graphics
 	{
 		// Per-frame statistics
 
-		uint32 APICallCount = 0; ///< Number of graphics API calls that took place
+		uint32 drawCalls; ///< Number of API calls that resulted in a visual effect
+		uint32 resourceCalls; ///< Number of API calls that related to resource management
 		uint32 APICallErrors = 0; ///< Number of errors that occurred due to graphics API calls
 
 		uint32 drawCacheAccesses = 0; ///< Number of lookups into render state cache
 		uint32 drawCacheMisses = 0; ///< Number of times render state cache needed to be written to
-
-		// Resource statistics
-
-		uint32 vertexArrayCount = 0;
-		uint32 shaderProgramCount = 0;
 
 		// Device internal statistics
 
