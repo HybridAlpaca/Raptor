@@ -13,7 +13,7 @@ namespace Graphics { class Display; }
  *
  **/
 
-namespace Graphics::Backend
+namespace Graphics::RenderDevice
 {
 
 	// Device Operations
@@ -50,7 +50,7 @@ namespace Graphics::Backend
 	void Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount);
 
 	/// Draws a vertex array by its indices with a provided shader program
-	void DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount);
+	void DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount, uint32 startIndex);
 
 	// Windowing Utilities
 

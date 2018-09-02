@@ -4,6 +4,8 @@
 
 namespace Graphics
 {
+	using ResourceHandle = uint16; ///< Max 65,535 indexable render resources
+
 	struct VertexAttribute
 	{
 		uint32 elementCount; ///< Number of components (i.e. position has 3, {x y z})
@@ -22,6 +24,4 @@ namespace Graphics
 		VertexAttribute * vertexAttributes; ///< Array of vertex buffer attribute descriptions
 		uint32 bufferDescCount; ///< Number of vertex attributes in the attribute buffer
 	};
-
-	using ResourceHandle = uint32;
 }

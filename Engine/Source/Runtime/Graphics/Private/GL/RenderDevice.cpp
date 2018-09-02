@@ -16,6 +16,7 @@ namespace
 	GL::RenderState state;
 	FrameStats frameStats;
 
+	// Rudimentary GPU resource system
 	GLuint resourceBuffer [4096];
 	uint32 resourceIndex = 0;
 
@@ -54,17 +55,25 @@ namespace
 		}
 	}
 
+	#ifdef RENDER_DEBUG
 	#define GL_CALL(stmt) do \
 	{ \
 		stmt; \
 		++frameStats.APICallCount; \
 		GLErrorCheck(#stmt, __FILE__, __LINE__); \
 	} while (0);
+	#else
+	#define GL_CALL(stmt) do \
+	{ \
+		stmt; \
+		++frameStats.APICallCount; \
+	} while (0);
+	#endif
 }
 
 // Backend code
 
-void Backend::Initialize ()
+void RenderDevice::Initialize ()
 {
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -76,7 +85,7 @@ void Backend::Initialize ()
 	}
 }
 
-FrameStats Backend::CurrentFrameStats ()
+FrameStats RenderDevice::CurrentFrameStats ()
 {
 	FrameStats temp = frameStats;
 
@@ -86,7 +95,7 @@ FrameStats Backend::CurrentFrameStats ()
 	return temp;
 }
 
-ResourceHandle Backend::AllocateShaderProgram (cchar vertexCode, cchar fragmentCode)
+ResourceHandle RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar fragmentCode)
 {
 	// Create shaders
 	GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -122,35 +131,32 @@ ResourceHandle Backend::AllocateShaderProgram (cchar vertexCode, cchar fragmentC
 	return resourceIndex;
 }
 
-void Backend::DestroyShaderProgram (ResourceHandle resource)
+void RenderDevice::DestroyShaderProgram (ResourceHandle resource)
 {
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
-ResourceHandle Backend::AllocateVertexArray (const VertexArrayDescription & desc)
+ResourceHandle RenderDevice::AllocateVertexArray (const VertexArrayDescription & desc)
 {
 	// Create handles to buffers
 	GLuint VAO;
-	GLuint VBO;
-	GLuint EBO;
+	GLuint buffers [2]; // 0 = VBO, 1 = EBO
 
 	// Create the buffers and populate handles
 	GL_CALL(glGenVertexArrays(1, & VAO));
-	/// @todo Combine these two calls
-	GL_CALL(glGenBuffers(1, & VBO));
-	GL_CALL(glGenBuffers(1, & EBO));
+	GL_CALL(glGenBuffers(2, buffers));
 
 	// Bind the vertex array
 	GL_CALL(glBindVertexArray(VAO));
 	state.boundVAO = VAO;
 
 	// Fill the vertex buffer
-	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffers[0]));
 	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.verticesSize, desc.vertices, GL_STATIC_DRAW));
 
 	// Fill the index buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize, desc.indices, GL_STATIC_DRAW);
+	GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]));
+	GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize, desc.indices, GL_STATIC_DRAW));
 
 	// The current vertex layout assumes an interleaved approach to filling the buffer.  This means that of the three vertex attributes (P, N, T), the buffer will look like (PNTPNTPNTPNTPNTPNT...)
 	// There are many approaches to filling the vertex buffer, and we will likely use many variations of them depending on the type of mesh being uploaded.
@@ -173,18 +179,18 @@ ResourceHandle Backend::AllocateVertexArray (const VertexArrayDescription & desc
 	return resourceIndex;
 }
 
-void Backend::DestroyVertexArray (ResourceHandle resource)
+void RenderDevice::DestroyVertexArray (ResourceHandle resource)
 {
 	GL_CALL(glDeleteVertexArrays(1, & resourceBuffer[resource]));
 }
 
-void Backend::Clear (float r, float g, float b, float a)
+void RenderDevice::Clear (float r, float g, float b, float a)
 {
 	GL_CALL(glClearColor(r, g, b, a));
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-void Backend::Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount)
+void RenderDevice::Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount)
 {
 	if (state.boundProgram != resourceBuffer[shader])
 	{
@@ -206,7 +212,7 @@ void Backend::Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 in
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, indexCount));
 }
 
-void Backend::DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount)
+void RenderDevice::DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount, uint32 startIndex)
 {
 	if (state.boundProgram != resourceBuffer[shader])
 	{
@@ -225,23 +231,17 @@ void Backend::DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, ui
 	}
 	++frameStats.drawCacheAccesses;
 
-	GL_CALL(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0));
+	GL_CALL(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void *) startIndex));
 }
 
-void Backend::Present (const Display & display)
+void RenderDevice::Present (const Display & display)
 {
 	// Forward the Present command
 	display.SwapBuffers();
 }
 
-void Backend::Resize (uint32 width, uint32 height)
+void RenderDevice::Resize (uint32 width, uint32 height)
 {
-	// Cache the internal device resolution to avoid uneccessary draw calls
-	if ((width != state.internalWidth) && (height != state.internalHeight))
-	{
-		state.internalWidth = width;
-		state.internalHeight = height;
-
-		GL_CALL(glViewport(0, 0, width, height));
-	}
+	// Don't cache the size, since Resize should only occur after an actual resize
+	GL_CALL(glViewport(0, 0, width, height));
 }

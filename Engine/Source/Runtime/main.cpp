@@ -8,8 +8,7 @@
 cchar vertex =
 	"#version 330 core\n"
 	"layout (location = 0) in vec3 aPos;\n"
-	"layout (location = 1) in vec2 aUV;\n"
-	"layout (location = 2) in vec3 aColor;\n"
+	"layout (location = 1) in vec3 aColor;\n"
 	"out vec3 ourColor;\n"
 	"void main()\n"
 	"{\n"
@@ -28,9 +27,10 @@ cchar fragment =
 
 float vertices [] =
 	{
-		-0.5f, -0.5f,	0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // left
-		0.5f,	-0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // right
-		0.0f,	0.5f,	0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // top
+		 0.5f,  0.5f,	0.0f, 1.0f, 0.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f
 	};
 
 int32 main (int32 argc, cchar * argv)
@@ -47,24 +47,22 @@ int32 main (int32 argc, cchar * argv)
 		1
 	});
 
-	Backend::Initialize();
-	Backend::Resize(display.FrameWidth(), display.FrameHeight());
+	RenderDevice::Initialize();
+	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
-	ResourceHandle shader = Backend::AllocateShaderProgram(vertex, fragment);
+	ResourceHandle shader = RenderDevice::AllocateShaderProgram(vertex, fragment);
 
 	VertexAttribute vertexAttributes [] =
 	{{
-		3, 8 // position
+		3, 6 // position
 	},
 	{
-		2, 8
-	},
-	{
-		3, 8 // color
+		3, 6 // color
 	}};
 	uint32 indices [] =
 	{
-		0, 1, 2
+		0, 1, 3, // first triangle
+		1, 2, 3 // second triangle
 	};
 
 	VertexArrayDescription desc;
@@ -73,9 +71,9 @@ int32 main (int32 argc, cchar * argv)
 	desc.indices = indices;
 	desc.indicesSize = sizeof(indices);
 	desc.vertexAttributes = vertexAttributes;
-	desc.bufferDescCount = 3;
+	desc.bufferDescCount = 2;
 
-	ResourceHandle vertexArray = Backend::AllocateVertexArray(desc);
+	ResourceHandle vertexArray = RenderDevice::AllocateVertexArray(desc);
 
 	uint32 frameCount = 0;
 
@@ -87,8 +85,8 @@ int32 main (int32 argc, cchar * argv)
 
 		// Draw
 
-		Backend::Clear(1.0f, 0.0f, 0.5f, 1.0f);
-		Backend::DrawIndexed(shader, vertexArray, 3);
+		RenderDevice::Clear(1.0f, 0.0f, 0.5f, 1.0f);
+		RenderDevice::DrawIndexed(shader, vertexArray, 6, 0);
 
 		// Debug
 
@@ -97,7 +95,7 @@ int32 main (int32 argc, cchar * argv)
 			frameCount = 0;
 
 			// Dump render device debug info
-			FrameStats frameStats = Backend::CurrentFrameStats();
+			FrameStats frameStats = RenderDevice::CurrentFrameStats();
 			std::cout << "CALLS: " << (frameStats.APICallCount) << ", ";
 			std::cout << "ERRORS: " << (frameStats.APICallErrors) << ", ";
 			std::cout << "HITS: " << frameStats.CalcDrawCacheHits() << ", ";
@@ -107,11 +105,11 @@ int32 main (int32 argc, cchar * argv)
 
 		// Present
 
-		Backend::Present(display);
+		RenderDevice::Present(display);
 	}
 
-	Backend::DestroyVertexArray(vertexArray);
-	Backend::DestroyShaderProgram(shader);
+	RenderDevice::DestroyVertexArray(vertexArray);
+	RenderDevice::DestroyShaderProgram(shader);
 
 	return 0;
 }
