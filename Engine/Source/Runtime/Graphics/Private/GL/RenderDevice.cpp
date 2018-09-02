@@ -20,54 +20,21 @@ namespace
 	GLuint resourceBuffer [4096];
 	uint32 resourceIndex = 0;
 
-	#ifdef RENDER_DEBUG
-	void GLErrorCheck (cchar stmt, cchar fname, uint32 line)
+	void GLAPIENTRY GLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * message, const void * userParam)
 	{
-		GLenum err;
-		cchar text;
-
-		while ((err = glGetError()) != GL_NO_ERROR)
-		{
-			++stats.APICallErrors;
-
-			switch (err)
-			{
-				case GL_INVALID_OPERATION:
-					text = "INVALID_OPERATION";
-					break;
-				case GL_INVALID_ENUM:
-					text = "INVALID_ENUM";
-					break;
-				case GL_INVALID_VALUE:
-					text = "INVALID_VALUE";
-					break;
-				case GL_OUT_OF_MEMORY:
-					text = "OUT_OF_MEMORY";
-					break;
-				case GL_INVALID_FRAMEBUFFER_OPERATION:
-					text = "INVALID_FRAMEBUFFER_OPERATION";
-					break;
-				default:
-					text = "UNKNOWN_ERROR";
-					break;
-			}
-
-			std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
-		}
+		/// @warning GLDebugCallback can be called from any thread; thread safety of the following statement is unknown to me :/
+		++stats.APICallErrors;
+		
+		cchar severityStr = (severity == GL_DEBUG_SEVERITY_HIGH ? "ERR" : (severity == GL_DEBUG_SEVERITY_MEDIUM ? "WARN" : (severity == GL_DEBUG_SEVERITY_LOW ? "NOTE" : "INFO")));
+		std::cout << "RenderDevice - " << severityStr << " '" << message << "'" << '\n';
 	}
-	#define GL_CALL(stmt) do \
-	{ \
-		stmt; \
-		++stats.APICallCount; \
-		GLErrorCheck(#stmt, __FILE__, __LINE__); \
-	} while (0);
-	#else
+
+	// Wondering if GL_CALL is really needed...
 	#define GL_CALL(stmt) do \
 	{ \
 		stmt; \
 		++stats.APICallCount; \
 	} while (0);
-	#endif
 }
 
 // Backend code
@@ -82,6 +49,9 @@ void RenderDevice::Initialize ()
 	{
 		// Sometimes GLEW Experimental Initialization causes unknown errors at runtime, perhaps due to unsupported driver features
 	}
+	
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(GLDebugCallback, nullptr);
 }
 
 RenderStats RenderDevice::Stats ()
@@ -148,11 +118,13 @@ ResourceHandle RenderDevice::AllocateVertexArray (const VertexArrayDescription &
 
 	// Fill the vertex buffer
 	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffers[0]));
-	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.verticesSize, desc.vertices, GL_STATIC_DRAW));
+	GL_CALL(glBufferData(GL_ARRAY_BUFFER, desc.verticesSize, 0, GL_STATIC_DRAW));
+	GL_CALL(glBufferSubData(GL_ARRAY_BUFFER, 0, desc.verticesSize, desc.vertices));
 
 	// Fill the index buffer
 	GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]));
-	GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize, desc.indices, GL_STATIC_DRAW));
+	GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize, 0, GL_STATIC_DRAW));
+	GL_CALL(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, desc.indicesSize, desc.indices));
 
 	// The current vertex layout assumes an interleaved approach to filling the buffer.  This means that of the three vertex attributes (P, N, T), the buffer will look like (PNTPNTPNTPNTPNTPNT...)
 	// There are many approaches to filling the vertex buffer, and we will likely use many variations of them depending on the type of mesh being uploaded.

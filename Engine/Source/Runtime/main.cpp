@@ -76,7 +76,7 @@ int32 main (int32 argc, cchar * argv)
 
 	ResourceHandle vertexArray = RenderDevice::AllocateVertexArray(desc);
 
-	uint32 frameCount = 0;
+	uint32 frameCount = 59;
 
 	while (!display.Closed())
 	{
