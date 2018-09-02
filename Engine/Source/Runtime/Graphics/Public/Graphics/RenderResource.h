@@ -4,7 +4,42 @@
 
 namespace Graphics
 {
-	using ResourceHandle = uint16; ///< Max 65,535 indexable render resources
+	/// @deprecated Use RenderResource instead
+	using ResourceHandle = uint16;
+
+	struct RenderResource
+	{
+		using ID = uint16;
+		static const ID NULL_ID = 0;
+
+		ID id = NULL_ID;
+
+		inline void Invalidate () { id = NULL_ID; }
+		inline bool Valid () const { return (id == NULL_ID); }
+
+		inline bool operator== (const RenderResource & rhs) { return (rhs.id == id); }
+		inline bool operator!= (const RenderResource & rhs) { return (rhs.id != id); }
+	};
+
+	struct VertexDescriptor
+	{
+		static constexpr uint8 MAX_VERTEX_ATTRIBS = 255;
+
+		struct Attribute
+		{
+			uint32 size;
+			uint32 stride;
+			uint32 offset;
+
+			bool normalized;
+		};
+
+		Attribute attribs [MAX_VERTEX_ATTRIBS];
+
+		void Begin ();
+		void Add (uint32 size, uint32 stride, uint32 offset, bool normalized);
+		void End ();
+	};
 
 	struct VertexAttribute
 	{

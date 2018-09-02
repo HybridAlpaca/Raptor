@@ -5,8 +5,6 @@
 
 #include <iostream>
 
-// <GL/glew.h> is included in RenderState
-
 using namespace Graphics;
 
 // file-local private information
@@ -20,14 +18,41 @@ namespace
 	GLuint resourceBuffer [4096];
 	uint32 resourceIndex = 0;
 
+	cchar GLEnumToString (GLenum glEnum)
+	{
+		switch (glEnum)
+		{
+			case GL_DEBUG_TYPE_ERROR:
+				return "ERROR";
+			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+				return "DEPRECATED";
+			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+				return "UNDEFINED BEHAVIOR";
+			case GL_DEBUG_TYPE_PORTABILITY:
+				return "PORTABILITY";
+			case GL_DEBUG_TYPE_PERFORMANCE:
+				return "PERFORMANCE";
+			case GL_DEBUG_TYPE_MARKER:
+				return "MARKER";
+			case GL_DEBUG_SEVERITY_HIGH:
+				return "CRITICAL";
+			case GL_DEBUG_SEVERITY_MEDIUM:
+				return "ERROR";
+			case GL_DEBUG_SEVERITY_LOW:
+				return "NOTE";
+			case GL_DEBUG_SEVERITY_NOTIFICATION:
+				return "INFO";
+			default:
+				return "UNKNOWN";
+		}
+	}
+
 	void GLAPIENTRY GLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * message, const void * userParam)
 	{
 		/// @warning GLDebugCallback can be called from any thread; thread safety of the following statement is unknown to me :/
 		++stats.APICallErrors;
 
-		cchar typeStr = (type == GL_DEBUG_TYPE_ERROR ? "ERROR" : (type == GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR) ? "DEPRECATED" : (type == GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR ? "UB" : (type == GL_DEBUG_TYPE_PORTABILITY ? "PORTABILITY" : (type == GL_DEBUG_TYPE_PERFORMANCE ? "PERFORMANCE" : (type == GL_DEBUG_TYPE_MARKER ? "MARKER" : "OTHER")))));
-
-		std::cout << "RenderDevice - " << typeStr << " '" << message << "'" << '\n';
+		std::cout << "RenderDevice - " << GLEnumToString(type) << " '" << message << "'" << '\n';
 	}
 }
 
