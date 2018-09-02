@@ -184,54 +184,54 @@ void RenderDevice::DestroyVertexArray (ResourceHandle resource)
 	GL_CALL(glDeleteVertexArrays(1, & resourceBuffer[resource]));
 }
 
-void RenderDevice::Clear (float r, float g, float b, float a)
+void RenderDevice::Clear (const Commands::Clear & cmd)
 {
-	GL_CALL(glClearColor(r, g, b, a));
+	GL_CALL(glClearColor(cmd.r, cmd.g, cmd.b, cmd.a));
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-void RenderDevice::Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount)
+void RenderDevice::Draw (const Commands::Draw & cmd)
 {
-	if (state.boundProgram != resourceBuffer[shader])
+	if (state.boundProgram != resourceBuffer[cmd.shaderProgram])
 	{
 		// If the shader program is not bound, bind it
-		GL_CALL(glUseProgram(resourceBuffer[shader]));
-		state.boundProgram = resourceBuffer[shader];
+		GL_CALL(glUseProgram(resourceBuffer[cmd.shaderProgram]));
+		state.boundProgram = resourceBuffer[cmd.shaderProgram];
 		++frameStats.drawCacheMisses;
 	}
 	++frameStats.drawCacheAccesses;
-	if (state.boundVAO != resourceBuffer[vertexArray])
+	if (state.boundVAO != resourceBuffer[cmd.vertexArray])
 	{
 		// If the vertex array is not bound, bind it
-		GL_CALL(glBindVertexArray(resourceBuffer[vertexArray]));
-		state.boundVAO = resourceBuffer[vertexArray];
+		GL_CALL(glBindVertexArray(resourceBuffer[cmd.vertexArray]));
+		state.boundVAO = resourceBuffer[cmd.vertexArray];
 		++frameStats.drawCacheMisses;
 	}
 	++frameStats.drawCacheAccesses;
 
-	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, indexCount));
+	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, cmd.indexCount));
 }
 
-void RenderDevice::DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount, uint32 startIndex)
+void RenderDevice::DrawIndexed (const Commands::DrawIndexed & cmd)
 {
-	if (state.boundProgram != resourceBuffer[shader])
+	if (state.boundProgram != resourceBuffer[cmd.shaderProgram])
 	{
 		// If the shader program is not bound, bind it
-		GL_CALL(glUseProgram(resourceBuffer[shader]));
-		state.boundProgram = resourceBuffer[shader];
+		GL_CALL(glUseProgram(resourceBuffer[cmd.shaderProgram]));
+		state.boundProgram = resourceBuffer[cmd.shaderProgram];
 		++frameStats.drawCacheMisses;
 	}
 	++frameStats.drawCacheAccesses;
-	if (state.boundVAO != resourceBuffer[vertexArray])
+	if (state.boundVAO != resourceBuffer[cmd.vertexArray])
 	{
 		// If the vertex array is not bound, bind it
-		GL_CALL(glBindVertexArray(resourceBuffer[vertexArray]));
-		state.boundVAO = resourceBuffer[vertexArray];
+		GL_CALL(glBindVertexArray(resourceBuffer[cmd.vertexArray]));
+		state.boundVAO = resourceBuffer[cmd.vertexArray];
 		++frameStats.drawCacheMisses;
 	}
 	++frameStats.drawCacheAccesses;
 
-	GL_CALL(glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void *) startIndex));
+	GL_CALL(glDrawElements(GL_TRIANGLES, cmd.indexCount, GL_UNSIGNED_INT, (void *) cmd.indexOffset));
 }
 
 void RenderDevice::Present (const Display & display)

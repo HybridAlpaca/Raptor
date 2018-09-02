@@ -1,5 +1,6 @@
 #include <Core/Common/Required.h>
 
+#include <Graphics/Commands.h>
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
 
@@ -85,8 +86,11 @@ int32 main (int32 argc, cchar * argv)
 
 		// Draw
 
-		RenderDevice::Clear(1.0f, 0.0f, 0.5f, 1.0f);
-		RenderDevice::DrawIndexed(shader, vertexArray, 6, 0);
+		Commands::Clear clear = {1.0f, 0.4f, 0.5f, 1.0f};
+		Commands::Clear::Dispatch(clear);
+
+		Commands::DrawIndexed draw = {shader, vertexArray, 6, 0};
+		Commands::DrawIndexed::Dispatch(draw);
 
 		// Debug
 

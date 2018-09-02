@@ -2,6 +2,7 @@
 
 #include <Core/Common/Required.h>
 #include <Constants.h>
+#include <Commands.h>
 #include <RenderStats.h>
 
 namespace Graphics { class Display; }
@@ -43,14 +44,14 @@ namespace Graphics::RenderDevice
 
 	/// Clears the framebuffer
 	/// @todo Allow DSA-esque framebuffer specification
-	void Clear (float r, float g, float b, float a);
+	void Clear (const Commands::Clear & cmd);
 
 	/// Draws the specified vertex array with a given shader program
 	/// @note Since this command is non-indexed, the index buffer is not used.  See DrawIndexed for more
-	void Draw (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount);
+	void Draw (const Commands::Draw & cmd);
 
 	/// Draws a vertex array by its indices with a provided shader program
-	void DrawIndexed (ResourceHandle shader, ResourceHandle vertexArray, uint32 indexCount, uint32 startIndex);
+	void DrawIndexed (const Commands::DrawIndexed & cmd);
 
 	// Windowing Utilities
 
