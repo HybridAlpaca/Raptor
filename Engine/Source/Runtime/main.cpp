@@ -99,12 +99,12 @@ int32 main (int32 argc, cchar * argv)
 			frameCount = 0;
 
 			// Dump render device debug info
-			FrameStats frameStats = RenderDevice::CurrentFrameStats();
-			std::cout << "CALLS: " << (frameStats.APICallCount) << ", ";
-			std::cout << "ERRORS: " << (frameStats.APICallErrors) << ", ";
-			std::cout << "HITS: " << frameStats.CalcDrawCacheHits() << ", ";
-			std::cout << "MISSES: " << (frameStats.drawCacheMisses) << ", ";
-			std::cout << "TOTAL: " << (frameStats.drawCacheAccesses) << '\n';
+			RenderStats stats = RenderDevice::Stats();
+			std::cout << "RENDERER " << stats.width << "x" << stats.height << "\n\t";
+			std::cout << stats.APICallCount << " Call, " << stats.APICallErrors << " Err\n\t";
+			std::cout << stats.drawCacheMisses << " / " << stats.drawCacheAccesses << " Cache Miss\n\t";
+			std::cout << stats.vertexArrayCount << " Vertex Array\n\t";
+			std::cout << stats.shaderProgramCount << " Shader Program\n";
 		}
 
 		// Present

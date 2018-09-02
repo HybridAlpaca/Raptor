@@ -14,12 +14,13 @@ using namespace Graphics;
 namespace
 {
 	GL::RenderState state;
-	FrameStats frameStats;
+	RenderStats stats;
 
 	// Rudimentary GPU resource system
 	GLuint resourceBuffer [4096];
 	uint32 resourceIndex = 0;
 
+	#ifdef RENDER_DEBUG
 	void GLErrorCheck (cchar stmt, cchar fname, uint32 line)
 	{
 		GLenum err;
@@ -27,7 +28,7 @@ namespace
 
 		while ((err = glGetError()) != GL_NO_ERROR)
 		{
-			++frameStats.APICallErrors;
+			++stats.APICallErrors;
 
 			switch (err)
 			{
@@ -54,19 +55,17 @@ namespace
 			std::cerr << "GL::" << text << " - " << stmt << " (" << fname << ", " << line << ")" << '\n';
 		}
 	}
-
-	#ifdef RENDER_DEBUG
 	#define GL_CALL(stmt) do \
 	{ \
 		stmt; \
-		++frameStats.APICallCount; \
+		++stats.APICallCount; \
 		GLErrorCheck(#stmt, __FILE__, __LINE__); \
 	} while (0);
 	#else
 	#define GL_CALL(stmt) do \
 	{ \
 		stmt; \
-		++frameStats.APICallCount; \
+		++stats.APICallCount; \
 	} while (0);
 	#endif
 }
@@ -85,14 +84,9 @@ void RenderDevice::Initialize ()
 	}
 }
 
-FrameStats RenderDevice::CurrentFrameStats ()
+RenderStats RenderDevice::Stats ()
 {
-	FrameStats temp = frameStats;
-
-	// Now that we've returned the current stats, we can reset them
-	frameStats.Reset();
-
-	return temp;
+	return stats;
 }
 
 ResourceHandle RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar fragmentCode)
@@ -125,6 +119,7 @@ ResourceHandle RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar frag
 	GL_CALL(glDeleteShader(vertexShader));
 	GL_CALL(glDeleteShader(fragmentShader));
 
+	++stats.shaderProgramCount;
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shaderProgram;
 
@@ -133,6 +128,7 @@ ResourceHandle RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar frag
 
 void RenderDevice::DestroyShaderProgram (ResourceHandle resource)
 {
+	--stats.shaderProgramCount;
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
@@ -173,6 +169,7 @@ ResourceHandle RenderDevice::AllocateVertexArray (const VertexArrayDescription &
 		GL_CALL(glEnableVertexAttribArray(i));
 	}
 
+	++stats.vertexArrayCount;
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = VAO;
 
@@ -181,6 +178,7 @@ ResourceHandle RenderDevice::AllocateVertexArray (const VertexArrayDescription &
 
 void RenderDevice::DestroyVertexArray (ResourceHandle resource)
 {
+	--stats.vertexArrayCount;
 	GL_CALL(glDeleteVertexArrays(1, & resourceBuffer[resource]));
 }
 
@@ -197,19 +195,19 @@ void RenderDevice::Draw (const Commands::Draw & cmd)
 		// If the shader program is not bound, bind it
 		GL_CALL(glUseProgram(resourceBuffer[cmd.shaderProgram]));
 		state.boundProgram = resourceBuffer[cmd.shaderProgram];
-		++frameStats.drawCacheMisses;
+		++stats.drawCacheMisses;
 	}
-	++frameStats.drawCacheAccesses;
+	++stats.drawCacheAccesses;
 	if (state.boundVAO != resourceBuffer[cmd.vertexArray])
 	{
 		// If the vertex array is not bound, bind it
 		GL_CALL(glBindVertexArray(resourceBuffer[cmd.vertexArray]));
 		state.boundVAO = resourceBuffer[cmd.vertexArray];
-		++frameStats.drawCacheMisses;
+		++stats.drawCacheMisses;
 	}
-	++frameStats.drawCacheAccesses;
+	++stats.drawCacheAccesses;
 
-	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, cmd.indexCount));
+	GL_CALL(glDrawArrays(GL_TRIANGLES, cmd.indexOffset, cmd.indexCount));
 }
 
 void RenderDevice::DrawIndexed (const Commands::DrawIndexed & cmd)
@@ -219,29 +217,38 @@ void RenderDevice::DrawIndexed (const Commands::DrawIndexed & cmd)
 		// If the shader program is not bound, bind it
 		GL_CALL(glUseProgram(resourceBuffer[cmd.shaderProgram]));
 		state.boundProgram = resourceBuffer[cmd.shaderProgram];
-		++frameStats.drawCacheMisses;
+		++stats.drawCacheMisses;
 	}
-	++frameStats.drawCacheAccesses;
+	++stats.drawCacheAccesses;
 	if (state.boundVAO != resourceBuffer[cmd.vertexArray])
 	{
 		// If the vertex array is not bound, bind it
 		GL_CALL(glBindVertexArray(resourceBuffer[cmd.vertexArray]));
 		state.boundVAO = resourceBuffer[cmd.vertexArray];
-		++frameStats.drawCacheMisses;
+		++stats.drawCacheMisses;
 	}
-	++frameStats.drawCacheAccesses;
+	++stats.drawCacheAccesses;
 
 	GL_CALL(glDrawElements(GL_TRIANGLES, cmd.indexCount, GL_UNSIGNED_INT, (void *) cmd.indexOffset));
 }
 
 void RenderDevice::Present (const Display & display)
 {
+	// Reset statistics
+	stats.APICallCount = 0;
+	stats.APICallErrors = 0;
+	stats.drawCacheAccesses = 0;
+	stats.drawCacheMisses = 0;
+
 	// Forward the Present command
 	display.SwapBuffers();
 }
 
 void RenderDevice::Resize (uint32 width, uint32 height)
 {
+	stats.width = width;
+	stats.height = height;
+
 	// Don't cache the size, since Resize should only occur after an actual resize
 	GL_CALL(glViewport(0, 0, width, height));
 }

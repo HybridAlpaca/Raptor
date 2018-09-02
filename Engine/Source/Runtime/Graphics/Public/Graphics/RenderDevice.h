@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Common/Required.h>
-#include <Constants.h>
+#include <RenderResource.h>
 #include <Commands.h>
 #include <RenderStats.h>
 
@@ -23,7 +23,7 @@ namespace Graphics::RenderDevice
 	void Initialize ();
 
 	/// Returns info about the internal state of the render device.  Useful for debugging and profiling
-	FrameStats CurrentFrameStats ();
+	RenderStats Stats ();
 
 	// Resource Operations
 
