@@ -4,42 +4,48 @@
 
 namespace Graphics
 {
-	/// @deprecated Use RenderResource instead
-	using ResourceHandle = uint16;
-
 	struct RenderResource
 	{
-		using ID = uint16;
-		static const ID NULL_ID = 0;
+		using ID = uint16; ///< 16 Bits per handle
+		static const ID NULL_ID = 0; /// A value of zero is reserved as an 'invalid' handle
 
-		ID id = NULL_ID;
+		ID id = NULL_ID; /// The handle value of the resource
+		ID version = 0; /// The generation of the resource.  Used to check for stale handles
 
+		/// Turn this into a null handle
 		inline void Invalidate () { id = NULL_ID; }
+
+		/// Check for validity of resource
 		inline bool Valid () const { return (id == NULL_ID); }
 
-		inline bool operator== (const RenderResource & rhs) { return (rhs.id == id); }
-		inline bool operator!= (const RenderResource & rhs) { return (rhs.id != id); }
-	};
+		inline operator uint16 () const { return id; }
 
-	struct VertexDescriptor
-	{
-		static constexpr uint8 MAX_VERTEX_ATTRIBS = 255;
-
-		struct Attribute
+		/// @return True if the two resources point to the same resource, false otherwise
+		inline bool operator== (const RenderResource & rhs) const
 		{
-			uint32 size;
-			uint32 stride;
-			uint32 offset;
+			return (rhs.id == id) && (rhs.version == version);
+		}
 
-			bool normalized;
-		};
+		/// @return True if two resources point to different resources, false otherwise
+		inline bool operator!= (const RenderResource & rhs) const
+		{
+			return (rhs.id != id) && (rhs.version != version);
+		}
 
-		Attribute attribs [MAX_VERTEX_ATTRIBS];
+		/// @return True if refers to the same resource as the other and this is older, false otherwise
+		inline bool operator< (const RenderResource & rhs) const
+		{
+			return (id == rhs.id) ? (version < rhs.version) : false;
+		}
 
-		void Begin ();
-		void Add (uint32 size, uint32 stride, uint32 offset, bool normalized);
-		void End ();
+		/// @return True if refers to the same resource as the other and this is newer, false otherwise
+		inline bool operator> (const RenderResource & rhs) const
+		{
+			return (id == rhs.id) ? (version > rhs.version) : false;
+		}
 	};
+
+	static_assert(sizeof(RenderResource) == (32 / 8), "RenderResource should take up 32 bits");
 
 	struct VertexAttribute
 	{

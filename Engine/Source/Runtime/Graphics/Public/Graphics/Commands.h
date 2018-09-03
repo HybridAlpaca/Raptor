@@ -27,8 +27,8 @@ namespace Graphics::Commands
 	{
 		DECLARE_DISPATCH_FUNC(Draw);
 
-		ResourceHandle shaderProgram; ///< The shader program to draw with
-		ResourceHandle vertexArray; ///< The vertex array to draw
+		RenderResource shaderProgram; ///< The shader program to draw with
+		RenderResource vertexArray; ///< The vertex array to draw
 
 		uint32 indexCount; ///< Number of vertices / indices to draw
 		uint32 indexOffset; ///< Offset of first vertex / index  to be drawn
@@ -38,8 +38,8 @@ namespace Graphics::Commands
 	{
 		DECLARE_DISPATCH_FUNC(DrawIndexed);
 
-		ResourceHandle shaderProgram; ///< The shader program to draw with
-		ResourceHandle vertexArray; ///< The vertex array to draw
+		RenderResource shaderProgram; ///< The shader program to draw with
+		RenderResource vertexArray; ///< The vertex array to draw
 
 		uint32 indexCount; ///< Number of indices to draw
 		uint32 indexOffset; ///< Offset of first index to be drawn

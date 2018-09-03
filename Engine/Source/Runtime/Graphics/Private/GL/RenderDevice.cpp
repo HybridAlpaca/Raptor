@@ -16,7 +16,7 @@ namespace
 
 	// Rudimentary GPU resource system
 	GLuint resourceBuffer [4096];
-	uint32 resourceIndex = 0;
+	uint16 resourceIndex = 0;
 
 	cchar GLEnumToString (GLenum glEnum)
 	{
@@ -78,7 +78,7 @@ RenderStats RenderDevice::Stats ()
 	return stats;
 }
 
-ResourceHandle RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar fragmentCode)
+RenderResource RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar fragmentCode)
 {
 	// Create shaders
 	GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -113,16 +113,16 @@ ResourceHandle RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar frag
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shaderProgram;
 
-	return resourceIndex;
+	return {resourceIndex, 0};
 }
 
-void RenderDevice::DestroyShaderProgram (ResourceHandle resource)
+void RenderDevice::DestroyShaderProgram (RenderResource resource)
 {
 	++stats.resourceCalls;
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
-ResourceHandle RenderDevice::AllocateVertexArray (const VertexArrayDescription & desc)
+RenderResource RenderDevice::AllocateVertexArray (const VertexArrayDescription & desc)
 {
 	// Create handles to buffers
 	GLuint VAO;
@@ -155,7 +155,7 @@ ResourceHandle RenderDevice::AllocateVertexArray (const VertexArrayDescription &
 		bufferDesc.offset = (i > 0) ? (desc.vertexAttributes[i - 1].elementCount + desc.vertexAttributes[i - 1].offset) : 0;
 
 		// Inform OpenGL of how to read the data
-		glVertexAttribPointer(i, bufferDesc.elementCount, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float), (void *) (bufferDesc.offset * sizeof(float)));
+		glVertexAttribPointer(i, bufferDesc.elementCount, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float), (GLvoid *) (bufferDesc.offset * sizeof(float)));
 
 		// Enable the vertex attribute
 		glEnableVertexAttribArray(i);
@@ -165,10 +165,10 @@ ResourceHandle RenderDevice::AllocateVertexArray (const VertexArrayDescription &
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = VAO;
 
-	return resourceIndex;
+	return {resourceIndex, 0};
 }
 
-void RenderDevice::DestroyVertexArray (ResourceHandle resource)
+void RenderDevice::DestroyVertexArray (RenderResource resource)
 {
 	++stats.resourceCalls;
 
@@ -226,7 +226,7 @@ void RenderDevice::DrawIndexed (const Commands::DrawIndexed & cmd)
 	++stats.drawCacheAccesses;
 	++stats.drawCalls;
 
-	glDrawElements(GL_TRIANGLES, cmd.indexCount, GL_UNSIGNED_INT, (void *) cmd.indexOffset);
+	glDrawElements(GL_TRIANGLES, cmd.indexCount, GL_UNSIGNED_INT, (GLvoid *) cmd.indexOffset);
 }
 
 void RenderDevice::Present (const Display & display)

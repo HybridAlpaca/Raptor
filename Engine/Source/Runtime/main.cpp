@@ -51,7 +51,7 @@ int32 main (int32 argc, cchar * argv)
 	RenderDevice::Initialize();
 	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
-	ResourceHandle shader = RenderDevice::AllocateShaderProgram(vertex, fragment);
+	RenderResource shader = RenderDevice::AllocateShaderProgram(vertex, fragment);
 
 	VertexAttribute vertexAttributes [] =
 	{{
@@ -74,7 +74,7 @@ int32 main (int32 argc, cchar * argv)
 	desc.vertexAttributes = vertexAttributes;
 	desc.bufferDescCount = 2;
 
-	ResourceHandle vertexArray = RenderDevice::AllocateVertexArray(desc);
+	RenderResource vertexArray = RenderDevice::AllocateVertexArray(desc);
 
 	uint32 frameCount = 59;
 
