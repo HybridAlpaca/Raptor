@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Common/Required.h>
+#include <Raptor/Required.h>
 #include <GL/glew.h>
 
 namespace Graphics::GL

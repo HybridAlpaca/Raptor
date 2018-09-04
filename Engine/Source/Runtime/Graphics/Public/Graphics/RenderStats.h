@@ -1,11 +1,21 @@
 #pragma once
 
-#include <Core/Common/Required.h>
+#include <Raptor/Required.h>
 
 namespace Graphics
 {
 	struct RenderStats
 	{
+		// Render device information
+
+		cchar deviceName;
+
+		const ubyte * vendor;
+		const ubyte * rendererName;
+
+		int32 contextVersionMajor = 0;
+		int32 contextVersionMinor = 0;
+
 		// Per-frame statistics
 
 		uint32 drawCalls; ///< Number of API calls that resulted in a visual effect
@@ -14,10 +24,5 @@ namespace Graphics
 
 		uint32 drawCacheAccesses = 0; ///< Number of lookups into render state cache
 		uint32 drawCacheMisses = 0; ///< Number of times render state cache needed to be written to
-
-		// Device internal statistics
-
-		uint32 width; ///< Internal width of the backbuffer
-		uint32 height; ///< Internal height of the backbuffer
 	};
 }

@@ -1,10 +1,9 @@
-#include <Core/Common/Required.h>
+#include <Raptor/Required.h>
+#include <Raptor/Console.h>
 
 #include <Graphics/Commands.h>
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
-
-#include <iostream>
 
 cchar vertex =
 	"#version 330 core\n"
@@ -76,7 +75,8 @@ int32 main (int32 argc, cchar * argv)
 
 	RenderResource vertexArray = RenderDevice::AllocateVertexArray(desc);
 
-	uint32 frameCount = 59;
+	double previousTime = display.Time();
+	uint16 frameCount = 0;
 
 	while (!display.Closed())
 	{
@@ -94,15 +94,19 @@ int32 main (int32 argc, cchar * argv)
 
 		// Debug
 
-		if ((++frameCount) == 60)
 		{
-			frameCount = 0;
+			// Measure speed
+			double currentTime = display.Time();
+			++frameCount;
+			// If a second has passed.
+			if (currentTime - previousTime >= 1.0)
+			{
+				Raptor::Print("DEBUG - ");
+				Raptor::Println(frameCount);
 
-			// Dump render device debug info
-			RenderStats stats = RenderDevice::Stats();
-			std::cout << "RenderStats (" << stats.width << "x" << stats.height << ") ";
-			std::cout << (stats.drawCalls + stats.resourceCalls) << " Total Calls, " << stats.APICallErrors << " Errors, (";
-			std::cout << stats.drawCacheMisses << " / " << stats.drawCacheAccesses << ") Cache Miss\n";
+				frameCount = 0;
+				previousTime = currentTime;
+			}
 		}
 
 		// Present

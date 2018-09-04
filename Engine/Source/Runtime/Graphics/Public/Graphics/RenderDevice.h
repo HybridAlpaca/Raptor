@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Common/Required.h>
+#include <Raptor/Required.h>
 #include <RenderResource.h>
 #include <Commands.h>
 #include <RenderStats.h>
@@ -9,7 +9,7 @@ namespace Graphics { class Display; }
 
 /**
  *
- * @namespace Graphics::Backend
+ * @namespace Graphics::RenderDevice
  * @author Seth Traman
  *
  **/

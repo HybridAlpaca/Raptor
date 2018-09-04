@@ -1,7 +1,7 @@
 #pragma once
 
 #include <RenderResource.h>
-#include <Core/Common/Required.h>
+#include <Raptor/Required.h>
 
 #define DECLARE_DISPATCH_FUNC(cmd) \
 	using DispatchFunc = void (*) (const cmd &); \

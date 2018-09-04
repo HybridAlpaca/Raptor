@@ -2,8 +2,7 @@
 #include "RenderState.h"
 
 #include <Display.h>
-
-#include <iostream>
+#include <Raptor/Console.h>
 
 using namespace Graphics;
 
@@ -52,7 +51,11 @@ namespace
 		/// @warning GLDebugCallback can be called from any thread; thread safety of the following statement is unknown to me :/
 		++stats.APICallErrors;
 
-		std::cout << "RenderDevice - " << GLEnumToString(type) << " '" << message << "'" << '\n';
+		Raptor::Print("RenderDevice - ");
+		Raptor::Print(GLEnumToString(type));
+		Raptor::Print(" '");
+		Raptor::Print(message);
+		Raptor::Println("'");
 	}
 }
 
@@ -71,6 +74,13 @@ void RenderDevice::Initialize ()
 
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GLDebugCallback, nullptr);
+
+	glGetIntegerv(GL_MAJOR_VERSION, & stats.contextVersionMajor);
+	glGetIntegerv(GL_MINOR_VERSION, & stats.contextVersionMinor);
+
+	stats.vendor = glGetString(GL_VENDOR);
+	stats.rendererName = glGetString(GL_RENDERER);
+	stats.deviceName = "OpenGL Core";
 }
 
 RenderStats RenderDevice::Stats ()
@@ -244,9 +254,6 @@ void RenderDevice::Present (const Display & display)
 
 void RenderDevice::Resize (uint32 width, uint32 height)
 {
-	stats.width = width;
-	stats.height = height;
-
 	// Don't cache the size, since Resize should only occur after an actual resize
 	glViewport(0, 0, width, height);
 }

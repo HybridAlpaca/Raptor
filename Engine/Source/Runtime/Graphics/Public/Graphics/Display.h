@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Common/Required.h>
+#include <Raptor/Required.h>
 
 class GLFWwindow {};
 
@@ -40,11 +40,14 @@ namespace Graphics
 		/// @return Whether the window is closed or not
 		bool Closed () const;
 
-		/// @brief Pulls window events off the event queue for processing
+		/// Pulls window events off the event queue for processing
 		void PollEvents () const;
 
-		/// @brief Swaps the front and back buffer for double buffered drawing
+		/// Swaps the front and back buffer for double buffered drawing
 		void SwapBuffers () const;
+
+		/// @return A double-precision timestamp since the window was created
+		double Time () const;
 
 		/// @return Width of the window's internal framebuffer
 		uint32 FrameWidth () const;

@@ -70,18 +70,17 @@ endif()
 # Static Libraries #
 ####################
 
-# core
+# raptor standard library
 
-#add_library (Core STATIC
-	#${RUNTIME_ROOT_DIR}/Core/Shader.cpp
-	#${RUNTIME_ROOT_DIR}/Core/Camera.cpp
-	#${RUNTIME_ROOT_DIR}/Core/Model.cpp
-	#${RUNTIME_ROOT_DIR}/Core/Display.cpp
-#)
-#target_include_directories (Core PRIVATE
-	#${RUNTIME_ROOT_DIR}/Core/
-#)
-include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
+add_library (LibRaptor STATIC
+	${RUNTIME_ROOT_DIR}/Raptor/Private/POSIX/Console.cpp
+)
+target_include_directories (LibRaptor PUBLIC
+	${RUNTIME_ROOT_DIR}/Raptor/Private
+	${RUNTIME_ROOT_DIR}/Raptor/Public/Raptor
+)
+
+include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 
 # graphics
 
@@ -96,7 +95,7 @@ target_include_directories (Graphics PUBLIC
 )
 include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 
-install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS LibRaptor Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
@@ -104,7 +103,7 @@ install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
-	#Core
+	LibRaptor
 	Graphics
 	assimp
 	${OPENGL_gl_LIBRARY}

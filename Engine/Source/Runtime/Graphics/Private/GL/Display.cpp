@@ -51,6 +51,11 @@ void Display::SwapBuffers () const
 	glfwSwapBuffers(window);
 }
 
+double Display::Time () const
+{
+	return glfwGetTime();
+}
+
 uint32 Display::FrameWidth () const
 {
 	int width, height;
