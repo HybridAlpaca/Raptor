@@ -72,13 +72,13 @@ endif()
 
 # raptor standard library
 
-add_library (LibRaptor STATIC
-	${RUNTIME_ROOT_DIR}/Raptor/Private/POSIX/Console.cpp
-)
-target_include_directories (LibRaptor PUBLIC
-	${RUNTIME_ROOT_DIR}/Raptor/Private
-	${RUNTIME_ROOT_DIR}/Raptor/Public/Raptor
-)
+# add_library (LibRaptor STATIC
+	# ${RUNTIME_ROOT_DIR}/Raptor/Private/POSIX/Console.cpp
+# )
+# target_include_directories (LibRaptor PUBLIC
+	# ${RUNTIME_ROOT_DIR}/Raptor/Private
+	# ${RUNTIME_ROOT_DIR}/Raptor/Public/Raptor
+# )
 
 include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 
@@ -95,7 +95,7 @@ target_include_directories (Graphics PUBLIC
 )
 include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 
-install (TARGETS LibRaptor Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
@@ -103,7 +103,7 @@ install (TARGETS LibRaptor Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
-	LibRaptor
+	# LibRaptor
 	Graphics
 	assimp
 	${OPENGL_gl_LIBRARY}

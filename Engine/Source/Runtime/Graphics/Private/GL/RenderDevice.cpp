@@ -2,7 +2,8 @@
 #include "RenderState.h"
 
 #include <Display.h>
-#include <Raptor/Console.h>
+
+#include <iostream>
 
 using namespace Graphics;
 
@@ -51,11 +52,7 @@ namespace
 		/// @warning GLDebugCallback can be called from any thread; thread safety of the following statement is unknown to me :/
 		++stats.APICallErrors;
 
-		Raptor::Print("RenderDevice - ");
-		Raptor::Print(GLEnumToString(type));
-		Raptor::Print(" '");
-		Raptor::Print(message);
-		Raptor::Println("'");
+		std::cerr << "RenderDevice - " << GLEnumToString(type) << " '" << message << "'\n";
 	}
 }
 

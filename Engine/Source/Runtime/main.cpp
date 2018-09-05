@@ -1,9 +1,10 @@
 #include <Raptor/Required.h>
-#include <Raptor/Console.h>
 
 #include <Graphics/Commands.h>
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
+
+#include <iostream>
 
 cchar vertex =
 	"#version 330 core\n"
@@ -40,8 +41,8 @@ int32 main (int32 argc, cchar * argv)
 	Display display
 	({
 		"Hello, Raptor!",
-		800,
-		600,
+		640,
+		480,
 		3,
 		3,
 		1
@@ -101,8 +102,7 @@ int32 main (int32 argc, cchar * argv)
 			// If a second has passed.
 			if (currentTime - previousTime >= 1.0)
 			{
-				Raptor::Print("DEBUG - ");
-				Raptor::Println(frameCount);
+				std::cout << "DEBUG - " << frameCount << '\n';
 
 				frameCount = 0;
 				previousTime = currentTime;
