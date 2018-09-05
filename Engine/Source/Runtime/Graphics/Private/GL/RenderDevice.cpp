@@ -58,7 +58,7 @@ namespace
 
 // Backend code
 
-void RenderDevice::Initialize ()
+void RenderDevice::Initialize (const InitDescriptor & desc)
 {
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -69,8 +69,11 @@ void RenderDevice::Initialize ()
 		// Sometimes GLEW Experimental Initialization causes unknown errors at runtime, perhaps due to unsupported driver features
 	}
 
-	glEnable(GL_DEBUG_OUTPUT);
-	glDebugMessageCallback(GLDebugCallback, nullptr);
+	if (desc.debug)
+	{
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(GLDebugCallback, nullptr);
+	}
 
 	glGetIntegerv(GL_MAJOR_VERSION, & stats.contextVersionMajor);
 	glGetIntegerv(GL_MINOR_VERSION, & stats.contextVersionMinor);
@@ -78,6 +81,11 @@ void RenderDevice::Initialize ()
 	stats.vendor = glGetString(GL_VENDOR);
 	stats.rendererName = glGetString(GL_RENDERER);
 	stats.deviceName = "OpenGL Core";
+}
+
+RenderDevice::GraphicsBackend RenderDevice::BackendType ()
+{
+	return GraphicsBackend::OPENGL;
 }
 
 RenderStats RenderDevice::Stats ()

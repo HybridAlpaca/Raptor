@@ -48,7 +48,7 @@ int32 main (int32 argc, cchar * argv)
 		1
 	});
 
-	RenderDevice::Initialize();
+	RenderDevice::Initialize({true});
 	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
 	RenderResource shader = RenderDevice::AllocateShaderProgram(vertex, fragment);

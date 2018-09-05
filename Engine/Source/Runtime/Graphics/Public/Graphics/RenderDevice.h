@@ -16,11 +16,30 @@ namespace Graphics { class Display; }
 
 namespace Graphics::RenderDevice
 {
+	// Data types
+
+	enum class GraphicsBackend
+	{
+		OPENGL,
+		// OPENGL_ES,
+		// WEBGL,
+		// D3D11,
+		// D3D12,
+		// METAL,
+		// VULKAN
+	};
+
+	struct InitDescriptor
+	{
+		bool debug = false;
+	};
 
 	// Device Operations
 
 	/// Initializes the render device for drawing
-	void Initialize ();
+	void Initialize (const InitDescriptor & desc);
+
+	inline GraphicsBackend BackendType ();
 
 	/// Returns info about the internal state of the render device.  Useful for debugging and profiling
 	RenderStats Stats ();
