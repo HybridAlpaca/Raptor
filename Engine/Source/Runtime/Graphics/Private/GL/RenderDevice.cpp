@@ -137,7 +137,7 @@ void RenderDevice::DestroyShaderProgram (RenderResource resource)
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
-RenderResource RenderDevice::AllocateVertexArray (const VertexArrayDescription & desc)
+RenderResource RenderDevice::AllocateVertexArray (const float32 * vertices, const uint32 * indices, const VertexArrayDescription & desc)
 {
 	// Create handles to buffers
 	GLuint VAO;
@@ -153,13 +153,13 @@ RenderResource RenderDevice::AllocateVertexArray (const VertexArrayDescription &
 
 	// Fill the vertex buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-	glBufferData(GL_ARRAY_BUFFER, desc.verticesSize, (void *) 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, desc.verticesSize, desc.vertices);
+	glBufferData(GL_ARRAY_BUFFER, desc.verticesSize * sizeof(float32) , (void *) 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, desc.verticesSize * sizeof(float32), vertices);
 
 	// Fill the index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize, (void *) 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, desc.indicesSize, desc.indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize * sizeof(uint32), (void *) 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, desc.indicesSize * sizeof(uint32), indices);
 
 	// The current vertex layout assumes an interleaved approach to filling the buffer.  This means that of the three vertex attributes (P, N, T), the buffer will look like (PNTPNTPNTPNTPNTPNT...)
 	// There are many approaches to filling the vertex buffer, and we will likely use many variations of them depending on the type of mesh being uploaded.
@@ -167,10 +167,9 @@ RenderResource RenderDevice::AllocateVertexArray (const VertexArrayDescription &
 	{
 		// Retrieve the buffer attribute description
 		VertexAttribute & bufferDesc = desc.vertexAttributes[i];
-		bufferDesc.offset = (i > 0) ? (desc.vertexAttributes[i - 1].elementCount + desc.vertexAttributes[i - 1].offset) : 0;
 
 		// Inform OpenGL of how to read the data
-		glVertexAttribPointer(i, bufferDesc.elementCount, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float), (GLvoid *) (bufferDesc.offset * sizeof(float)));
+		glVertexAttribPointer(i, bufferDesc.size, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float32), (GLvoid *) (bufferDesc.offset * sizeof(float32)));
 
 		// Enable the vertex attribute
 		glEnableVertexAttribArray(i);

@@ -39,30 +39,29 @@ namespace Graphics
 		}
 
 		/// @return True if refers to the same resource as the other and this is newer, false otherwise
-		inline bool operator> (const RenderResource & rhs) const
+		inline bool operator > (const RenderResource & rhs) const
 		{
 			return (id == rhs.id) ? (version > rhs.version) : false;
 		}
 	};
 
+	// tests
 	static_assert(sizeof(RenderResource) == (32 / 8), "RenderResource should take up 32 bits");
 
 	struct VertexAttribute
 	{
-		uint32 elementCount; ///< Number of components (i.e. position has 3, {x y z})
-		uint32 stride; ///< Distance between each appearance of this attribute
-		uint32 offset; ///< Used internally, shouldn't be set
+		uint8 size;		///< Number of components (i.e. position has 3, {x y z})
+		uint8 stride; ///< Byte offset between consecutive appearances of this attribute
+		uint8 offset; ///< Byte offset to first appearance of this attribute
 	};
 
 	struct VertexArrayDescription
 	{
-		float * vertices; ///< A float array or similar containing vertex data to be uploaded and drawn
-		uint32 verticesSize; ///< The number of elements / vertices in the vertex buffer
+		VertexAttribute * vertexAttributes; ///< Array of vertex buffer attribute descriptions
 
-		uint32 * indices; ///< A uint32 array containing the indices into the vertices buffer to be drawn
+		uint32 verticesSize; ///< The number of elements / vertices in the vertex buffer
 		uint32 indicesSize; ///< The number of elements / indices in the index buffer
 
-		VertexAttribute * vertexAttributes; ///< Array of vertex buffer attribute descriptions
-		uint32 bufferDescCount; ///< Number of vertex attributes in the attribute buffer
+		uint8 bufferDescCount; ///< Number of vertex attributes in the attribute buffer
 	};
 }

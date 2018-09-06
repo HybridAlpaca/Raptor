@@ -54,7 +54,7 @@ namespace Graphics::RenderDevice
 	void DestroyShaderProgram (RenderResource resource);
 
 	/// Creates a vertex array object for storing vertices to be uploaded to the GPU
-	RenderResource AllocateVertexArray (const VertexArrayDescription & desc);
+	RenderResource AllocateVertexArray (const float32 * vertices, const uint32 * indices, const VertexArrayDescription & desc);
 
 	/// Destroys a vertex array object
 	void DestroyVertexArray (RenderResource resource);
