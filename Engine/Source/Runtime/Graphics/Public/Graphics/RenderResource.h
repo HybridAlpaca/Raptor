@@ -10,13 +10,13 @@ namespace Graphics
 		static const ID NULL_ID = 0; /// A value of zero is reserved as an 'invalid' handle
 
 		ID id = NULL_ID; /// The handle value of the resource
-		ID version = 0; /// The generation of the resource.  Used to check for stale handles
+		ID version = 0;  /// The generation of the resource.  Used to check for stale handles
 
 		/// Turn this into a null handle
 		inline void Invalidate () { id = NULL_ID; }
 
 		/// Check for validity of resource
-		inline bool Valid () const { return (id == NULL_ID); }
+		inline bool Valid () const { return (id != NULL_ID); }
 
 		/// Implicit type conversion overload to return id
 		inline operator uint16 () const { return id; }
@@ -51,9 +51,9 @@ namespace Graphics
 
 	struct VertexAttribute
 	{
-		uint8 size;		  ///< Number of components (i.e. position has 3, {x y z})
+		uint8 size;		  ///< Number of attrib components (i.e. position has 3, {x y z})
 		uint8 stride;   ///< Byte offset between consecutive appearances of this attribute
-		uint8 offset;   ///< Byte offset to first appearance of this attribute
+		uint8 offset;   ///< Byte offset to first appearance of this attribute in the vertex buffer
 	};
 
 	struct VertexFormat
@@ -61,23 +61,11 @@ namespace Graphics
 		/// Max attributes per vertex
 		static const uint8 MAX_ATTRIBUTES = 255;
 
-		enum class Type : uint8
-		{
-			VERTEX, ///< Specifies a vertex buffer
-			INDEX		///< Specifies an index / element buffer
-		};
-
 		/// Vertex attribute buffer
 		VertexAttribute attributes[MAX_ATTRIBUTES];
 
-		uint32 verticesSize;
-		uint32 indicesSize;
-
 		/// The number of vertex attributes in the format
 		uint32 attributeCount = 0;
-
-		/// The type of this buffer
-		Type type;
 
 		/// Add an attribute to this description
 		inline VertexFormat & AddAttribute (const VertexAttribute & attrib)
@@ -88,6 +76,7 @@ namespace Graphics
 			return (* this);
 		}
 
+		/// Finish the attribute specification process and compile description
 		inline void End ()
 		{
 			uint32 attribStride = 0;
@@ -114,5 +103,28 @@ namespace Graphics
 				}
 			}
 		}
+	};
+
+	enum class BufferType
+	{
+		VERTEX,
+		INDEX
+	};
+
+	struct BufferDescriptor
+	{
+		/// The type of this buffer
+		BufferType type;
+
+		/// The size in bytes of the data stored in the buffer
+		uint32 size;
+
+		/// Additional data specific to each buffer type
+		union
+		{
+			VertexFormat format; /// Vertex attribute description
+
+			// Nothing for index buffers ATM
+		};
 	};
 }

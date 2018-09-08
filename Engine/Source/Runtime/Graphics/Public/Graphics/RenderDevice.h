@@ -12,15 +12,18 @@ namespace Graphics { class Display; }
  * @namespace Graphics::RenderDevice
  * @author Seth Traman
  *
+ * @warning The render device is NOT thread safe, especially resource operations.  If you need to do any work with GPU resources, this work should be done on the rendering thread.
+ *
  **/
 
 namespace Graphics::RenderDevice
 {
 	// Data types
 
+	/// Any of the possible graphics API's that the render device uses internally
 	enum class GraphicsBackend
 	{
-		NULL,
+		NONE,
 		OPENGL_CORE,
 		// OPENGL_ES,
 		// WEBGL,
@@ -40,6 +43,7 @@ namespace Graphics::RenderDevice
 	/// Initializes the render device for drawing
 	void Initialize (const InitDescriptor & desc);
 
+	/// @return The backend API that the render device is using
 	inline GraphicsBackend BackendType ();
 
 	/// Returns info about the internal state of the render device.  Useful for debugging and profiling
@@ -58,15 +62,11 @@ namespace Graphics::RenderDevice
 	RenderResource AllocateVertexArray ();
 
 	/// Destroys a vertex array object
-	void DestroyVertexArray (RenderResource resource);
+	void DestroyVertexArray (RenderResource & resource);
 
-	RenderResource AllocateVertexBuffer (RenderResource vertexArray, const void * vertices, const VertexFormat & format);
+	RenderResource AllocateBuffer (RenderResource vertexArray, const void * data, const BufferDescriptor & desc);
 
-	void DestroyVertexBuffer (RenderResource resource);
-
-	RenderResource AllocateIndexBuffer (RenderResource vertexArray, const void * indices, uint32 indicesSize);
-
-	void DestroyIndexBuffer (RenderResource resource);
+	void DestroyBuffer (RenderResource & resource);
 
 	// Drawing Operations
 

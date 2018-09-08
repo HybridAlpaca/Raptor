@@ -128,12 +128,11 @@ RenderResource RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar frag
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shaderProgram;
 
-	return {resourceIndex, 0};
+	return { resourceIndex, 0 };
 }
 
 void RenderDevice::DestroyShaderProgram (RenderResource resource)
 {
-	++stats.resourceCalls;
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
@@ -145,136 +144,86 @@ RenderResource RenderDevice::AllocateVertexArray ()
 	// Create the buffers and populate handles
 	glGenVertexArrays(1, & VAO);
 
-	// Bind the vertex array
-	glBindVertexArray(VAO);
-	state.boundVAO = VAO;
-
-	++stats.resourceCalls;
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = VAO;
 
 	return {resourceIndex, 0};
 }
 
-void RenderDevice::DestroyVertexArray (RenderResource resource)
+void RenderDevice::DestroyVertexArray (RenderResource & resource)
 {
-	++stats.resourceCalls;
-
+	resource.Invalidate();
 	glDeleteVertexArrays(1, & resourceBuffer[resource]);
 }
 
-RenderResource RenderDevice::AllocateVertexBuffer (RenderResource vertexArray, const void * vertices, const VertexFormat & format)
+RenderResource RenderDevice::AllocateBuffer (RenderResource vertexArray, const void * data, const BufferDescriptor & desc)
 {
-	GLuint VBO;
-	glGenBuffers(1, & VBO);
+	GLuint buf;
+	glGenBuffers(1, & buf);
 
-	glBindVertexArray(resourceBuffer[vertexArray]);
+	state.BindVAO(resourceBuffer[vertexArray]);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	state.boundVBO = VBO;
-	glBufferData(GL_ARRAY_BUFFER, format.verticesSize, (void *) 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, format.verticesSize, vertices);
+	GLenum bufferType = (desc.type == BufferType::VERTEX) ? (GL_ARRAY_BUFFER) : (GL_ELEMENT_ARRAY_BUFFER);
 
-	for (uint32 i = 0; i < format.attributeCount; ++i)
+	glBindBuffer(bufferType, buf);
+	glBufferData(bufferType, desc.size, (void *) 0, GL_STATIC_DRAW);
+	glBufferSubData(bufferType, 0, desc.size, data);
+
+	switch (desc.type)
 	{
-		// Retrieve the buffer attribute description
-		const VertexAttribute & bufferDesc = format.attributes[i];
+		// For vertex buffers, describe vertex attributes
+		case BufferType::VERTEX:
+			for (uint32 i = 0; i < desc.format.attributeCount; ++i)
+			{
+				// Retrieve the buffer attribute description
+				const VertexAttribute & attrib = desc.format.attributes[i];
 
-		// Inform OpenGL of how to read the data
-		/// @warning This assumes all vertex data is 32 bits wide.
-		/// @todo Provide a more type-safe stride / offset deduction mechanism
-		glVertexAttribPointer(i, bufferDesc.size, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float32), (GLvoid *) (bufferDesc.offset * sizeof(float32)));
+				// Inform OpenGL of how to read the data
+				/// @warning This assumes all vertex data is 32 bits wide.
+				/// @todo Provide a more type-safe stride / offset deduction mechanism
+				glVertexAttribPointer(i, attrib.size, GL_FLOAT, GL_FALSE, attrib.stride * sizeof(float32), (GLvoid *) (attrib.offset * sizeof(float32)));
 
-		// Enable the vertex attribute
-		glEnableVertexAttribArray(i);
+				// Enable the vertex attribute
+				glEnableVertexAttribArray(i);
+			}
+			break;
+
+		// Don't do anything for index buffers
+		case BufferType::INDEX:
+		default:
+			break;
 	}
 
-	++stats.resourceCalls;
 	++resourceIndex;
-	resourceBuffer[resourceIndex] = VBO;
+	resourceBuffer[resourceIndex] = buf;
 
 	return {resourceIndex, 0};
 }
 
-void RenderDevice::DestroyVertexBuffer (RenderResource resource)
+void RenderDevice::DestroyBuffer (RenderResource & resource)
 {
-	/// @todo Implement this
-}
-
-RenderResource RenderDevice::AllocateIndexBuffer (RenderResource vertexArray, const void * indices, uint32 indicesSize)
-{
-	GLuint EBO;
-	glGenBuffers(1, & EBO);
-
-	glBindVertexArray(resourceBuffer[vertexArray]);
-
-	// Fill the index buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, (void *) 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indicesSize, indices);
-
-	++stats.resourceCalls;
-	++resourceIndex;
-	resourceBuffer[resourceIndex] = EBO;
-
-	return {resourceIndex, 0};
-}
-
-void RenderDevice::DestroyIndexBuffer (RenderResource resource)
-{
-	/// @todo Implement this
+	resource.Invalidate();
+	glDeleteBuffers(1, & resourceBuffer[resource]);
 }
 
 void RenderDevice::Clear (const Commands::Clear & cmd)
 {
-	++stats.drawCalls;
-
 	glClearColor(cmd.r, cmd.g, cmd.b, cmd.a);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void RenderDevice::Draw (const Commands::Draw & cmd)
 {
-	if (state.boundProgram != resourceBuffer[cmd.shaderProgram])
-	{
-		// If the shader program is not bound, bind it
-		glUseProgram(resourceBuffer[cmd.shaderProgram]);
-		state.boundProgram = resourceBuffer[cmd.shaderProgram];
-		++stats.drawCacheMisses;
-	}
-	++stats.drawCacheAccesses;
-	if (state.boundVAO != resourceBuffer[cmd.vertexArray])
-	{
-		// If the vertex array is not bound, bind it
-		glBindVertexArray(resourceBuffer[cmd.vertexArray]);
-		state.boundVAO = resourceBuffer[cmd.vertexArray];
-		++stats.drawCacheMisses;
-	}
-	++stats.drawCacheAccesses;
-	++stats.drawCalls;
+	state.BindProgram(resourceBuffer[cmd.shaderProgram]);
+	state.BindVAO(resourceBuffer[cmd.vertexArray]);
 
 	glDrawArrays(GL_TRIANGLES, cmd.indexOffset, cmd.indexCount);
 }
 
 void RenderDevice::DrawIndexed (const Commands::DrawIndexed & cmd)
 {
-	if (state.boundProgram != resourceBuffer[cmd.shaderProgram])
-	{
-		// If the shader program is not bound, bind it
-		glUseProgram(resourceBuffer[cmd.shaderProgram]);
-		state.boundProgram = resourceBuffer[cmd.shaderProgram];
-		++stats.drawCacheMisses;
-	}
-	++stats.drawCacheAccesses;
-	if (state.boundVAO != resourceBuffer[cmd.vertexArray])
-	{
-		// If the vertex array is not bound, bind it
-		glBindVertexArray(resourceBuffer[cmd.vertexArray]);
-		state.boundVAO = resourceBuffer[cmd.vertexArray];
-		++stats.drawCacheMisses;
-	}
-	++stats.drawCacheAccesses;
-	++stats.drawCalls;
+	state.BindProgram(resourceBuffer[cmd.shaderProgram]);
+	state.BindVAO(resourceBuffer[cmd.vertexArray]);
 
 	glDrawElements(GL_TRIANGLES, cmd.indexCount, GL_UNSIGNED_INT, (GLvoid *) cmd.indexOffset);
 }

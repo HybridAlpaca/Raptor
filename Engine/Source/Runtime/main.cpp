@@ -8,10 +8,24 @@
 
 namespace
 {
+	struct Vec3f
+	{
+		float32 x;
+		float32 y;
+		float32 z;
+	};
+
+	struct Color3f
+	{
+		float32 r;
+		float32 g;
+		float32 b;
+	};
+
 	struct Vertex
 	{
-		float32 position[3];
-		float32 color[3];
+		Vec3f position;
+		Color3f color;
 	};
 
 	Vertex vertices [] =
@@ -69,18 +83,17 @@ int32 main (int32 argc, cchar * argv)
 	RenderResource shader = RenderDevice::AllocateShaderProgram(vertex, fragment);
 
 	VertexFormat format;
-
-	format.verticesSize = sizeof(vertices);
-	format.indicesSize = sizeof(indices);
-
 	format
-		.AddAttribute({3}) // stride and offset are implied
-		.AddAttribute({3}) // stride and offset are implied
-		.End(); // Compile the vertex format
+		.AddAttribute({3}) // Stride and offset are implied
+		.AddAttribute({3}) // Stride and offset are implied
+		.End();            // Compile the vertex format
 
-	RenderResource vertexArray = RenderDevice::AllocateVertexArray();
-	RenderResource vertexBuffer = RenderDevice::AllocateVertexBuffer(vertexArray, vertices, format);
-	RenderResource indexBuffer = RenderDevice::AllocateIndexBuffer(vertexArray, indices, sizeof(indices));
+	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), format };
+	BufferDescriptor idexDesc   = { BufferType::INDEX, sizeof(indices) };
+
+	RenderResource vertexArray  = RenderDevice::AllocateVertexArray();
+	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
+	RenderResource indexBuffer  = RenderDevice::AllocateBuffer(vertexArray, indices, idexDesc);
 
 	double previousTime = display.Time();
 	uint16 frameCount = 0;
@@ -93,11 +106,9 @@ int32 main (int32 argc, cchar * argv)
 
 		// Draw
 
-		Commands::Clear clear = {0.2f, 0.2f, 0.2f, 1.0f};
-		Commands::Clear::Dispatch(clear);
+		Commands::Clear::Dispatch({ 0.2f, 0.2f, 0.2f, 1.0f });
 
-		Commands::DrawIndexed draw = {shader, vertexArray, 6, 0};
-		Commands::DrawIndexed::Dispatch(draw);
+		Commands::DrawIndexed::Dispatch({ shader, vertexArray, 6, 0 });
 
 		// Debug
 
@@ -120,8 +131,8 @@ int32 main (int32 argc, cchar * argv)
 		RenderDevice::Present(display);
 	}
 
-	RenderDevice::DestroyVertexArray(indexBuffer);
-	RenderDevice::DestroyVertexArray(vertexBuffer);
+	RenderDevice::DestroyBuffer(indexBuffer);
+	RenderDevice::DestroyBuffer(vertexBuffer);
 	RenderDevice::DestroyVertexArray(vertexArray);
 	RenderDevice::DestroyShaderProgram(shader);
 
