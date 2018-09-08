@@ -85,7 +85,7 @@ void RenderDevice::Initialize (const InitDescriptor & desc)
 
 RenderDevice::GraphicsBackend RenderDevice::BackendType ()
 {
-	return GraphicsBackend::OPENGL;
+	return GraphicsBackend::OPENGL_CORE;
 }
 
 RenderStats RenderDevice::Stats ()
@@ -137,7 +137,7 @@ void RenderDevice::DestroyShaderProgram (RenderResource resource)
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
-RenderResource RenderDevice::AllocateVertexArray (const float32 * vertices, const uint32 * indices, const VertexArrayDescription & desc)
+RenderResource RenderDevice::AllocateVertexArray (const void * vertices, const void * indices, const VertexFormat & format)
 {
 	// Create handles to buffers
 	GLuint VAO;
@@ -153,22 +153,24 @@ RenderResource RenderDevice::AllocateVertexArray (const float32 * vertices, cons
 
 	// Fill the vertex buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-	glBufferData(GL_ARRAY_BUFFER, desc.verticesSize * sizeof(float32) , (void *) 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, desc.verticesSize * sizeof(float32), vertices);
+	glBufferData(GL_ARRAY_BUFFER, format.verticesSize, (void *) 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, format.verticesSize, vertices);
 
 	// Fill the index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.indicesSize * sizeof(uint32), (void *) 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, desc.indicesSize * sizeof(uint32), indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, format.indicesSize, (void *) 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, format.indicesSize, indices);
 
 	// The current vertex layout assumes an interleaved approach to filling the buffer.  This means that of the three vertex attributes (P, N, T), the buffer will look like (PNTPNTPNTPNTPNTPNT...)
 	// There are many approaches to filling the vertex buffer, and we will likely use many variations of them depending on the type of mesh being uploaded.
-	for (uint32 i = 0; i < desc.bufferDescCount; ++i)
+	for (uint32 i = 0; i < format.attributeCount; ++i)
 	{
 		// Retrieve the buffer attribute description
-		VertexAttribute & bufferDesc = desc.vertexAttributes[i];
+		const VertexAttribute & bufferDesc = format.attributes[i];
 
 		// Inform OpenGL of how to read the data
+		/// @warning This assumes all vertex data is 32 bits wide.
+		/// @todo Provide a more type-safe stride / offset deduction mechanism
 		glVertexAttribPointer(i, bufferDesc.size, GL_FLOAT, GL_FALSE, bufferDesc.stride * sizeof(float32), (GLvoid *) (bufferDesc.offset * sizeof(float32)));
 
 		// Enable the vertex attribute

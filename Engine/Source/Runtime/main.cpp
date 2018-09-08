@@ -8,6 +8,26 @@
 
 namespace
 {
+	struct Vertex
+	{
+		float32 position[3];
+		float32 color[3];
+	};
+
+	Vertex vertices [] =
+	{
+		{ {0.5f,   0.5f, 0.0f}, {1.0f, 0.0f, 0.0f} },
+		{ {0.5f,  -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f} },
+		{ {-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f} },
+		{ {-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 1.0f} }
+	};
+
+	uint32 indices [] =
+	{
+		0, 1, 3, // first triangle
+		1, 2, 3 // second triangle
+	};
+
 	cchar vertex =
 		"#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
@@ -27,20 +47,6 @@ namespace
 		"{\n"
 		"  FragColor = vec4(ourColor, 1.0);\n"
 		"}\0";
-
-	float32 vertices [] =
-	{
-		 0.5f,  0.5f,	0.0f, 1.0f, 0.0f, 0.0f,
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f
-	};
-
-	uint32 indices [] =
-	{
-		0, 1, 3, // first triangle
-		1, 2, 3 // second triangle
-	};
 }
 
 int32 main (int32 argc, cchar * argv)
@@ -57,32 +63,22 @@ int32 main (int32 argc, cchar * argv)
 		1
 	});
 
-	RenderDevice::InitDescriptor initDescriptor =
-	{
-		true
-	};
-	RenderDevice::Initialize(initDescriptor);
+	RenderDevice::Initialize({true});
 	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
 	RenderResource shader = RenderDevice::AllocateShaderProgram(vertex, fragment);
 
-	VertexAttribute vertexAttributes [] =
-	{{
-		3, 6, 0 // position
-	},
-	{
-		3, 6, 3 // color
-	}};
+	VertexFormat format;
 
-	VertexArrayDescription desc =
-	{
-		vertexAttributes,
-		sizeof(vertices) / sizeof(vertices[0]),
-		sizeof(indices) / sizeof(indices[0]),
-		sizeof(vertexAttributes) / sizeof(vertexAttributes[0])
-	};
+	format.verticesSize = sizeof(vertices);
+	format.indicesSize = sizeof(indices);
 
-	RenderResource vertexArray = RenderDevice::AllocateVertexArray(vertices, indices, desc);
+	format
+		.AddAttribute({3}) // stride and offset are implied
+		.AddAttribute({3}) // stride and offset are implied
+		.End();            // Compile the vertex format
+
+	RenderResource vertexArray = RenderDevice::AllocateVertexArray(vertices, indices, format);
 
 	double previousTime = display.Time();
 	uint16 frameCount = 0;

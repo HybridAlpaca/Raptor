@@ -20,7 +20,8 @@ namespace Graphics::RenderDevice
 
 	enum class GraphicsBackend
 	{
-		OPENGL,
+		NULL,
+		OPENGL_CORE,
 		// OPENGL_ES,
 		// WEBGL,
 		// D3D11,
@@ -54,7 +55,7 @@ namespace Graphics::RenderDevice
 	void DestroyShaderProgram (RenderResource resource);
 
 	/// Creates a vertex array object for storing vertices to be uploaded to the GPU
-	RenderResource AllocateVertexArray (const float32 * vertices, const uint32 * indices, const VertexArrayDescription & desc);
+	RenderResource AllocateVertexArray (const void * vertices, const void * indices, const VertexFormat & format);
 
 	/// Destroys a vertex array object
 	void DestroyVertexArray (RenderResource resource);

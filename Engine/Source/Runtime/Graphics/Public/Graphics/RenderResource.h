@@ -18,6 +18,7 @@ namespace Graphics
 		/// Check for validity of resource
 		inline bool Valid () const { return (id == NULL_ID); }
 
+		/// Implicit type conversion overload to return id
 		inline operator uint16 () const { return id; }
 
 		/// @return True if the two resources point to the same resource, false otherwise
@@ -52,16 +53,66 @@ namespace Graphics
 	{
 		uint8 size;		///< Number of components (i.e. position has 3, {x y z})
 		uint8 stride; ///< Byte offset between consecutive appearances of this attribute
-		uint8 offset; ///< Byte offset to first appearance of this attribute
+		uint8 offset = 0; ///< Byte offset to first appearance of this attribute
 	};
 
-	struct VertexArrayDescription
+	struct VertexFormat
 	{
-		VertexAttribute * vertexAttributes; ///< Array of vertex buffer attribute descriptions
+		/// Max attributes per vertex
+		static const uint8 MAX_ATTRIBUTES = 255;
 
-		uint32 verticesSize; ///< The number of elements / vertices in the vertex buffer
-		uint32 indicesSize; ///< The number of elements / indices in the index buffer
+		enum class Type : uint8
+		{
+			VERTEX, ///< Specifies a vertex buffer
+			INDEX		///< Specifies an index / element buffer
+		};
 
-		uint8 bufferDescCount; ///< Number of vertex attributes in the attribute buffer
+		/// Vertex attribute buffer
+		VertexAttribute attributes[MAX_ATTRIBUTES];
+
+		uint32 verticesSize;
+		uint32 indicesSize;
+
+		/// The number of vertex attributes in the format
+		uint32 attributeCount = 0;
+
+		/// The type of this buffer
+		Type type;
+
+		/// Add an attribute to this description
+		inline VertexFormat & AddAttribute (const VertexAttribute & attrib)
+		{
+			attributes[attributeCount++] = attrib;
+
+			// Return dereferenced this to allow method chaining
+			return (* this);
+		}
+
+		inline void End ()
+		{
+			uint32 attribStride = 0;
+
+			for (uint32 i = 0; i < attributeCount; ++i)
+			{
+				attribStride += attributes[i].size;
+
+				// Don't calculate offset if this is the first attribute
+				if (i == 0) { continue; }
+
+				if (!attributes[i].offset)
+				{
+					// If this attribute doesn't have a starting offset, assign one based on previous attributes
+					attributes[i].offset = attributes[i - 1].offset + attributes[i - 1].size;
+				}
+			}
+
+			for (uint32 i = 0; i < attributeCount; ++i)
+			{
+				if (!attributes[i].stride)
+				{
+					attributes[i].stride = attribStride;
+				}
+			}
+		}
 	};
 }
