@@ -51,9 +51,9 @@ namespace Graphics
 
 	struct VertexAttribute
 	{
-		uint8 size;		///< Number of components (i.e. position has 3, {x y z})
-		uint8 stride; ///< Byte offset between consecutive appearances of this attribute
-		uint8 offset = 0; ///< Byte offset to first appearance of this attribute
+		uint8 size;		  ///< Number of components (i.e. position has 3, {x y z})
+		uint8 stride;   ///< Byte offset between consecutive appearances of this attribute
+		uint8 offset;   ///< Byte offset to first appearance of this attribute
 	};
 
 	struct VertexFormat

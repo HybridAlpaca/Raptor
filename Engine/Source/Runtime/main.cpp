@@ -76,9 +76,11 @@ int32 main (int32 argc, cchar * argv)
 	format
 		.AddAttribute({3}) // stride and offset are implied
 		.AddAttribute({3}) // stride and offset are implied
-		.End();            // Compile the vertex format
+		.End(); // Compile the vertex format
 
-	RenderResource vertexArray = RenderDevice::AllocateVertexArray(vertices, indices, format);
+	RenderResource vertexArray = RenderDevice::AllocateVertexArray();
+	RenderResource vertexBuffer = RenderDevice::AllocateVertexBuffer(vertexArray, vertices, format);
+	RenderResource indexBuffer = RenderDevice::AllocateIndexBuffer(vertexArray, indices, sizeof(indices));
 
 	double previousTime = display.Time();
 	uint16 frameCount = 0;
@@ -118,6 +120,8 @@ int32 main (int32 argc, cchar * argv)
 		RenderDevice::Present(display);
 	}
 
+	RenderDevice::DestroyVertexArray(indexBuffer);
+	RenderDevice::DestroyVertexArray(vertexBuffer);
 	RenderDevice::DestroyVertexArray(vertexArray);
 	RenderDevice::DestroyShaderProgram(shader);
 

@@ -137,32 +137,44 @@ void RenderDevice::DestroyShaderProgram (RenderResource resource)
 	glDeleteProgram(resourceBuffer[resource]);
 }
 
-RenderResource RenderDevice::AllocateVertexArray (const void * vertices, const void * indices, const VertexFormat & format)
+RenderResource RenderDevice::AllocateVertexArray ()
 {
 	// Create handles to buffers
 	GLuint VAO;
-	GLuint buffers [2]; // 0 = VBO, 1 = EBO
 
 	// Create the buffers and populate handles
 	glGenVertexArrays(1, & VAO);
-	glGenBuffers(2, buffers);
 
 	// Bind the vertex array
 	glBindVertexArray(VAO);
 	state.boundVAO = VAO;
 
-	// Fill the vertex buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+	++stats.resourceCalls;
+	++resourceIndex;
+	resourceBuffer[resourceIndex] = VAO;
+
+	return {resourceIndex, 0};
+}
+
+void RenderDevice::DestroyVertexArray (RenderResource resource)
+{
+	++stats.resourceCalls;
+
+	glDeleteVertexArrays(1, & resourceBuffer[resource]);
+}
+
+RenderResource RenderDevice::AllocateVertexBuffer (RenderResource vertexArray, const void * vertices, const VertexFormat & format)
+{
+	GLuint VBO;
+	glGenBuffers(1, & VBO);
+
+	glBindVertexArray(resourceBuffer[vertexArray]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	state.boundVBO = VBO;
 	glBufferData(GL_ARRAY_BUFFER, format.verticesSize, (void *) 0, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, format.verticesSize, vertices);
 
-	// Fill the index buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, format.indicesSize, (void *) 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, format.indicesSize, indices);
-
-	// The current vertex layout assumes an interleaved approach to filling the buffer.  This means that of the three vertex attributes (P, N, T), the buffer will look like (PNTPNTPNTPNTPNTPNT...)
-	// There are many approaches to filling the vertex buffer, and we will likely use many variations of them depending on the type of mesh being uploaded.
 	for (uint32 i = 0; i < format.attributeCount; ++i)
 	{
 		// Retrieve the buffer attribute description
@@ -179,16 +191,38 @@ RenderResource RenderDevice::AllocateVertexArray (const void * vertices, const v
 
 	++stats.resourceCalls;
 	++resourceIndex;
-	resourceBuffer[resourceIndex] = VAO;
+	resourceBuffer[resourceIndex] = VBO;
 
 	return {resourceIndex, 0};
 }
 
-void RenderDevice::DestroyVertexArray (RenderResource resource)
+void RenderDevice::DestroyVertexBuffer (RenderResource resource)
 {
-	++stats.resourceCalls;
+	/// @todo Implement this
+}
 
-	glDeleteVertexArrays(1, & resourceBuffer[resource]);
+RenderResource RenderDevice::AllocateIndexBuffer (RenderResource vertexArray, const void * indices, uint32 indicesSize)
+{
+	GLuint EBO;
+	glGenBuffers(1, & EBO);
+
+	glBindVertexArray(resourceBuffer[vertexArray]);
+
+	// Fill the index buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, (void *) 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indicesSize, indices);
+
+	++stats.resourceCalls;
+	++resourceIndex;
+	resourceBuffer[resourceIndex] = EBO;
+
+	return {resourceIndex, 0};
+}
+
+void RenderDevice::DestroyIndexBuffer (RenderResource resource)
+{
+	/// @todo Implement this
 }
 
 void RenderDevice::Clear (const Commands::Clear & cmd)
