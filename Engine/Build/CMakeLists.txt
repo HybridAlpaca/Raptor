@@ -70,6 +70,19 @@ endif()
 # Static Libraries #
 ####################
 
+# imgui
+
+add_library (imgui STATIC
+	${SOURCE_ROOT_DIR}/External/imgui/imgui.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_demo.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_widgets.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_draw.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_impl_glfw.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_impl_opengl3.cpp
+)
+
+set_target_properties(imgui PROPERTIES LINKER_LANGUAGE CXX)
+
 # raptor standard library
 
 # add_library (LibRaptor STATIC
@@ -105,7 +118,8 @@ add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	# LibRaptor
 	Graphics
-	assimp
+	imgui
+	# assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}

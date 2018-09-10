@@ -1,6 +1,9 @@
 #include <Display.h>
 
 #include <GLFW/glfw3.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 using namespace Graphics;
 
@@ -26,10 +29,23 @@ Display::Display (const DisplayParams & params)
 
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(params.vsync);
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+
+	// Setup style
+	ImGui::StyleColorsDark();
 }
 
 Display::~Display ()
 {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
 	glfwDestroyWindow(window);
 	window = nullptr;
 
@@ -48,6 +64,8 @@ void Display::PollEvents () const
 
 void Display::SwapBuffers () const
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	glfwSwapBuffers(window);
 }
 

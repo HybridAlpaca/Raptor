@@ -4,7 +4,9 @@
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
 
-#include <iostream>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 namespace
 {
@@ -95,8 +97,7 @@ int32 main (int32 argc, cchar * argv)
 	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
 	RenderResource indexBuffer  = RenderDevice::AllocateBuffer(vertexArray, indices, idexDesc);
 
-	double previousTime = display.Time();
-	uint16 frameCount = 0;
+	float color [] = { 0.2f, 0.2f, 0.2f, 1.0f };
 
 	while (!display.Closed())
 	{
@@ -104,27 +105,31 @@ int32 main (int32 argc, cchar * argv)
 
 		display.PollEvents();
 
-		// Draw
-
-		Commands::Clear::Dispatch({ 0.2f, 0.2f, 0.2f, 1.0f });
-
-		Commands::DrawIndexed::Dispatch({ shader, vertexArray, 6, 0 });
-
 		// Debug
 
 		{
-			// Measure speed
-			double currentTime = display.Time();
-			++frameCount;
-			// If a second has passed.
-			if (currentTime - previousTime >= 1.0)
-			{
-				std::cout << "DEBUG - " << frameCount << '\n';
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
 
-				frameCount = 0;
-				previousTime = currentTime;
-			}
+			ImGui::Begin("Debug");
+
+			ImGui::Text(
+				"App -  %.3f ms/frame (%.1f FPS)",
+				1000.0f / ImGui::GetIO().Framerate,
+				ImGui::GetIO().Framerate
+			);
+
+			ImGui::ColorEdit4("Clear Color", color);
+
+			ImGui::End();
 		}
+
+		// Draw
+
+		Commands::Clear::Dispatch({ color[0], color[1], color[2], color[3] });
+
+		Commands::DrawIndexed::Dispatch({ shader, vertexArray, 6, 0 });
 
 		// Present
 

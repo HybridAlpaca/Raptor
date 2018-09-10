@@ -30,7 +30,8 @@ namespace Graphics::RenderDevice
 		// D3D11,
 		// D3D12,
 		// METAL,
-		// VULKAN
+		// VULKAN,
+		OTHER
 	};
 
 	struct InitDescriptor
