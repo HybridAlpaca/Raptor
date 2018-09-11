@@ -44,7 +44,6 @@ endif ()
 # Inlcudes & Linking #
 ######################
 
-include_directories (${RUNTIME_ROOT_DIR})
 include_directories ("${SOURCE_ROOT_DIR}/External")
 
 link_directories ("${ENGINE_ROOT_DIR}/Binaries")
@@ -71,29 +70,45 @@ endif()
 # Static Libraries #
 ####################
 
-# core
+# imgui
 
-add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Shader.cpp
-	${RUNTIME_ROOT_DIR}/Core/Camera.cpp
-	${RUNTIME_ROOT_DIR}/Core/Model.cpp
-	${RUNTIME_ROOT_DIR}/Core/Display.cpp
+add_library (imgui STATIC
+	${SOURCE_ROOT_DIR}/External/imgui/imgui.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_demo.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_widgets.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_draw.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_impl_glfw.cpp
+	${SOURCE_ROOT_DIR}/External/imgui/imgui_impl_opengl3.cpp
 )
-target_include_directories (Core PRIVATE
-	${RUNTIME_ROOT_DIR}/Core/
-)
+
+set_target_properties(imgui PROPERTIES LINKER_LANGUAGE CXX)
+
+# raptor standard library
+
+# add_library (LibRaptor STATIC
+	# ${RUNTIME_ROOT_DIR}/Raptor/Private/POSIX/Console.cpp
+# )
+# target_include_directories (LibRaptor PUBLIC
+	# ${RUNTIME_ROOT_DIR}/Raptor/Private
+	# ${RUNTIME_ROOT_DIR}/Raptor/Public/Raptor
+# )
+
+include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 
 # graphics
 
 add_library (Graphics STATIC
-	${RUNTIME_ROOT_DIR}/Graphics/OpenGL/RenderDevice.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/DrawContext.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Private/Commands.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/RenderDevice.cpp
+	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/Display.cpp
 )
-target_include_directories (Graphics PRIVATE
-	${RUNTIME_ROOT_DIR}/Graphics/
+target_include_directories (Graphics PUBLIC
+	${RUNTIME_ROOT_DIR}/Graphics/Private
+	${RUNTIME_ROOT_DIR}/Graphics/Public/Graphics
 )
+include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 
-install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
@@ -101,9 +116,10 @@ install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
-	Core
+	# LibRaptor
 	Graphics
-	assimp
+	imgui
+	# assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}

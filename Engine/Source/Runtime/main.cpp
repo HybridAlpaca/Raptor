@@ -1,134 +1,158 @@
-#include <Core/Shader.h>
-#include <Core/Model.h>
-#include <Core/Camera.h>
-#include <Core/Display.h>
-#include <Graphics/RenderBackend.h>
-#include <Graphics/DrawContext.h>
+#include <Raptor/Required.h>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include "STBI/stb_image.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <Graphics/Commands.h>
+#include <Graphics/Display.h>
+#include <Graphics/RenderDevice.h>
 
-#include <iostream>
-#include <vector>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 
-/**
- *
- * @mainpage Raptor Public Documentation
- *
- * Not much to see here.  Start looking around!
- *
- **/
-
-void ProcessInput (GLFWwindow * window, Camera & camera)
+namespace
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+	struct Vec3f
+	{
+		float32 x;
+		float32 y;
+		float32 z;
+	};
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(CameraControl::FORWARD, 0.16f);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(CameraControl::BACKWARD, 0.16f);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(CameraControl::LEFT, 0.16f);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(CameraControl::RIGHT, 0.16f);
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-		camera.ProcessKeyboard(CameraControl::UP, 0.16f);
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		camera.ProcessKeyboard(CameraControl::DOWN, 0.16f);
+	struct Color3f
+	{
+		float32 r;
+		float32 g;
+		float32 b;
+	};
+
+	struct Vertex
+	{
+		Vec3f position;
+		Color3f color;
+	};
+
+	Vertex vertices [] =
+	{
+		{ {0.5f,   0.5f, 0.0f}, {1.0f, 0.0f, 0.0f} },
+		{ {0.5f,  -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f} },
+		{ {-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f} },
+		{ {-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 1.0f} }
+	};
+
+	uint32 indices [] =
+	{
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
+	};
+
+	cchar vertex =
+		"#version 330 core\n"
+		"layout (location = 0) in vec3 aPos;\n"
+		"layout (location = 1) in vec3 aColor;\n"
+		"out vec3 ourColor;\n"
+		"void main()\n"
+		"{\n"
+		"  gl_Position = vec4(aPos, 1.0);\n"
+		"  ourColor = aColor;\n"
+		"}\0";
+
+	cchar fragment =
+		"#version 330 core\n"
+		"out vec4 FragColor;\n"
+		"in vec3 ourColor;\n"
+		"void main()\n"
+		"{\n"
+		"  FragColor = vec4(ourColor, 1.0);\n"
+		"}\0";
 }
 
 int32 main (int32 argc, cchar * argv)
 {
-	Display display;
+	using namespace Graphics;
 
-	Graphics::Backend::RenderDevice renderDevice;
+	Display display
+	({
+		"Hello, Raptor!",
+		800,
+		600,
+		1,
+		false,
+		3,
+		3
+	});
 
-	Shader shader("/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.vs", "/home/cellman123/Desktop/Raptor/Engine/Assets/Shaders/Phong.fs");
+	RenderDevice::Initialize({true});
 
-	ModelLoader loader("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/");
-	std::vector<Mesh> nanosuit = loader.Load("nanosuit/nanosuit.obj");
+	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
-	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-
-	Graphics::DrawContext ctx;
-
-	while (!display.ShouldClose())
+	RenderResource shaders [] =
 	{
-		ProcessInput(display.Window(), camera);
+		RenderDevice::AllocateShader(vertex,   ShaderType::VERTEX),
+		RenderDevice::AllocateShader(fragment, ShaderType::FRAGMENT)
+	};
 
-		ctx.Clear(1.0f, 0.0f, 1.0f);
+	RenderResource program = RenderDevice::AllocateShaderProgram(shaders, 2);
 
-		glm::mat4 model(1.0f);
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+	RenderDevice::DestroyShader(shaders[0]);
+	RenderDevice::DestroyShader(shaders[1]);
 
-		shader.Bind();
-		shader.Mat4("model", model);
-		shader.Mat4("view", camera.ViewMatrix());
-		shader.Mat4("projection", projection);
+	VertexFormat format;
+	format
+		.AddAttribute({3}) // Stride and offset are implied
+		.AddAttribute({3}) // Stride and offset are implied
+		.End();            // Compile the vertex format
 
-		shader.Vec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		shader.Vec3("lightPos", camera.Position());
-		shader.Vec3("viewPos", camera.Position());
+	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), format };
+	BufferDescriptor idexDesc   = { BufferType::INDEX,  sizeof(indices) };
 
-		renderDevice.Dispatch(ctx);
-		ctx.ClearBuffer();
+	RenderResource vertexArray  = RenderDevice::AllocateVertexArray();
+	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
+	RenderResource indexBuffer  = RenderDevice::AllocateBuffer(vertexArray, indices, idexDesc);
 
-		for (unsigned int i = 0; i < nanosuit.size(); i++)
+	float color [] = { 0.2f, 0.2f, 0.2f, 1.0f };
+
+	while (!display.Closed())
+	{
+		// Listen
+
+		display.PollEvents();
+
+		// Debug
+
 		{
-			unsigned int diffuseNr = 1;
-			unsigned int specularNr = 1;
-			unsigned int heightNr = 1;
-			unsigned int normalNr = 1;
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
 
-			for (unsigned int j = 0; j < nanosuit[i].textures.size(); j++)
-			{
-				glActiveTexture(GL_TEXTURE0 + j); // activate proper texture unit before binding
-				// retrieve texture number (the N in diffuse_textureN)
-				std::string name;
-				std::string number;
-				TextureType type = nanosuit[i].textures[j].type;
-				if (type == TextureType::DIFFUSE)
-				{
-					name = "diffuse";
-					number = std::to_string(diffuseNr++);
-				}
-				else if (type == TextureType::SPECULAR)
-				{
-					name = "specular";
-					number = std::to_string(specularNr++);
-				}
-				else if (type == TextureType::NORMAL)
-				{
-					name = "normal";
-					number = std::to_string(normalNr++);
-				}
-				else if (type == TextureType::HEIGHT)
-				{
-					name = "height";
-					number = std::to_string(heightNr++);
-				}
+			ImGui::Begin("Debug");
 
-				shader.Int(("texture_" + name + number).c_str(), j);
-				glBindTexture(GL_TEXTURE_2D, nanosuit[i].textures[j].id);
-			}
+			if (ImGui::Button("Quit")) { display.Close(); }
 
-			{
-				Graphics::DrawContext meshCtx;
-				meshCtx.DrawIndexed(nanosuit[i].VAO, nanosuit[i].indexCount);
-				renderDevice.Dispatch(meshCtx);
-				meshCtx.ClearBuffer();
-			}
+			ImGui::Text(
+				"App -  %.3f ms/frame (%.1f FPS)",
+				1000.0f / ImGui::GetIO().Framerate,
+				ImGui::GetIO().Framerate
+			);
+
+			ImGui::ColorEdit4("Clear Color", color);
+
+			ImGui::End();
 		}
 
-		display.Update();
+		// Draw
+
+		Commands::Clear::Dispatch({ color[0], color[1], color[2], color[3] });
+
+		Commands::DrawIndexed::Dispatch({ program, vertexArray, 6, 0 });
+
+		// Present
+
+		RenderDevice::Present(display);
 	}
+
+	RenderDevice::DestroyVertexArray(vertexArray);
+	RenderDevice::DestroyBuffer(indexBuffer);
+	RenderDevice::DestroyBuffer(vertexBuffer);
+	RenderDevice::DestroyShaderProgram(program);
 
 	return 0;
 }
