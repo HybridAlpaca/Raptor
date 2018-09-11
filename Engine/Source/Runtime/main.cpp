@@ -41,7 +41,7 @@ namespace
 	uint32 indices [] =
 	{
 		0, 1, 3, // first triangle
-		1, 2, 3 // second triangle
+		1, 2, 3  // second triangle
 	};
 
 	cchar vertex =
@@ -72,8 +72,8 @@ int32 main (int32 argc, cchar * argv)
 	Display display
 	({
 		"Hello, Raptor!",
-		0,
-		0,
+		800,
+		600,
 		1,
 		false,
 		3,
@@ -84,7 +84,16 @@ int32 main (int32 argc, cchar * argv)
 
 	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
-	RenderResource shader = RenderDevice::AllocateShaderProgram(vertex, fragment);
+	RenderResource shaders [] =
+	{
+		RenderDevice::AllocateShader(vertex,   ShaderType::VERTEX),
+		RenderDevice::AllocateShader(fragment, ShaderType::FRAGMENT)
+	};
+
+	RenderResource program = RenderDevice::AllocateShaderProgram(shaders, 2);
+
+	RenderDevice::DestroyShader(shaders[0]);
+	RenderDevice::DestroyShader(shaders[1]);
 
 	VertexFormat format;
 	format
@@ -93,7 +102,7 @@ int32 main (int32 argc, cchar * argv)
 		.End();            // Compile the vertex format
 
 	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), format };
-	BufferDescriptor idexDesc   = { BufferType::INDEX, sizeof(indices) };
+	BufferDescriptor idexDesc   = { BufferType::INDEX,  sizeof(indices) };
 
 	RenderResource vertexArray  = RenderDevice::AllocateVertexArray();
 	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
@@ -116,6 +125,8 @@ int32 main (int32 argc, cchar * argv)
 
 			ImGui::Begin("Debug");
 
+			if (ImGui::Button("Quit")) { display.Close(); }
+
 			ImGui::Text(
 				"App -  %.3f ms/frame (%.1f FPS)",
 				1000.0f / ImGui::GetIO().Framerate,
@@ -131,17 +142,17 @@ int32 main (int32 argc, cchar * argv)
 
 		Commands::Clear::Dispatch({ color[0], color[1], color[2], color[3] });
 
-		Commands::DrawIndexed::Dispatch({ shader, vertexArray, 6, 0 });
+		Commands::DrawIndexed::Dispatch({ program, vertexArray, 6, 0 });
 
 		// Present
 
 		RenderDevice::Present(display);
 	}
 
+	RenderDevice::DestroyVertexArray(vertexArray);
 	RenderDevice::DestroyBuffer(indexBuffer);
 	RenderDevice::DestroyBuffer(vertexBuffer);
-	RenderDevice::DestroyVertexArray(vertexArray);
-	RenderDevice::DestroyShaderProgram(shader);
+	RenderDevice::DestroyShaderProgram(program);
 
 	return 0;
 }

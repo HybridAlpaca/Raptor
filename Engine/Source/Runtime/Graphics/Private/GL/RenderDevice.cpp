@@ -93,38 +93,45 @@ RenderStats RenderDevice::Stats ()
 	return stats;
 }
 
-RenderResource RenderDevice::AllocateShaderProgram (cchar vertexCode, cchar fragmentCode)
+RenderResource RenderDevice::AllocateShader (cchar code, ShaderType type)
 {
-	// Create shaders
-	GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint shader = glCreateShader((type == ShaderType::VERTEX) ? (GL_VERTEX_SHADER) : (GL_FRAGMENT_SHADER));
+	glShaderSource(shader, 1, & code, nullptr);
 
-	// Set shader source code
-	glShaderSource(vertexShader, 1, & vertexCode, nullptr);
-	// glShaderSource(vertexShader, 1, & vertexCode, nullptr));
-	glShaderSource(fragmentShader, 1, & fragmentCode, nullptr);
+	glCompileShader(shader);
 
-	// Compile shaders
-	glCompileShader(vertexShader);
-	glCompileShader(fragmentShader);
+	++resourceIndex;
+	resourceBuffer[resourceIndex] = shader;
 
+	return { resourceIndex, 0 };
+}
+
+void RenderDevice::DestroyShader (RenderResource & resource)
+{
+	resource.Invalidate();
+	glDeleteShader(resourceBuffer[resource]);
+}
+
+RenderResource RenderDevice::AllocateShaderProgram (const RenderResource * const shaders, uint32 shaderCount)
+{
 	// Create shader program
 	GLuint shaderProgram = glCreateProgram();
 
 	// Attach shaders to program
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
+	for (uint32 i = 0; i < shaderCount; ++i)
+	{
+		glAttachShader(shaderProgram, resourceBuffer[shaders[i]]);
+	}
 
 	// Link shaders together inside program
 	glLinkProgram(shaderProgram);
 
 	// Clean up
-	glDetachShader(shaderProgram, vertexShader);
-	glDetachShader(shaderProgram, fragmentShader);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	for (uint32 i = 0; i < shaderCount; ++i)
+	{
+		glDetachShader(shaderProgram, resourceBuffer[shaders[i]]);
+	}
 
-	++stats.resourceCalls;
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shaderProgram;
 

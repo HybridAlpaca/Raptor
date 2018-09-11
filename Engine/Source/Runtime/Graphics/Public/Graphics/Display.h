@@ -43,6 +43,9 @@ namespace Graphics
 		/// @return Whether the window is closed or not
 		bool Closed () const;
 
+		/// Informs the window manager to close this window
+		void Close () const;
+
 		/// Pulls window events off the event queue for processing
 		void PollEvents () const;
 

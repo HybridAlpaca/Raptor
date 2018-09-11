@@ -52,9 +52,14 @@ namespace Graphics::RenderDevice
 
 	// Resource Operations
 
-	/// Creates a shader program object with a vertex shader and a fragment shader
-	/// @todo Create a more customizable shader pipeline with geometry & tess shaders
-	RenderResource AllocateShaderProgram (cchar vertexCode, cchar fragmentCode);
+	/// Allocates a shader of the specified type
+	RenderResource AllocateShader (cchar code, ShaderType type);
+
+	/// Destroys a shader
+	void DestroyShader (RenderResource & resource);
+
+	/// Creates and links a shader program with specified shaders
+	RenderResource AllocateShaderProgram (const RenderResource * const shaders, uint32 shaderCount);
 
 	/// Destroys a shader program object
 	void DestroyShaderProgram (RenderResource resource);
@@ -65,8 +70,10 @@ namespace Graphics::RenderDevice
 	/// Destroys a vertex array object
 	void DestroyVertexArray (RenderResource & resource);
 
+	/// Creates a segment of memory on the GPU for storing vertices, indices, or any generic data
 	RenderResource AllocateBuffer (RenderResource vertexArray, const void * data, const BufferDescriptor & desc);
 
+	/// Frees a segment of memory allocated as a GPU buffer
 	void DestroyBuffer (RenderResource & resource);
 
 	// Drawing Operations

@@ -47,7 +47,7 @@ Display::Display (const DisplayParams & params)
 	ImGui::CreateContext();
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplOpenGL3_Init("#version 330 core");
 
 	// Setup style
 	ImGui::StyleColorsDark();
@@ -68,6 +68,11 @@ Display::~Display ()
 bool Display::Closed () const
 {
 	return glfwWindowShouldClose(window);
+}
+
+void Display::Close () const
+{
+	glfwSetWindowShouldClose(window, true);
 }
 
 void Display::PollEvents () const

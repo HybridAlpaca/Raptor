@@ -21,6 +21,19 @@ namespace Graphics
 		/// Implicit type conversion overload to return id
 		inline operator uint16 () const { return id; }
 
+		RenderResource & operator= (const RenderResource & rhs)
+		{
+			if (rhs == (* this)) return (* this);
+			id = rhs.id;
+			version = rhs.version;
+		}
+
+		RenderResource & operator= (uint32 rhs)
+		{
+			id = rhs;
+			return (* this);
+		}
+
 		/// @return True if the two resources point to the same resource, false otherwise
 		inline bool operator== (const RenderResource & rhs) const
 		{
@@ -126,5 +139,11 @@ namespace Graphics
 
 			// Nothing for index buffers ATM
 		};
+	};
+
+	enum class ShaderType
+	{
+		VERTEX,
+		FRAGMENT
 	};
 }
