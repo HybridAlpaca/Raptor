@@ -72,14 +72,16 @@ int32 main (int32 argc, cchar * argv)
 	Display display
 	({
 		"Hello, Raptor!",
-		640,
-		480,
+		0,
+		0,
+		1,
+		false,
 		3,
-		3,
-		1
+		3
 	});
 
 	RenderDevice::Initialize({true});
+
 	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
 	RenderResource shader = RenderDevice::AllocateShaderProgram(vertex, fragment);

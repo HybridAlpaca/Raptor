@@ -11,14 +11,17 @@ namespace Graphics
 	{
 		cchar title = ""; ///< The text to display on top of the window, commonly the name of the app
 
-		uint32 width = 800; ///< Starting width in pixels of the window
-		uint32 height = 600; ///< Starting height in pixels of the window
+		uint32 width = 800; ///< Window width in px.  Value of 0 indicates full width
+		uint32 height = 600; ///< Window height in px.  Value of 0 indicates full height
+
+		uint32 vsync = 1;	///< How many monitor refreshes to wait for before a buffer swap
+
+		bool fullscreen = false;
 
 		// OpenGL specific
 		uint8 glVersionMajor = 3; ///< @todo Move this to render device
 		uint8 glVersionMinor = 3; ///< @todo Move this to render device
 
-		uint32 vsync = 1;	///< How many monitor refreshes to wait for before a buffer swap
 	};
 
 	class Display
