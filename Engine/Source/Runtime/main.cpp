@@ -62,7 +62,10 @@ int32 main (int32 argc, cchar * argv)
 		.glVersionMinor = 3
 	});
 
-	RenderDevice::Initialize({true});
+	RenderDevice::Initialize
+	({
+		.debug = true
+	});
 
 	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
 
@@ -79,7 +82,7 @@ int32 main (int32 argc, cchar * argv)
 
 	VertexFormat format;
 	format
-		.AddAttribute({3}) // Stride and offset are implied
+		.AddAttribute({ 3 }) // Stride and offset are implied
 		.End();            // Compile the vertex format
 
 	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), format };
@@ -89,8 +92,11 @@ int32 main (int32 argc, cchar * argv)
 	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
 	RenderResource indexBuffer  = RenderDevice::AllocateBuffer(vertexArray, indices, idexDesc);
 
-	float32 clear [] { 0.2f, 0.2f, 0.2f, 1.0f };
-	float32 color [] { 1.0f, 0.2f, 0.5f };
+	float32 clear [4] { 0.2f, 0.2f, 0.2f, 1.0f };
+	float32 color [3] { 1.0f, 0.2f, 0.5f };
+
+	const uint32 fpsBufferSize = 20;
+	float32 fps [fpsBufferSize] { 0 };
 
 	ImGui::GetIO().IniFilename = "./Engine/Config/imgui.ini";
 
@@ -111,7 +117,13 @@ int32 main (int32 argc, cchar * argv)
 
 			if (ImGui::Button("Quit")) { display.Close(); }
 
-			ImGui::Text("%.3f ms (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			float32 FPS = ImGui::GetIO().Framerate;
+
+			for (uint32 i = 0; i < fpsBufferSize - 1; ++i) { fps[i] = fps[i + 1]; }
+
+			fps[fpsBufferSize - 1] = FPS;
+
+			ImGui::PlotLines("FPS", fps, fpsBufferSize, 0, "0 - 60", 0, 60);
 
 			ImGui::ColorEdit4("Clear Color", clear);
 			ImGui::ColorEdit3("Quad Color", color);

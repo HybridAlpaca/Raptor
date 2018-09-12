@@ -22,15 +22,15 @@ namespace Graphics::RenderDevice
 	/// Any of the possible graphics API's that the render device uses internally
 	enum class GraphicsBackend
 	{
-		NONE,
-		OPENGL_CORE,
+		NONE,         /// Represents a null render device, useful for mockups & testing
+		OPENGL_CORE,  /// Using an OpenGL 3.3+ Core profile backend
 		// OPENGL_ES,
 		// WEBGL,
 		// D3D11,
 		// D3D12,
 		// METAL,
 		// VULKAN,
-		OTHER
+		OTHER         /// Any backend other than those specified above, i.e. a user-defined render device
 	};
 
 	struct InitDescriptor
