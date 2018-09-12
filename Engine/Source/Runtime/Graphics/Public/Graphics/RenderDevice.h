@@ -2,7 +2,6 @@
 
 #include <Raptor/Required.h>
 #include <RenderResource.h>
-#include <Commands.h>
 #include <RenderStats.h>
 
 namespace Graphics { class Display; }
@@ -80,14 +79,17 @@ namespace Graphics::RenderDevice
 
 	/// Clears the framebuffer
 	/// @todo Allow DSA-esque framebuffer specification
-	void Clear (const Commands::Clear & cmd);
+	void Clear (float color [4]);
+
+	void ShaderUniform (RenderResource program, cchar name, float32 value);
+	void ShaderUniform (RenderResource program, cchar name, float32 values [3]);
 
 	/// Draws the specified vertex array with a given shader program
 	/// @note Since this command is non-indexed, the index buffer is not used.  See DrawIndexed for more
-	void Draw (const Commands::Draw & cmd);
+	void Draw (RenderResource program, RenderResource vertexArray, uint32 indexCount, uint32 indexOffset);
 
 	/// Draws a vertex array by its indices with a provided shader program
-	void DrawIndexed (const Commands::DrawIndexed & cmd);
+	void DrawIndexed (RenderResource program, RenderResource vertexArray, uint32 indexCount, uint32 indexOffset);
 
 	// Windowing Utilities
 

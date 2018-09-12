@@ -1,6 +1,6 @@
 #include <Raptor/Required.h>
+#include <Raptor/Vector3.h>
 
-#include <Graphics/Commands.h>
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
 
@@ -10,32 +10,17 @@
 
 namespace
 {
-	struct Vec3f
-	{
-		float32 x;
-		float32 y;
-		float32 z;
-	};
-
-	struct Color3f
-	{
-		float32 r;
-		float32 g;
-		float32 b;
-	};
-
 	struct Vertex
 	{
-		Vec3f position;
-		Color3f color;
+		Raptor::Vector3f position;
 	};
 
 	Vertex vertices [] =
 	{
-		{ {0.5f,   0.5f, 0.0f}, {1.0f, 0.0f, 0.0f} },
-		{ {0.5f,  -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f} },
-		{ {-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f} },
-		{ {-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 1.0f} }
+		{ {0.5f,   0.5f, 0.0f} },
+		{ {0.5f,  -0.5f, 0.0f} },
+		{ {-0.5f, -0.5f, 0.0f} },
+		{ {-0.5f,  0.5f, 0.0f} }
 	};
 
 	uint32 indices [] =
@@ -47,21 +32,18 @@ namespace
 	cchar vertex =
 		"#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
-		"layout (location = 1) in vec3 aColor;\n"
-		"out vec3 ourColor;\n"
 		"void main()\n"
 		"{\n"
 		"  gl_Position = vec4(aPos, 1.0);\n"
-		"  ourColor = aColor;\n"
 		"}\0";
 
 	cchar fragment =
 		"#version 330 core\n"
 		"out vec4 FragColor;\n"
-		"in vec3 ourColor;\n"
+		"uniform vec3 color;\n"
 		"void main()\n"
 		"{\n"
-		"  FragColor = vec4(ourColor, 1.0);\n"
+		"  FragColor = vec4(color, 1.0);\n"
 		"}\0";
 }
 
@@ -71,13 +53,13 @@ int32 main (int32 argc, cchar * argv)
 
 	Display display
 	({
-		"Hello, Raptor!",
-		800,
-		600,
-		1,
-		false,
-		3,
-		3
+		.title          = "Hello, Raptor!",
+		.width          = 800,
+		.height         = 600,
+		.vsync          = 1,
+		.fullscreen     = false,
+		.glVersionMajor = 3,
+		.glVersionMinor = 3
 	});
 
 	RenderDevice::Initialize({true});
@@ -98,7 +80,6 @@ int32 main (int32 argc, cchar * argv)
 	VertexFormat format;
 	format
 		.AddAttribute({3}) // Stride and offset are implied
-		.AddAttribute({3}) // Stride and offset are implied
 		.End();            // Compile the vertex format
 
 	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), format };
@@ -108,7 +89,10 @@ int32 main (int32 argc, cchar * argv)
 	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
 	RenderResource indexBuffer  = RenderDevice::AllocateBuffer(vertexArray, indices, idexDesc);
 
-	float color [] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	float32 clear [] { 0.2f, 0.2f, 0.2f, 1.0f };
+	float32 color [] { 1.0f, 0.2f, 0.5f };
+
+	ImGui::GetIO().IniFilename = "./Engine/Config/imgui.ini";
 
 	while (!display.Closed())
 	{
@@ -127,22 +111,20 @@ int32 main (int32 argc, cchar * argv)
 
 			if (ImGui::Button("Quit")) { display.Close(); }
 
-			ImGui::Text(
-				"App -  %.3f ms/frame (%.1f FPS)",
-				1000.0f / ImGui::GetIO().Framerate,
-				ImGui::GetIO().Framerate
-			);
+			ImGui::Text("%.3f ms (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-			ImGui::ColorEdit4("Clear Color", color);
+			ImGui::ColorEdit4("Clear Color", clear);
+			ImGui::ColorEdit3("Quad Color", color);
 
 			ImGui::End();
 		}
 
 		// Draw
 
-		Commands::Clear::Dispatch({ color[0], color[1], color[2], color[3] });
+		RenderDevice::Clear(clear);
 
-		Commands::DrawIndexed::Dispatch({ program, vertexArray, 6, 0 });
+		RenderDevice::ShaderUniform(program, "color", color);
+		RenderDevice::DrawIndexed(program, vertexArray, sizeof(indices) / sizeof(indices[0]), 0);
 
 		// Present
 

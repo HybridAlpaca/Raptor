@@ -213,26 +213,42 @@ void RenderDevice::DestroyBuffer (RenderResource & resource)
 	glDeleteBuffers(1, & resourceBuffer[resource]);
 }
 
-void RenderDevice::Clear (const Commands::Clear & cmd)
+void RenderDevice::Clear (float color [4])
 {
-	glClearColor(cmd.r, cmd.g, cmd.b, cmd.a);
+	glClearColor(color[0], color[1], color[2], color[3]);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenderDevice::Draw (const Commands::Draw & cmd)
+void RenderDevice::ShaderUniform (RenderResource program, cchar name, float32 value)
 {
-	state.BindProgram(resourceBuffer[cmd.shaderProgram]);
-	state.BindVAO(resourceBuffer[cmd.vertexArray]);
+	state.BindProgram(resourceBuffer[program]);
 
-	glDrawArrays(GL_TRIANGLES, cmd.indexOffset, cmd.indexCount);
+	GLuint location = glGetUniformLocation(resourceBuffer[program], name);
+	glUniform1f(location, value);
 }
 
-void RenderDevice::DrawIndexed (const Commands::DrawIndexed & cmd)
+void RenderDevice::ShaderUniform (RenderResource program, cchar name, float32 values [3])
 {
-	state.BindProgram(resourceBuffer[cmd.shaderProgram]);
-	state.BindVAO(resourceBuffer[cmd.vertexArray]);
+	state.BindProgram(resourceBuffer[program]);
 
-	glDrawElements(GL_TRIANGLES, cmd.indexCount, GL_UNSIGNED_INT, (GLvoid *) cmd.indexOffset);
+	GLuint location = glGetUniformLocation(resourceBuffer[program], name);
+	glUniform3f(location, values[0], values[1], values[2]);
+}
+
+void RenderDevice::Draw (RenderResource program, RenderResource vertexArray, uint32 indexCount, uint32 indexOffset)
+{
+	state.BindProgram(resourceBuffer[program]);
+	state.BindVAO(resourceBuffer[vertexArray]);
+
+	glDrawArrays(GL_TRIANGLES, indexOffset, indexCount);
+}
+
+void RenderDevice::DrawIndexed (RenderResource program, RenderResource vertexArray, uint32 indexCount, uint32 indexOffset)
+{
+	state.BindProgram(resourceBuffer[program]);
+	state.BindVAO(resourceBuffer[vertexArray]);
+
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (GLvoid *) indexOffset);
 }
 
 void RenderDevice::Present (const Display & display)

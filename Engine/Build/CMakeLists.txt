@@ -98,7 +98,6 @@ include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 # graphics
 
 add_library (Graphics STATIC
-	${RUNTIME_ROOT_DIR}/Graphics/Private/Commands.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/RenderDevice.cpp
 	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/Display.cpp
 )
