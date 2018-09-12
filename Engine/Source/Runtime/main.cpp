@@ -51,6 +51,8 @@ int32 main (int32 argc, cchar * argv)
 {
 	using namespace Graphics;
 
+	// Display & Swapchain Creation
+
 	Display display
 	({
 		.title          = "Hello, Raptor!",
@@ -62,12 +64,16 @@ int32 main (int32 argc, cchar * argv)
 		.glVersionMinor = 3
 	});
 
+	// Render Device Initialization
+
 	RenderDevice::Initialize
 	({
 		.debug = true
 	});
 
 	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
+
+	// Shader Program Creation
 
 	RenderResource shaders [] =
 	{
@@ -79,6 +85,8 @@ int32 main (int32 argc, cchar * argv)
 
 	RenderDevice::DestroyShader(shaders[0]);
 	RenderDevice::DestroyShader(shaders[1]);
+
+	// Vertex Array & Buffer Creation
 
 	VertexFormat format;
 	format
@@ -92,8 +100,12 @@ int32 main (int32 argc, cchar * argv)
 	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
 	RenderResource indexBuffer  = RenderDevice::AllocateBuffer(vertexArray, indices, idexDesc);
 
+	// Uniforms and Dynamic Render Data
+
 	float32 clear [4] { 0.2f, 0.2f, 0.2f, 1.0f };
 	float32 color [3] { 1.0f, 0.2f, 0.5f };
+
+	// Debug Variables
 
 	const uint32 fpsBufferSize = 20;
 	float32 fps [fpsBufferSize] { 0 };
@@ -142,6 +154,8 @@ int32 main (int32 argc, cchar * argv)
 
 		RenderDevice::Present(display);
 	}
+
+	// Resource Destruction
 
 	RenderDevice::DestroyVertexArray(vertexArray);
 	RenderDevice::DestroyBuffer(indexBuffer);
