@@ -26,6 +26,7 @@ namespace Graphics
 			if (rhs == (* this)) return (* this);
 			id = rhs.id;
 			version = rhs.version;
+			return (* this);
 		}
 
 		RenderResource & operator= (uint32 rhs)

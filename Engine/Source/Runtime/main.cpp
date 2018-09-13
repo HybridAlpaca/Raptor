@@ -8,11 +8,14 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
+using namespace Graphics;
+using namespace Raptor;
+
 namespace
 {
 	struct Vertex
 	{
-		Raptor::Vector3f position;
+		Vector3f position;
 	};
 
 	Vertex vertices [] =
@@ -45,12 +48,54 @@ namespace
 		"{\n"
 		"  FragColor = vec4(color, 1.0);\n"
 		"}\0";
+
+		struct Memory
+		{
+			void * data  = nullptr;
+			uintptr size = 0;
+			uint32 count = 0;
+		};
+
+		class Mesh
+		{
+			RenderResource
+				VAO,
+				VBO,
+				EBO;
+
+			uint32 indexCount;
+
+		public:
+
+			Mesh (const VertexFormat & fmt, const Memory & vertices, const Memory & indices)
+			{
+				BufferDescriptor vertDesc   = { BufferType::VERTEX, vertices.size, fmt };
+				BufferDescriptor idexDesc   = { BufferType::INDEX,  indices.size };
+
+				VAO = RenderDevice::AllocateVertexArray();
+				VBO = RenderDevice::AllocateBuffer(VAO, vertices.data, vertDesc);
+				EBO = RenderDevice::AllocateBuffer(VAO, indices.data, idexDesc);
+
+				indexCount = indices.count;
+			}
+
+			~Mesh ()
+			{
+				RenderDevice::DestroyVertexArray(VAO);
+				RenderDevice::DestroyBuffer(VBO);
+				RenderDevice::DestroyBuffer(EBO);
+			}
+
+			void Draw (RenderResource program, float32 color [4])
+			{
+				RenderDevice::ShaderUniform(program, "color", color);
+				RenderDevice::DrawIndexed(program, VAO, indexCount, 0);
+			}
+		};
 }
 
 int32 main (int32 argc, cchar * argv)
 {
-	using namespace Graphics;
-
 	// Display & Swapchain Creation
 
 	Display display
@@ -93,12 +138,12 @@ int32 main (int32 argc, cchar * argv)
 		.AddAttribute({ 3 }) // Stride and offset are implied
 		.End();            // Compile the vertex format
 
-	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), format };
-	BufferDescriptor idexDesc   = { BufferType::INDEX,  sizeof(indices) };
-
-	RenderResource vertexArray  = RenderDevice::AllocateVertexArray();
-	RenderResource vertexBuffer = RenderDevice::AllocateBuffer(vertexArray, vertices, vertDesc);
-	RenderResource indexBuffer  = RenderDevice::AllocateBuffer(vertexArray, indices, idexDesc);
+	Mesh mesh
+	(
+		format,
+		{ vertices, sizeof(vertices) },
+		{ indices, sizeof(indices), sizeof(indices) / sizeof(indices[0]) }
+	);
 
 	// Uniforms and Dynamic Render Data
 
@@ -147,8 +192,7 @@ int32 main (int32 argc, cchar * argv)
 
 		RenderDevice::Clear(clear);
 
-		RenderDevice::ShaderUniform(program, "color", color);
-		RenderDevice::DrawIndexed(program, vertexArray, sizeof(indices) / sizeof(indices[0]), 0);
+		mesh.Draw(program, color);
 
 		// Present
 
@@ -157,9 +201,6 @@ int32 main (int32 argc, cchar * argv)
 
 	// Resource Destruction
 
-	RenderDevice::DestroyVertexArray(vertexArray);
-	RenderDevice::DestroyBuffer(indexBuffer);
-	RenderDevice::DestroyBuffer(vertexBuffer);
 	RenderDevice::DestroyShaderProgram(program);
 
 	return 0;
