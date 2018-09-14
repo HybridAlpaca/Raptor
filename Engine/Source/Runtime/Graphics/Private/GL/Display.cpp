@@ -30,30 +30,29 @@ Display::WindowHandle Display::Create (const InitDescriptor & desc)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, desc.glVersionMinor);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	uint16 handle = ++windowCount;
 
-	windowBuffer[handle] = glfwCreateWindow(desc.width, desc.height, desc.title, nullptr, nullptr);
+	GLFWwindow * window = glfwCreateWindow(desc.width, desc.height, desc.title, nullptr, nullptr);
 
-	if (windowBuffer[handle] == nullptr)
+	if (window == nullptr)
 	{
 		/// @todo Log error
-		--windowCount;
 		return NULL_HANDLE;
 	}
 
-	glfwMakeContextCurrent(windowBuffer[handle]);
+	glfwMakeContextCurrent(window);
 	glfwSwapInterval(desc.vsync);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
-	ImGui_ImplGlfw_InitForOpenGL(windowBuffer[handle], true);
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 
 	// Setup style
 	ImGui::StyleColorsDark();
 
-	return handle;
+	windowBuffer[++windowCount] = window;
+	return windowCount;
 }
 
 void Display::Destroy (WindowHandle window)
