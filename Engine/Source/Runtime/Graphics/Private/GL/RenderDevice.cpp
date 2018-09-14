@@ -251,19 +251,6 @@ void RenderDevice::DrawIndexed (RenderResource program, RenderResource vertexArr
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (GLvoid *) indexOffset);
 }
 
-void RenderDevice::Present (const Display & display)
-{
-	// Reset statistics
-	stats.drawCalls = 0;
-	stats.resourceCalls = 0;
-	stats.APICallErrors = 0;
-	stats.drawCacheAccesses = 0;
-	stats.drawCacheMisses = 0;
-
-	// Forward the Present command
-	display.SwapBuffers();
-}
-
 void RenderDevice::Resize (uint32 width, uint32 height)
 {
 	// Don't cache the size, since Resize should only occur after an actual resize

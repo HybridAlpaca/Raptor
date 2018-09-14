@@ -98,7 +98,7 @@ int32 main (int32 argc, cchar * argv)
 {
 	// Display & Swapchain Creation
 
-	Display display
+	Display::WindowHandle window = Display::Create
 	({
 		.title          = "Hello, Raptor!",
 		.width          = 800,
@@ -116,7 +116,7 @@ int32 main (int32 argc, cchar * argv)
 		.debug = true
 	});
 
-	RenderDevice::Resize(display.FrameWidth(), display.FrameHeight());
+	RenderDevice::Resize(Display::FrameWidth(window), Display::FrameHeight(window));
 
 	// Shader Program Creation
 
@@ -136,7 +136,7 @@ int32 main (int32 argc, cchar * argv)
 	VertexFormat format;
 	format
 		.AddAttribute({ 3 }) // Stride and offset are implied
-		.End();            // Compile the vertex format
+		.End();              // Compile the vertex format
 
 	Mesh mesh
 	(
@@ -157,11 +157,11 @@ int32 main (int32 argc, cchar * argv)
 
 	ImGui::GetIO().IniFilename = "./Engine/Config/imgui.ini";
 
-	while (!display.Closed())
+	while (!Display::Closed(window))
 	{
 		// Listen
 
-		display.PollEvents();
+		Display::PollEvents();
 
 		// Debug
 
@@ -172,7 +172,7 @@ int32 main (int32 argc, cchar * argv)
 
 			ImGui::Begin("Debug");
 
-			if (ImGui::Button("Quit")) { display.Close(); }
+			if (ImGui::Button("Quit")) { Display::Close(window); }
 
 			float32 FPS = ImGui::GetIO().Framerate;
 
@@ -196,7 +196,7 @@ int32 main (int32 argc, cchar * argv)
 
 		// Present
 
-		RenderDevice::Present(display);
+		Display::SwapBuffers(window);
 	}
 
 	// Resource Destruction

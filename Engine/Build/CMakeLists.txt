@@ -95,6 +95,18 @@ set_target_properties(imgui PROPERTIES LINKER_LANGUAGE CXX)
 
 include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 
+# Core
+
+# add_library (Core STATIC
+	# ${RUNTIME_ROOT_DIR}/Core/Private/POSIX/Console.cpp
+# )
+# target_include_directories (Core PUBLIC
+	# ${RUNTIME_ROOT_DIR}/Core/Private
+	# ${RUNTIME_ROOT_DIR}/Core/Public/Core
+# )
+
+include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
+
 # graphics
 
 add_library (Graphics STATIC

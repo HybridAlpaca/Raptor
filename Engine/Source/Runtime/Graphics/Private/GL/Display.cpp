@@ -1,107 +1,109 @@
 #include <Display.h>
 
 #include <GLFW/glfw3.h>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
 using namespace Graphics;
 
-Display::Display (const DisplayParams & params)
+// File-local internal data
+
+namespace
+{
+	uint16 windowCount = 0;
+	GLFWwindow * windowBuffer [Display::MAX_WINDOWS] { nullptr };
+}
+
+Display::WindowHandle Display::Create (const InitDescriptor & desc)
 {
 	if (!glfwInit())
 	{
-		return;
+		/// @todo Log error
+		return NULL_HANDLE;
 	}
-
-	GLFWmonitor * monitor = glfwGetPrimaryMonitor();
-	const GLFWvidmode * mode = glfwGetVideoMode(monitor);
-
-	glfwWindowHint(GLFW_RED_BITS, mode -> redBits);
-	glfwWindowHint(GLFW_GREEN_BITS, mode -> greenBits);
-	glfwWindowHint(GLFW_BLUE_BITS, mode -> blueBits);
-	glfwWindowHint(GLFW_REFRESH_RATE, mode -> refreshRate);
 
 	// OpenGL specific window hints
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, params.glVersionMajor);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, params.glVersionMinor);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, desc.glVersionMajor);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, desc.glVersionMinor);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	uint32 width  = (params.width)  ? (params.width)  : (mode -> width);
-	uint32 height = (params.height) ? (params.height) : (mode -> height);
+	uint16 handle = ++windowCount;
 
-	window = glfwCreateWindow(width, height, params.title, (params.fullscreen ? monitor : nullptr), nullptr);
+	windowBuffer[handle] = glfwCreateWindow(desc.width, desc.height, desc.title, nullptr, nullptr);
 
-	if (window == nullptr)
+	if (windowBuffer[handle] == nullptr)
 	{
 		/// @todo Log error
-		glfwTerminate();
-		return;
+		--windowCount;
+		return NULL_HANDLE;
 	}
 
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(params.vsync);
+	glfwMakeContextCurrent(windowBuffer[handle]);
+	glfwSwapInterval(desc.vsync);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(windowBuffer[handle], true);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 
 	// Setup style
 	ImGui::StyleColorsDark();
+
+	return handle;
 }
 
-Display::~Display ()
+void Display::Destroy (WindowHandle window)
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
-	glfwDestroyWindow(window);
-	window = nullptr;
+	glfwDestroyWindow(windowBuffer[window]);
+	windowBuffer[window] = nullptr;
 
 	glfwTerminate();
 }
 
-bool Display::Closed () const
+bool Display::Closed (WindowHandle window)
 {
-	return glfwWindowShouldClose(window);
+	return glfwWindowShouldClose(windowBuffer[window]);
 }
 
-void Display::Close () const
+void Display::Close (WindowHandle window)
 {
-	glfwSetWindowShouldClose(window, true);
+	glfwSetWindowShouldClose(windowBuffer[window], true);
 }
 
-void Display::PollEvents () const
+void Display::PollEvents ()
 {
 	glfwPollEvents();
 }
 
-void Display::SwapBuffers () const
+void Display::SwapBuffers (WindowHandle window)
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	glfwSwapBuffers(window);
+	glfwSwapBuffers(windowBuffer[window]);
 }
 
-double Display::Time () const
+uint32 Display::FrameWidth (WindowHandle window)
 {
-	return glfwGetTime();
-}
+	int32 width, height;
 
-uint32 Display::FrameWidth () const
-{
-	int width, height;
-	glfwGetFramebufferSize(window, & width, & height);
+	glfwGetFramebufferSize(windowBuffer[window], & width, & height);
+
 	return width;
 }
 
-uint32 Display::FrameHeight () const
+uint32 Display::FrameHeight (WindowHandle window)
 {
-	int width, height;
-	glfwGetFramebufferSize(window, & width, & height);
+	int32 width, height;
+
+	glfwGetFramebufferSize(windowBuffer[window], & width, & height);
+
 	return height;
 }

@@ -1,10 +1,9 @@
 #pragma once
 
 #include <Raptor/Required.h>
+#include <Display.h>
 #include <RenderResource.h>
 #include <RenderStats.h>
-
-namespace Graphics { class Display; }
 
 /**
  *
@@ -92,9 +91,6 @@ namespace Graphics::RenderDevice
 	void DrawIndexed (RenderResource program, RenderResource vertexArray, uint32 indexCount, uint32 indexOffset);
 
 	// Windowing Utilities
-
-	/// Pushes the last rendered frame onto a display instance
-	void Present (const Display & display);
 
 	/// Resize the internal renderer resolution
 	void Resize (uint32 width, uint32 height);
