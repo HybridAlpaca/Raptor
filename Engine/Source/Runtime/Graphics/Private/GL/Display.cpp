@@ -91,18 +91,18 @@ void Display::SwapBuffers (WindowHandle window)
 
 uint32 Display::FrameWidth (WindowHandle window)
 {
-	int32 width, height;
+	int32 width;
 
-	glfwGetFramebufferSize(windowBuffer[window], & width, & height);
+	glfwGetFramebufferSize(windowBuffer[window], & width, nullptr);
 
 	return width;
 }
 
 uint32 Display::FrameHeight (WindowHandle window)
 {
-	int32 width, height;
+	int32 height;
 
-	glfwGetFramebufferSize(windowBuffer[window], & width, & height);
+	glfwGetFramebufferSize(windowBuffer[window], nullptr, & height);
 
 	return height;
 }

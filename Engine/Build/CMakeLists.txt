@@ -48,9 +48,9 @@ include_directories ("${SOURCE_ROOT_DIR}/External")
 
 link_directories ("${ENGINE_ROOT_DIR}/Binaries")
 
-#######################
-# Dependant Libraries #
-#######################
+################
+# Dependancies #
+################
 
 # opengl
 
@@ -97,13 +97,14 @@ include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 
 # Core
 
-# add_library (Core STATIC
-	# ${RUNTIME_ROOT_DIR}/Core/Private/POSIX/Console.cpp
-# )
-# target_include_directories (Core PUBLIC
-	# ${RUNTIME_ROOT_DIR}/Core/Private
-	# ${RUNTIME_ROOT_DIR}/Core/Public/Core
-# )
+add_library (Core STATIC
+	${RUNTIME_ROOT_DIR}/Core/Private/JsUtil.cpp
+	${RUNTIME_ROOT_DIR}/Core/Private/Functions.cpp
+)
+target_include_directories (Core PUBLIC
+	${RUNTIME_ROOT_DIR}/Core/Private
+	${RUNTIME_ROOT_DIR}/Core/Public/Core
+)
 
 include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
 
@@ -128,12 +129,14 @@ install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	# LibRaptor
+	Core
 	Graphics
 	imgui
 	# assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}
+	v8
 	glfw
 	X11
 	pthread

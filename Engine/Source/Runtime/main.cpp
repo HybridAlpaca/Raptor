@@ -1,15 +1,21 @@
 #include <Raptor/Required.h>
 #include <Raptor/Vector3.h>
 
+#include <Core/JsUtil.h>
+#include <Core/Functions.h>
+
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
+
+#include <iostream>
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
-using namespace Graphics;
 using namespace Raptor;
+using namespace Core;
+using namespace Graphics;
 
 namespace
 {
@@ -59,10 +65,30 @@ namespace
 		"{\n"
 		"  FragColor = vec4(color, 1.0);\n"
 		"}\0";
+
+	cchar script =
+		"var i = 42;"
+		"print(i);"
+		"print('yeet')";
 }
 
 int32 main (int32 argc, cchar * argv)
 {
+	// Expiremental Javascript Engine
+
+	{
+		v8::Locker locker;
+		v8::HandleScope scope;
+
+		v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
+
+		global -> Set(v8::String::New("print"), v8::FunctionTemplate::New(JS::Print));
+
+		v8::Handle<v8::Context> context = v8::Context::New(nullptr, global);
+
+		JS::ExecuteString(context, script, "FILENAME");
+	}
+
 	// Display & Swapchain Creation
 
 	Display::WindowHandle window = Display::Create
