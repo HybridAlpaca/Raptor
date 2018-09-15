@@ -9,10 +9,6 @@
 
 #include <iostream>
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
-
 using namespace Raptor;
 using namespace Core;
 using namespace Graphics;
@@ -65,28 +61,47 @@ namespace
 		"{\n"
 		"  FragColor = vec4(color, 1.0);\n"
 		"}\0";
-
-	cchar script =
-		"var i = 42;"
-		"print(i);"
-		"print('yeet')";
 }
 
 int32 main (int32 argc, cchar * argv)
 {
 	// Expiremental Javascript Engine
 
+	v8::Locker locker;
+	v8::HandleScope scope;
+
+	v8::Handle<v8::ObjectTemplate> globalTemplate = v8::ObjectTemplate::New();
+
+	globalTemplate -> Set(v8::String::New("RAPTOR"), v8::Boolean::New(true));
+	globalTemplate -> Set(v8::String::New("print"), v8::FunctionTemplate::New(JS::Print));
+
+	v8::Handle<v8::Context> context = v8::Context::New(nullptr, globalTemplate);
+
+	v8::Handle<v8::String> source = JS::ReadFile(
+		"/home/cellman123/Desktop/Raptor/Engine/Plugins/startup.js"
+	);
+
+	v8::Context::Scope contextScope(context);
+
+	v8::Handle<v8::Script> script = v8::Script::Compile(source, v8::String::New("FILE"));
+
+	script -> Run();
+
+	v8::Handle<v8::Object> global = context -> Global();
+
+	global -> Set (v8::String::New("VERSION"), v8::Number::New(0.1));
+
+	v8::Handle<v8::Value> initFunc = global -> Get(v8::String::New("Init"));
+	if (initFunc -> IsFunction())
 	{
-		v8::Locker locker;
-		v8::HandleScope scope;
+		v8::Handle<v8::Function> func = v8::Handle<v8::Function>::Cast(initFunc);
 
-		v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
+		v8::Handle<v8::Value> args[2];
 
-		global -> Set(v8::String::New("print"), v8::FunctionTemplate::New(JS::Print));
+		args[0] = v8::String::New("value1");
+		args[1] = v8::String::New("value2");
 
-		v8::Handle<v8::Context> context = v8::Context::New(nullptr, global);
-
-		JS::ExecuteString(context, script, "FILENAME");
+		func -> Call(global, 2, args);
 	}
 
 	// Display & Swapchain Creation
@@ -144,13 +159,6 @@ int32 main (int32 argc, cchar * argv)
 	float32 clear [4] { 0.2f, 0.2f, 0.2f, 1.0f };
 	float32 color [3] { 1.0f, 0.2f, 0.5f };
 
-	// Debug Variables
-
-	const uint32 fpsBufferSize = 20;
-	float32 fps [fpsBufferSize] { 0 };
-
-	ImGui::GetIO().IniFilename = "./Engine/Config/imgui.ini";
-
 	while (!Display::Closed(window))
 	{
 		// Listen
@@ -159,27 +167,18 @@ int32 main (int32 argc, cchar * argv)
 
 		// Debug
 
+		float32 FPS = 60.0f; // sshhhh.... ;)
+
+		v8::Handle<v8::Value> updateFunc = global -> Get(v8::String::New("Update"));
+		if (updateFunc -> IsFunction())
 		{
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplGlfw_NewFrame();
-			ImGui::NewFrame();
+			v8::Handle<v8::Function> func = v8::Handle<v8::Function>::Cast(updateFunc);
 
-			ImGui::Begin("Debug");
+			v8::Handle<v8::Value> args[1];
 
-			if (ImGui::Button("Quit")) { Display::Close(window); }
+			args[0] = v8::Number::New(FPS);
 
-			float32 FPS = ImGui::GetIO().Framerate;
-
-			for (uint32 i = 0; i < fpsBufferSize - 1; ++i) { fps[i] = fps[i + 1]; }
-
-			fps[fpsBufferSize - 1] = FPS;
-
-			ImGui::PlotLines("FPS", fps, fpsBufferSize, 0, "0 - 60", 0, 60);
-
-			ImGui::ColorEdit4("Clear Color", clear);
-			ImGui::ColorEdit3("Quad Color", color);
-
-			ImGui::End();
+			func -> Call(global, 1, args);
 		}
 
 		// Draw

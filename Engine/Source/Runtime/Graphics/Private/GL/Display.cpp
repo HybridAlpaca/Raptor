@@ -2,10 +2,6 @@
 
 #include <GLFW/glfw3.h>
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
-
 using namespace Graphics;
 
 // File-local internal data
@@ -42,25 +38,12 @@ Display::WindowHandle Display::Create (const InitDescriptor & desc)
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(desc.vsync);
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init("#version 330 core");
-
-	// Setup style
-	ImGui::StyleColorsDark();
-
 	windowBuffer[++windowCount] = window;
 	return windowCount;
 }
 
 void Display::Destroy (WindowHandle window)
 {
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-
 	glfwDestroyWindow(windowBuffer[window]);
 	windowBuffer[window] = nullptr;
 
@@ -84,8 +67,6 @@ void Display::PollEvents ()
 
 void Display::SwapBuffers (WindowHandle window)
 {
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	glfwSwapBuffers(windowBuffer[window]);
 }
 
