@@ -16,7 +16,18 @@ namespace
 	struct Vertex
 	{
 		Vector3f position;
+
+		static VertexFormat format;
+
+		static void Init ()
+		{
+			format
+				.AddAttribute({ 3 })
+				.End();
+		}
 	};
+
+	VertexFormat Vertex::format;
 
 	Vertex vertices [] =
 	{
@@ -48,50 +59,6 @@ namespace
 		"{\n"
 		"  FragColor = vec4(color, 1.0);\n"
 		"}\0";
-
-		struct Memory
-		{
-			void * data  = nullptr;
-			uintptr size = 0;
-			uint32 count = 0;
-		};
-
-		class Mesh
-		{
-			RenderResource
-				VAO,
-				VBO,
-				EBO;
-
-			uint32 indexCount;
-
-		public:
-
-			Mesh (const VertexFormat & fmt, const Memory & vertices, const Memory & indices)
-			{
-				BufferDescriptor vertDesc   = { BufferType::VERTEX, vertices.size, fmt };
-				BufferDescriptor idexDesc   = { BufferType::INDEX,  indices.size };
-
-				VAO = RenderDevice::AllocateVertexArray();
-				VBO = RenderDevice::AllocateBuffer(VAO, vertices.data, vertDesc);
-				EBO = RenderDevice::AllocateBuffer(VAO, indices.data, idexDesc);
-
-				indexCount = indices.count;
-			}
-
-			~Mesh ()
-			{
-				RenderDevice::DestroyVertexArray(VAO);
-				RenderDevice::DestroyBuffer(VBO);
-				RenderDevice::DestroyBuffer(EBO);
-			}
-
-			void Draw (RenderResource program, float32 color [4])
-			{
-				RenderDevice::ShaderUniform(program, "color", color);
-				RenderDevice::DrawIndexed(program, VAO, indexCount, 0);
-			}
-		};
 }
 
 int32 main (int32 argc, cchar * argv)
@@ -133,17 +100,18 @@ int32 main (int32 argc, cchar * argv)
 
 	// Vertex Array & Buffer Creation
 
-	VertexFormat format;
-	format
-		.AddAttribute({ 3 }) // Stride and offset are implied
-		.End();              // Compile the vertex format
+	Vertex::Init(); // Compile the vertex format
 
-	Mesh mesh
-	(
-		format,
-		{ vertices, sizeof(vertices) },
-		{ indices, sizeof(indices), sizeof(indices) / sizeof(indices[0]) }
-	);
+	RenderResource VAO, VBO, EBO;
+
+	uint32 indexCount = sizeof(indices) / sizeof(indices[0]);
+
+	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), Vertex::format };
+	BufferDescriptor idexDesc   = { BufferType::INDEX,  sizeof(indices) };
+
+	VAO = RenderDevice::AllocateVertexArray();
+	VBO = RenderDevice::AllocateBuffer(VAO, vertices, vertDesc);
+	EBO = RenderDevice::AllocateBuffer(VAO, indices, idexDesc);
 
 	// Uniforms and Dynamic Render Data
 
@@ -192,7 +160,8 @@ int32 main (int32 argc, cchar * argv)
 
 		RenderDevice::Clear(clear);
 
-		mesh.Draw(program, color);
+		RenderDevice::ShaderUniform(program, "color", color);
+		RenderDevice::DrawIndexed(program, VAO, indexCount, 0);
 
 		// Present
 
@@ -201,6 +170,9 @@ int32 main (int32 argc, cchar * argv)
 
 	// Resource Destruction
 
+	RenderDevice::DestroyVertexArray(VAO);
+	RenderDevice::DestroyBuffer(VBO);
+	RenderDevice::DestroyBuffer(EBO);
 	RenderDevice::DestroyShaderProgram(program);
 
 	return 0;
