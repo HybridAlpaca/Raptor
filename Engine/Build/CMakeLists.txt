@@ -84,16 +84,15 @@ include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 
 # Core
 
-# add_library (Core STATIC
-	# ${RUNTIME_ROOT_DIR}/Core/Private/JsUtil.cpp
-	# ${RUNTIME_ROOT_DIR}/Core/Private/Functions.cpp
-# )
-# target_include_directories (Core PUBLIC
-	# ${RUNTIME_ROOT_DIR}/Core/Private
-	# ${RUNTIME_ROOT_DIR}/Core/Public/Core
-# )
+add_library (Core STATIC
+	${RUNTIME_ROOT_DIR}/Core/Private/Plugins.cpp
+)
+target_include_directories (Core PUBLIC
+	${RUNTIME_ROOT_DIR}/Core/Private
+	${RUNTIME_ROOT_DIR}/Core/Public/Core
+)
 
-# include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
+include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
 
 # graphics
 
@@ -107,7 +106,7 @@ include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 # )
 include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 
-# install (TARGETS Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Core DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
 
 #####################
 # Create Executable #
@@ -116,7 +115,7 @@ include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
 target_link_libraries (Raptor
 	# LibRaptor
-	# Core
+	Core
 	# Graphics
 	# assimp
 	${OPENGL_gl_LIBRARY}
