@@ -1,22 +1,34 @@
-#include <Graphics/API.h>
+#include <Core/PluginsApi.h>
 
-struct GraphicsPlugin : public Plugin
+#include <iostream>
+
+namespace
 {
-	virtual void Execute (GraphicsAPI * api) override
+	const uint32 GRAPHICS_API_VERSION = 0;
+
+	GraphicsApi * graphics = nullptr;
+
+	float32 clearColor [4] = { 0.2f, 1.0f, 0.2f, 1.0f };
+}
+
+struct BasicPlugin : public Plugin
+{
+	virtual void Init (EngineApiGetter GetEngineApi) override
 	{
-		api -> Clear();
-		api -> DrawIndexed();
-		api -> DrawIndexed();
-		api -> DrawIndexed();
+		// For now, it's safe to assume getEngineApi won't return nullptr (given the proper version), so we won't check for errors.
+
+		graphics = (GraphicsApi *) GetEngineApi(EngineApi::GRAPHICS, GRAPHICS_API_VERSION);
+	}
+
+	virtual void Update () override
+	{
+		graphics -> Clear(clearColor);
+	}
+
+	virtual void Shutdown () override
+	{
+		/// @todo something
 	}
 };
 
-extern "C" Plugin * CreatePlugin ()
-{
-	return new GraphicsPlugin;
-}
-
-extern "C" void DestroyPlugin (Plugin * plugin)
-{
-	delete plugin;
-}
+EXPORT_PLUGIN(BasicPlugin)

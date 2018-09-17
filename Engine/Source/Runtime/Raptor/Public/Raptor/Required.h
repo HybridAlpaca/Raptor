@@ -5,11 +5,11 @@
 // pointer types
 
 #if RPTR_ENV_64
-using uintptr		= unsigned long long;	///< max value of pointer (64-bit)
-static_assert(sizeof(uintptr) == (64 / 8), "Pointer int sizes should be 8 bytes on 64 bit machines");
+	using uintptr		= unsigned long long;	///< max value of pointer (64-bit)
+	static_assert(sizeof(uintptr) == (64 / 8), "Pointer int sizes should be 8 bytes on 64 bit machines");
 #else
-using uintptr		= unsigned int;		///< max value of pointer (32-bit)
-static_assert(sizeof(uintptr) == (32 / 8), "Pointer int sizes should be 4 bytes on 32 bit machines");
+	using uintptr		= unsigned int;		///< max value of pointer (32-bit)
+	static_assert(sizeof(uintptr) == (32 / 8), "Pointer int sizes should be 4 bytes on 32 bit machines");
 #endif
 
 // miscellaneous
