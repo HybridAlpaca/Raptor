@@ -2,6 +2,44 @@
 
 #include <iostream>
 
+namespace
+{
+	float32 vertices [] =
+	{
+		0.5f,   0.5f, 0.0f,
+		0.5f,  -0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
+	};
+
+	uint32 indices [] =
+	{
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
+	};
+
+	uint8 attribs [] =
+	{
+		3, 0, 0
+	};
+
+	cchar vertex =
+		"#version 330 core\n"
+		"layout (location = 0) in vec3 aPos;\n"
+		"void main()\n"
+		"{\n"
+		"  gl_Position = vec4(aPos, 1.0);\n"
+		"}\0";
+
+	cchar fragment =
+		"#version 330 core\n"
+		"out vec4 FragColor;\n"
+		"void main()\n"
+		"{\n"
+		"  FragColor = vec4(0.7, 0.3, 0.7, 1.0);\n"
+		"}\0";
+}
+
 class BasicPlugin : public Plugin
 {
 	GraphicsApi * graphics = nullptr;
@@ -10,23 +48,43 @@ class BasicPlugin : public Plugin
 
 	float32 clearColor [4] = { 0.2f, 1.0f, 0.2f, 1.0f };
 
+	uint16 VAO, VBO, EBO;
+	uint16 shader;
+
+	uint32 indexCount = sizeof(indices) / sizeof(indices[0]);
+
 public:
 
-	virtual void Init (EngineApiGetter GetEngineApi) override
+	void Init (EngineApiGetter GetEngineApi) override
 	{
-		// For now, it's safe to assume getEngineApi won't return nullptr (given the proper version), so we won't check for errors.
+		// Retrieve neccessary API's
 
 		graphics = (GraphicsApi *) GetEngineApi(EngineApi::GRAPHICS, GRAPHICS_API_VERSION);
+
+		// Perform some other initialization
+
+		shader = graphics -> CreateShader(vertex, fragment);
+
+		// Vertex Array & Buffer Creation
+
+		VAO = graphics -> CreateVertexArray();
+		VBO = graphics -> CreateBuffer(VAO, vertices, 0, sizeof(vertices), attribs, 1);
+		EBO = graphics -> CreateBuffer(VAO, indices, 1, sizeof(indices), nullptr, 0);
 	}
 
-	virtual void Update () override
+	void Update () override
 	{
 		graphics -> Clear(clearColor);
+
+		graphics -> DrawIndexed(shader, VAO, indexCount);
 	}
 
-	virtual void Shutdown () override
+	void Shutdown () override
 	{
-		/// @todo something
+		graphics -> DestroyBuffer(VBO);
+		graphics -> DestroyBuffer(EBO);
+
+		graphics -> DestroyVertexArray(VAO);
 	}
 };
 

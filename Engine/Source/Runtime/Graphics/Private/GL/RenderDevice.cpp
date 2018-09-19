@@ -1,7 +1,5 @@
 #include "RenderDevice.h"
 
-#include <Display.h>
-
 #include <GL/glew.h>
 
 #include <iostream>
@@ -86,12 +84,11 @@ RenderResource RenderDevice::AllocateShader (cchar code, ShaderType type)
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shader;
 
-	return { resourceIndex, 0 };
+	return resourceIndex;
 }
 
 void RenderDevice::DestroyShader (RenderResource & resource)
 {
-	resource.Invalidate();
 	glDeleteShader(resourceBuffer[resource]);
 }
 
@@ -118,7 +115,7 @@ RenderResource RenderDevice::AllocateShaderProgram (const RenderResource * const
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shaderProgram;
 
-	return { resourceIndex, 0 };
+	return {resourceIndex};
 }
 
 void RenderDevice::DestroyShaderProgram (RenderResource & resource)
@@ -137,12 +134,11 @@ RenderResource RenderDevice::AllocateVertexArray ()
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = VAO;
 
-	return {resourceIndex, 0};
+	return resourceIndex;
 }
 
 void RenderDevice::DestroyVertexArray (RenderResource & resource)
 {
-	resource.Invalidate();
 	glDeleteVertexArrays(1, & resourceBuffer[resource]);
 }
 
@@ -163,10 +159,10 @@ RenderResource RenderDevice::AllocateBuffer (RenderResource vertexArray, const v
 	{
 		// For vertex buffers, describe vertex attributes
 		case BufferType::VERTEX:
-			for (uint32 i = 0; i < desc.format.attributeCount; ++i)
+			for (uint32 i = 0; i < desc.attribCount; ++i)
 			{
 				// Retrieve the buffer attribute description
-				const VertexAttribute & attrib = desc.format.attributes[i];
+				const VertexAttribute & attrib = desc.attribs[i];
 
 				// Inform OpenGL of how to read the data
 				/// @warning This assumes all vertex data is 32 bits wide.
@@ -187,12 +183,11 @@ RenderResource RenderDevice::AllocateBuffer (RenderResource vertexArray, const v
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = buf;
 
-	return {resourceIndex, 0};
+	return resourceIndex;
 }
 
 void RenderDevice::DestroyBuffer (RenderResource & resource)
 {
-	resource.Invalidate();
 	glDeleteBuffers(1, & resourceBuffer[resource]);
 }
 
