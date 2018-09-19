@@ -2,17 +2,16 @@
 
 #include <iostream>
 
-namespace
+class BasicPlugin : public Plugin
 {
-	const uint32 GRAPHICS_API_VERSION = 0;
-
 	GraphicsApi * graphics = nullptr;
 
-	float32 clearColor [4] = { 0.2f, 1.0f, 0.2f, 1.0f };
-}
+	const uint32 GRAPHICS_API_VERSION = 0;
 
-struct BasicPlugin : public Plugin
-{
+	float32 clearColor [4] = { 0.2f, 1.0f, 0.2f, 1.0f };
+
+public:
+
 	virtual void Init (EngineApiGetter GetEngineApi) override
 	{
 		// For now, it's safe to assume getEngineApi won't return nullptr (given the proper version), so we won't check for errors.

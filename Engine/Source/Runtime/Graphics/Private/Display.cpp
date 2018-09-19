@@ -60,6 +60,22 @@ namespace Graphics::Display
 		glfwSwapBuffers(windowBuffer[handle]);
 	}
 
+	uint32 Window::FrameWidth () const
+	{
+		int32 width;
+		glfwGetFramebufferSize(windowBuffer[handle], & width, nullptr);
+
+		return width;
+	}
+
+	uint32 Window::FrameHeight () const
+	{
+		int32 height;
+		glfwGetFramebufferSize(windowBuffer[handle], nullptr, & height);
+
+		return height;
+	}
+
 	bool Window::ShouldClose () const
 	{
 		return glfwWindowShouldClose(windowBuffer[handle]);

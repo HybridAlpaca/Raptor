@@ -29,6 +29,9 @@ namespace Graphics::Display
 		void PollEvents () const;
 		void SwapBuffers () const;
 
+		uint32 FrameWidth () const;
+		uint32 FrameHeight () const;
+
 		bool ShouldClose () const;
 		void ShouldClose (bool value) const;
 	};

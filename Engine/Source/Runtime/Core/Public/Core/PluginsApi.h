@@ -40,8 +40,11 @@ using EngineApiGetter = void * (EngineApi api, uint32 version);
  * @brief Abstract class that a plugin author may inherit from to create or extend engine functionality
  *
  **/
-struct Plugin
+class Plugin
 {
+
+public:
+
 	virtual ~Plugin () {}
 
 	virtual void Init (EngineApiGetter getEngineApi) = 0;
