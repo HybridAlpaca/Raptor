@@ -15,7 +15,7 @@ int32 main (int32 argc, cchar const * argv)
 	Core::SharedLibrary lib;
 	lib.Open("/home/cellman123/Desktop/Raptor/Engine/Plugins/Basic/libbasic.so");
 
-	PluginDescriptor * desc  = (PluginDescriptor *) lib.ProcAddress("Exports");
+	const PluginDescriptor * desc  = (PluginDescriptor *) lib.ProcAddress("Exports");
 
 	// Initialize
 
