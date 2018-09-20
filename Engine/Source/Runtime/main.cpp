@@ -3,7 +3,7 @@
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
 
-#include <Core/Plugins.h>
+#include <Core/SharedLib.h>
 #include <Core/EngineApi.h>
 
 using namespace Graphics;
@@ -15,12 +15,11 @@ int32 main (int32 argc, cchar const * argv)
 	Core::SharedLibrary lib;
 	lib.Open("/home/cellman123/Desktop/Raptor/Engine/Plugins/Basic/libbasic.so");
 
-	Create_T  * CreatePlugin  = (Create_T  *) lib.ProcAddress("CreatePlugin");
-  Destroy_T * DestroyPlugin = (Destroy_T *) lib.ProcAddress("DestroyPlugin");
+	PluginDescriptor * desc  = (PluginDescriptor *) lib.ProcAddress("Exports");
 
 	// Initialize
 
-	Plugin * plugin = CreatePlugin();
+	Plugin * plugin = desc -> CreatePlugin();
 
 	Display::Window window({ "Hello, Raptor!", 800, 600 });
 
@@ -51,8 +50,6 @@ int32 main (int32 argc, cchar const * argv)
 	// Shut Down
 
 	plugin -> Shutdown();
-
-	DestroyPlugin(plugin);
 
 	lib.Close();
 

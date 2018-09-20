@@ -1,4 +1,4 @@
-#include <Plugins.h>
+#include <SharedLib.h>
 
 #include <dlfcn.h>
 #include <iostream>

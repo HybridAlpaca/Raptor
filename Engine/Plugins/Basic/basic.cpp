@@ -88,4 +88,4 @@ public:
 	}
 };
 
-EXPORT_PLUGIN(BasicPlugin);
+EXPORT_PLUGIN(BasicPlugin, "Basic Plugin", 1, 0);

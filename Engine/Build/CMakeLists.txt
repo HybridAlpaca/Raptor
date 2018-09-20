@@ -85,7 +85,7 @@ include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
 # Core
 
 add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Private/Plugins.cpp
+	${RUNTIME_ROOT_DIR}/Core/Private/SharedLib.cpp
 )
 target_include_directories (Core PUBLIC
 	${RUNTIME_ROOT_DIR}/Core/Private

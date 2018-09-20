@@ -2,9 +2,11 @@
 
 #include <Raptor/Required.h>
 
-#define EXPORT_PLUGIN(PLUGIN_NAME) \
-	extern "C" Plugin * CreatePlugin () { return new PLUGIN_NAME; } \
-	extern "C" void DestroyPlugin (Plugin * plugin) { delete plugin; plugin = nullptr; }
+#ifdef WIN32
+# define EXPORT __declspec(dllexport)
+#else
+# define EXPORT // empty
+#endif
 
 /**
  *
@@ -65,8 +67,33 @@ public:
 	virtual void Shutdown () = 0;
 };
 
-/// Function pointer the engine uses to create instances of a plugin
-using Create_T =  Plugin * ();
+struct PluginDescriptor
+{
+	typedef Plugin * (* GetPluginFunc)();
 
-/// Counterpart of Create_T, the engine uses this to destroy plugin instances
-using Destroy_T = void (Plugin *);
+	cchar className;
+	cchar pluginName;
+
+	uint32 pluginVersionMajor;
+	uint32 pluginVersionMinor;
+
+	GetPluginFunc CreatePlugin;
+};
+
+#define EXPORT_PLUGIN(CLASS_TYPE, PLUGIN_NAME, VERSION_MAJOR, VERSION_MINOR) \
+extern "C" \
+{ \
+	EXPORT Plugin * GetPlugin() \
+	{ \
+		static CLASS_TYPE singleton; \
+		return & singleton; \
+	} \
+	EXPORT PluginDescriptor Exports = \
+	{ \
+		#CLASS_TYPE, \
+		PLUGIN_NAME, \
+		VERSION_MAJOR, \
+		VERSION_MINOR, \
+		GetPlugin \
+	}; \
+}
