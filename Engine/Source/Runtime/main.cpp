@@ -32,11 +32,18 @@ int32 main (int32 argc, cchar const * argv)
 
 	// Run
 
+	float32 delta = 0.0f;	// Time between current frame and last frame
+	float32 lastFrame = 0.0f;
+
 	while (!window.ShouldClose())
 	{
 		window.PollEvents();
 
-		plugin -> Update();
+		float32 currentFrame = window.CurrentTime();
+		delta = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
+		plugin -> Update(delta);
 
 		window.SwapBuffers();
 	}

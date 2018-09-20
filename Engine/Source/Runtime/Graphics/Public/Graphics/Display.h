@@ -26,6 +26,8 @@ namespace Graphics::Display
 
 		Window & operator= (const Window & rhs) = delete;
 
+		float64 CurrentTime () const;
+
 		void PollEvents () const;
 		void SwapBuffers () const;
 

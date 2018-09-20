@@ -61,7 +61,7 @@ public:
 	virtual ~Plugin () {}
 
 	virtual void Init (EngineApiGetter getEngineApi) = 0;
-	virtual void Update () = 0;
+	virtual void Update (float32 delta) = 0;
 	virtual void Shutdown () = 0;
 };
 

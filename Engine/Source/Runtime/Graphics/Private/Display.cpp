@@ -50,6 +50,11 @@ namespace Graphics::Display
 		}
 	}
 
+	float64 Window::CurrentTime () const
+	{
+		return glfwGetTime();
+	}
+
 	void Window::PollEvents () const
 	{
 		glfwPollEvents();

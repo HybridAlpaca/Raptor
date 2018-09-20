@@ -46,7 +46,7 @@ class BasicPlugin : public Plugin
 
 	const uint32 GRAPHICS_API_VERSION = 0;
 
-	float32 clearColor [4] = { 0.2f, 1.0f, 0.2f, 1.0f };
+	float32 clearColor [4] = { 0.2f, 0.2f, 0.2f, 1.0f };
 
 	uint16 VAO, VBO, EBO;
 	uint16 shader;
@@ -72,7 +72,7 @@ public:
 		EBO = graphics -> CreateBuffer(VAO, indices, 1, sizeof(indices), nullptr, 0);
 	}
 
-	void Update () override
+	void Update (float32 delta) override
 	{
 		graphics -> Clear(clearColor);
 
@@ -88,4 +88,4 @@ public:
 	}
 };
 
-EXPORT_PLUGIN(BasicPlugin)
+EXPORT_PLUGIN(BasicPlugin);

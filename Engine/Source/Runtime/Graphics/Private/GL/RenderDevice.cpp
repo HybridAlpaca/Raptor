@@ -59,7 +59,8 @@ void RenderDevice::Initialize (const DeviceDescriptor & desc)
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR)
 	{
-		// Sometimes GLEW Experimental Initialization causes unknown errors at runtime, perhaps due to unsupported driver features
+		// GLEW Experimental Mode emits nonsense errors
+		// Thus, we simply yeet them out of existence
 	}
 
 	if (desc.debug)
