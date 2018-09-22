@@ -26,7 +26,7 @@ include (GNUInstallDirs)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set (CMAKE_CXX_COMPILER /usr/bin/g++-8)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -fno-exceptions")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -fno-exceptions")
 
 set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
 set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
@@ -106,6 +106,7 @@ target_include_directories (Graphics PUBLIC
 	${RUNTIME_ROOT_DIR}/Graphics/Public/Graphics
 )
 target_link_libraries (Graphics
+	assimp
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}
@@ -128,7 +129,6 @@ target_link_libraries (Raptor
 	# LibRaptor
 	Core
 	Graphics
-	# assimp
 	dl
 )
 

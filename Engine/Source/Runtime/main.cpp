@@ -1,48 +1,36 @@
 #include <Raptor/Required.h>
-#include <Raptor/Either.h>
 
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
+#include <Graphics/Importer.h>
 
 #include <Core/SharedLib.h>
 #include <Core/EngineApi.h>
 
-#include <iostream>
-
+using namespace Core;
 using namespace Graphics;
 
-Raptor::Either<float, cchar> Square (float num)
-{
-	if (num < 0) return "Number should be >= 0!";
-
-	return num * num;
-}
-
-int32 main (int32 argc, cchar const * argv)
+int32 main (int32 argc, cchar * argv)
 {
 	// Test Playgound Area
 
-	Raptor::Either<float, cchar> either = Square(-8);
+	{
+		Importer importer("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/");
+		Model model = importer.Load("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/nanosuit/nanosuit.obj");
 
-	bool success = either
-		.MapLeft([] (float value)
+		for (uint32 i = 0; i < model.meshCount; ++i)
 		{
-			std::cout << value << '\n';
-		})
-		.MapRight([] (cchar err)
-		{
-			std::cout << err << '\n';
-		})
-		.Join();
-
-	std::cout << success << '\n';
+			delete [] model.meshes[i].vertices;
+			delete [] model.meshes[i].indices;
+		}
+	}
 
 	// Open Library
 
-	Core::SharedLibrary lib;
+	SharedLibrary lib;
 	lib.Open("/home/cellman123/Desktop/Raptor/Engine/Plugins/Basic/libbasic.so");
 
-	const PluginDescriptor * desc  = (PluginDescriptor *) lib.ProcAddress("Exports");
+	const PluginDescriptor * desc = (PluginDescriptor *) lib.ProcAddress("Exports");
 
 	// Initialize
 
@@ -54,7 +42,7 @@ int32 main (int32 argc, cchar const * argv)
 
 	RenderDevice::Resize(window.FrameWidth(), window.FrameHeight());
 
-	plugin -> Init(Core::GetEngineApi);
+	plugin -> Init(GetEngineApi);
 
 	// Run
 
