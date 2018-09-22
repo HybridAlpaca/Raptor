@@ -1,4 +1,5 @@
 #include <Raptor/Required.h>
+#include <Raptor/Filesystem.h>
 
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
