@@ -1,5 +1,5 @@
 #include <Raptor/Required.h>
-#include <Raptor/Filesystem.h>
+#include <Raptor/Either.h>
 
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
@@ -7,10 +7,36 @@
 #include <Core/SharedLib.h>
 #include <Core/EngineApi.h>
 
+#include <iostream>
+
 using namespace Graphics;
+
+Raptor::Either<float, cchar> Square (float num)
+{
+	if (num < 0) return "Number should be >= 0!";
+
+	return num * num;
+}
 
 int32 main (int32 argc, cchar const * argv)
 {
+	// Test Playgound Area
+
+	Raptor::Either<float, cchar> either = Square(-8);
+
+	bool success = either
+		.MapLeft([] (float value)
+		{
+			std::cout << value << '\n';
+		})
+		.MapRight([] (cchar err)
+		{
+			std::cout << err << '\n';
+		})
+		.Join();
+
+	std::cout << success << '\n';
+
 	// Open Library
 
 	Core::SharedLibrary lib;
