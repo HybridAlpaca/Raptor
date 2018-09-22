@@ -104,6 +104,16 @@ target_include_directories (Graphics PUBLIC
 	${RUNTIME_ROOT_DIR}/Graphics/Private
 	${RUNTIME_ROOT_DIR}/Graphics/Public/Graphics
 )
+target_link_libraries (Graphics
+	${OPENGL_gl_LIBRARY}
+	${OPENGL_LIBRARIES}
+	${GLEW_LIBRARIES}
+	glfw
+	X11
+	pthread
+	Xrandr
+	Xi
+)
 include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
 
 install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
@@ -118,15 +128,6 @@ target_link_libraries (Raptor
 	Core
 	Graphics
 	# assimp
-	${OPENGL_gl_LIBRARY}
-	${OPENGL_LIBRARIES}
-	${GLEW_LIBRARIES}
-	v8
-	glfw
-	X11
-	pthread
-	Xrandr
-	Xi
 	dl
 )
 
