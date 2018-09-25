@@ -68,6 +68,8 @@ void RenderDevice::Initialize (const DeviceDescriptor & desc)
 		glEnable(GL_DEBUG_OUTPUT);
 		glDebugMessageCallback(GLDebugCallback, nullptr);
 	}
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 RenderDevice::GraphicsBackend RenderDevice::BackendType ()
@@ -195,7 +197,7 @@ void RenderDevice::DestroyBuffer (RenderResource & resource)
 void RenderDevice::Clear (float color [4])
 {
 	glClearColor(color[0], color[1], color[2], color[3]);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderDevice::ShaderUniform (RenderResource program, cchar name, float32 value)

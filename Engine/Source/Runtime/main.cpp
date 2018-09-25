@@ -2,10 +2,10 @@
 
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
-#include <Graphics/Importer.h>
+#include <Graphics/EngineApi.h>
 
 #include <Core/SharedLib.h>
-#include <Core/EngineApi.h>
+#include <Core/PluginsApi.h>
 
 using namespace Core;
 using namespace Graphics;
@@ -13,17 +13,6 @@ using namespace Graphics;
 int32 main (int32 argc, cchar * argv)
 {
 	// Test Playgound Area
-
-	{
-		Importer importer("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/");
-		Model model = importer.Load("/home/cellman123/Desktop/Raptor/Engine/Assets/Models/nanosuit/nanosuit.obj");
-
-		for (uint32 i = 0; i < model.meshCount; ++i)
-		{
-			delete [] model.meshes[i].vertices;
-			delete [] model.meshes[i].indices;
-		}
-	}
 
 	// Open Library
 
@@ -42,7 +31,13 @@ int32 main (int32 argc, cchar * argv)
 
 	RenderDevice::Resize(window.FrameWidth(), window.FrameHeight());
 
-	plugin -> Init(GetEngineApi);
+	ApiRegistry registry;
+
+	Graphics::Api::EngineApi api;
+
+	registry.RegisterApi(GRAPHICS_API, & api);
+
+	plugin -> Init(registry);
 
 	// Run
 

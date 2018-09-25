@@ -1,4 +1,5 @@
 #include <Core/PluginsApi.h>
+#include "../Common/GraphicsApi.h"
 
 #include <iostream>
 
@@ -55,11 +56,11 @@ class BasicPlugin : public Plugin
 
 public:
 
-	void Init (EngineApiGetter GetEngineApi) override
+	void Init (const ApiRegistry & registry) override
 	{
 		// Retrieve neccessary API's
 
-		graphics = (GraphicsApi *) GetEngineApi(EngineApi::GRAPHICS, GRAPHICS_API_VERSION);
+		graphics = (GraphicsApi *) registry.GetApi(GRAPHICS_API);
 
 		// Perform some other initialization
 

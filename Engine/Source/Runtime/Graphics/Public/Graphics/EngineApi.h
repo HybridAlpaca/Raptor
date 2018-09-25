@@ -1,11 +1,13 @@
 #pragma once
 
-#include "PluginsApi.h"
+#include "GraphicsApi.h"
 #include "RenderDevice.h"
+
+#include <Core/PluginsApi.h>
 
 namespace Graphics::Api
 {
-	class v0 : public GraphicsApi
+	class EngineApi : public GraphicsApi
 	{
 		uint16 CreateShader (cchar vertexCode, cchar fragmentCode) override
 		{

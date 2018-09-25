@@ -8,45 +8,24 @@
 # define EXPORT // empty
 #endif
 
-/**
- *
- * @class GraphicsApi
- * @author Seth Traman
- * @brief Abstract class describig the methods a graphics API is expected to have
- *
- **/
-class GraphicsApi
+class ApiRegistry
 {
+	static const uint16 MAX_API_COUNT = 65535;
+
+	void * apiPool [MAX_API_COUNT] = { nullptr };
 
 public:
 
-	virtual ~GraphicsApi () {}
+	inline void RegisterApi (uint32 identifier, void * api)
+	{
+		apiPool[identifier] = api;
+	}
 
-	virtual uint16 CreateShader (cchar vertexCode, cchar fragmentCode) = 0;
-	virtual void DestroyShader (uint16 shader) = 0;
-
-	virtual uint16 CreateVertexArray () = 0;
-	virtual void DestroyVertexArray (uint16 vertexArray) = 0;
-
-	virtual uint16 CreateBuffer (uint16 vertexArray, void * data, uint16 type, uintptr size, uint8 * attribs, uint16 attribCount) = 0;
-	virtual void DestroyBuffer (uint16 buffer) = 0;
-
-	virtual void DrawIndexed (uint16 vertexArray, uint16 shader, uint16 indexCount) = 0;
-
-	//
-
-	virtual void Clear (float32 color [4]) = 0;
+	inline void * GetApi (uint32 identifier) const
+	{
+		return apiPool[identifier];
+	}
 };
-
-/// An enum defining the types of API's a plugin may request
-
-enum class EngineApi
-{
-	GRAPHICS ///< Requests an instance of the engine's graphics API
-};
-
-/// Function pointer provided to plugin on startup that allows it to query for engine API's
-using EngineApiGetter = void * (EngineApi api, uint32 version);
 
 /**
  *
@@ -62,7 +41,7 @@ public:
 
 	virtual ~Plugin () {}
 
-	virtual void Init (EngineApiGetter getEngineApi) = 0;
+	virtual void Init (const ApiRegistry & registry) = 0;
 	virtual void Update (float32 delta) = 0;
 	virtual void Shutdown () = 0;
 };
