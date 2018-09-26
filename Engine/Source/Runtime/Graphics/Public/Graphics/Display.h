@@ -4,47 +4,37 @@
 
 namespace Graphics::Display
 {
+	using Handle = uint16;
 
-	using WindowHandle = uint16;
-
-	static const WindowHandle NULL_HANDLE = 0;
-
-	static const uint16 MAX_WINDOWS = 65535;
-
-	struct InitDescriptor
+	struct WindowDescriptor
 	{
-		cchar title = ""; ///< The text to display on top of the window, commonly the name of the app
+		cchar title;
 
-		uint32 width  = 800; ///< Window width in px.  Value of 0 indicates full width
-		uint32 height = 600; ///< Window height in px.  Value of 0 indicates full height
-
-		uint32 vsync = 1;	///< How many monitor refreshes to wait for before a buffer swap
-
-		bool fullscreen = false;
-
-		// OpenGL specific
-
-		uint8 glVersionMajor = 3; ///< @todo Move this to render device
-		uint8 glVersionMinor = 3; ///< @todo Move this to render device
-
+		uint32 width;
+		uint32 height;
 	};
 
-	WindowHandle Create (const InitDescriptor & desc);
+	class Window
+	{
+		Handle handle;
 
-	void Destroy (WindowHandle window);
+	public:
 
-	bool Closed (WindowHandle window);
+		Window (const WindowDescriptor & desc);
+		Window (const Window & copy) = delete;
+		~Window ();
 
-	void Close (WindowHandle window);
+		Window & operator= (const Window & rhs) = delete;
 
-	void PollEvents ();
+		float64 CurrentTime () const;
 
-	void SwapBuffers (WindowHandle window);
+		void PollEvents () const;
+		void SwapBuffers () const;
 
-	/// @warning Temporary.
-	uint32 FrameWidth (WindowHandle window);
+		uint32 FrameWidth () const;
+		uint32 FrameHeight () const;
 
-	/// @warning Temporary.
-	uint32 FrameHeight (WindowHandle window);
-
+		bool ShouldClose () const;
+		void ShouldClose (bool value) const;
+	};
 }

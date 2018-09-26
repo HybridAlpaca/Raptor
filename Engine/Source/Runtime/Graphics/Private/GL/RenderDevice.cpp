@@ -1,7 +1,6 @@
 #include "RenderDevice.h"
-#include "RenderState.h"
 
-#include <Display.h>
+#include <GL/glew.h>
 
 #include <iostream>
 
@@ -11,9 +10,6 @@ using namespace Graphics;
 
 namespace
 {
-	GL::RenderState state;
-	RenderStats stats;
-
 	// Rudimentary GPU resource system
 	GLuint resourceBuffer [4096];
 	uint16 resourceIndex = 0;
@@ -49,16 +45,13 @@ namespace
 
 	void GLAPIENTRY GLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * message, const void * userParam)
 	{
-		/// @warning GLDebugCallback can be called from any thread; thread safety of the following statement is unknown to me :/
-		++stats.APICallErrors;
-
 		std::cerr << "RenderDevice - " << GLEnumToString(type) << " '" << message << "'\n";
 	}
 }
 
 // Backend code
 
-void RenderDevice::Initialize (const InitDescriptor & desc)
+void RenderDevice::Initialize (const DeviceDescriptor & desc)
 {
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -66,7 +59,8 @@ void RenderDevice::Initialize (const InitDescriptor & desc)
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR)
 	{
-		// Sometimes GLEW Experimental Initialization causes unknown errors at runtime, perhaps due to unsupported driver features
+		// GLEW Experimental Mode emits nonsense errors
+		// Thus, we simply yeet them out of existence
 	}
 
 	if (desc.debug)
@@ -75,22 +69,12 @@ void RenderDevice::Initialize (const InitDescriptor & desc)
 		glDebugMessageCallback(GLDebugCallback, nullptr);
 	}
 
-	glGetIntegerv(GL_MAJOR_VERSION, & stats.contextVersionMajor);
-	glGetIntegerv(GL_MINOR_VERSION, & stats.contextVersionMinor);
-
-	stats.vendor = glGetString(GL_VENDOR);
-	stats.rendererName = glGetString(GL_RENDERER);
-	stats.deviceName = "OpenGL Core";
+	glEnable(GL_DEPTH_TEST);
 }
 
 RenderDevice::GraphicsBackend RenderDevice::BackendType ()
 {
 	return GraphicsBackend::OPENGL_CORE;
-}
-
-RenderStats RenderDevice::Stats ()
-{
-	return stats;
 }
 
 RenderResource RenderDevice::AllocateShader (cchar code, ShaderType type)
@@ -103,12 +87,11 @@ RenderResource RenderDevice::AllocateShader (cchar code, ShaderType type)
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shader;
 
-	return { resourceIndex, 0 };
+	return resourceIndex;
 }
 
 void RenderDevice::DestroyShader (RenderResource & resource)
 {
-	resource.Invalidate();
 	glDeleteShader(resourceBuffer[resource]);
 }
 
@@ -135,10 +118,10 @@ RenderResource RenderDevice::AllocateShaderProgram (const RenderResource * const
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = shaderProgram;
 
-	return { resourceIndex, 0 };
+	return {resourceIndex};
 }
 
-void RenderDevice::DestroyShaderProgram (RenderResource resource)
+void RenderDevice::DestroyShaderProgram (RenderResource & resource)
 {
 	glDeleteProgram(resourceBuffer[resource]);
 }
@@ -154,12 +137,11 @@ RenderResource RenderDevice::AllocateVertexArray ()
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = VAO;
 
-	return {resourceIndex, 0};
+	return resourceIndex;
 }
 
 void RenderDevice::DestroyVertexArray (RenderResource & resource)
 {
-	resource.Invalidate();
 	glDeleteVertexArrays(1, & resourceBuffer[resource]);
 }
 
@@ -168,7 +150,7 @@ RenderResource RenderDevice::AllocateBuffer (RenderResource vertexArray, const v
 	GLuint buf;
 	glGenBuffers(1, & buf);
 
-	state.BindVAO(resourceBuffer[vertexArray]);
+	glBindVertexArray(resourceBuffer[vertexArray]);
 
 	GLenum bufferType = (desc.type == BufferType::VERTEX) ? (GL_ARRAY_BUFFER) : (GL_ELEMENT_ARRAY_BUFFER);
 
@@ -180,10 +162,10 @@ RenderResource RenderDevice::AllocateBuffer (RenderResource vertexArray, const v
 	{
 		// For vertex buffers, describe vertex attributes
 		case BufferType::VERTEX:
-			for (uint32 i = 0; i < desc.format.attributeCount; ++i)
+			for (uint32 i = 0; i < desc.attribCount; ++i)
 			{
 				// Retrieve the buffer attribute description
-				const VertexAttribute & attrib = desc.format.attributes[i];
+				const VertexAttribute & attrib = desc.attribs[i];
 
 				// Inform OpenGL of how to read the data
 				/// @warning This assumes all vertex data is 32 bits wide.
@@ -204,24 +186,23 @@ RenderResource RenderDevice::AllocateBuffer (RenderResource vertexArray, const v
 	++resourceIndex;
 	resourceBuffer[resourceIndex] = buf;
 
-	return {resourceIndex, 0};
+	return resourceIndex;
 }
 
 void RenderDevice::DestroyBuffer (RenderResource & resource)
 {
-	resource.Invalidate();
 	glDeleteBuffers(1, & resourceBuffer[resource]);
 }
 
 void RenderDevice::Clear (float color [4])
 {
 	glClearColor(color[0], color[1], color[2], color[3]);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderDevice::ShaderUniform (RenderResource program, cchar name, float32 value)
 {
-	state.BindProgram(resourceBuffer[program]);
+	glUseProgram(resourceBuffer[program]);
 
 	GLuint location = glGetUniformLocation(resourceBuffer[program], name);
 	glUniform1f(location, value);
@@ -229,7 +210,7 @@ void RenderDevice::ShaderUniform (RenderResource program, cchar name, float32 va
 
 void RenderDevice::ShaderUniform (RenderResource program, cchar name, float32 values [3])
 {
-	state.BindProgram(resourceBuffer[program]);
+	glUseProgram(resourceBuffer[program]);
 
 	GLuint location = glGetUniformLocation(resourceBuffer[program], name);
 	glUniform3f(location, values[0], values[1], values[2]);
@@ -237,16 +218,16 @@ void RenderDevice::ShaderUniform (RenderResource program, cchar name, float32 va
 
 void RenderDevice::Draw (RenderResource program, RenderResource vertexArray, uint32 indexCount, uint32 indexOffset)
 {
-	state.BindProgram(resourceBuffer[program]);
-	state.BindVAO(resourceBuffer[vertexArray]);
+	glUseProgram(resourceBuffer[program]);
+	glBindVertexArray(resourceBuffer[vertexArray]);
 
 	glDrawArrays(GL_TRIANGLES, indexOffset, indexCount);
 }
 
 void RenderDevice::DrawIndexed (RenderResource program, RenderResource vertexArray, uint32 indexCount, uint32 indexOffset)
 {
-	state.BindProgram(resourceBuffer[program]);
-	state.BindVAO(resourceBuffer[vertexArray]);
+	glUseProgram(resourceBuffer[program]);
+	glBindVertexArray(resourceBuffer[vertexArray]);
 
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (GLvoid *) indexOffset);
 }

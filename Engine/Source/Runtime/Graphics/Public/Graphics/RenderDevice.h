@@ -1,9 +1,6 @@
 #pragma once
 
-#include <Raptor/Required.h>
-#include <Display.h>
-#include <RenderResource.h>
-#include <RenderStats.h>
+#include "Resource.h"
 
 /**
  *
@@ -32,7 +29,7 @@ namespace Graphics::RenderDevice
 		OTHER         ///< Any backend other than those specified above, i.e. a user-defined render device
 	};
 
-	struct InitDescriptor
+	struct DeviceDescriptor
 	{
 		bool debug = false;
 	};
@@ -40,13 +37,10 @@ namespace Graphics::RenderDevice
 	// Device Operations
 
 	/// Initializes the render device for drawing
-	void Initialize (const InitDescriptor & desc);
+	void Initialize (const DeviceDescriptor & desc);
 
 	/// @return The backend API that the render device is using
 	inline GraphicsBackend BackendType ();
-
-	/// Returns info about the internal state of the render device.  Useful for debugging and profiling
-	RenderStats Stats ();
 
 	// Resource Operations
 
@@ -60,7 +54,7 @@ namespace Graphics::RenderDevice
 	RenderResource AllocateShaderProgram (const RenderResource * const shaders, uint32 shaderCount);
 
 	/// Destroys a shader program object
-	void DestroyShaderProgram (RenderResource resource);
+	void DestroyShaderProgram (RenderResource & resource);
 
 	/// Creates a vertex array object for storing vertices to be uploaded to the GPU
 	RenderResource AllocateVertexArray ();

@@ -1,204 +1,67 @@
 #include <Raptor/Required.h>
-#include <Raptor/Vector3.h>
-
-#include <Core/JsUtil.h>
-#include <Core/Functions.h>
 
 #include <Graphics/Display.h>
 #include <Graphics/RenderDevice.h>
+#include <Graphics/EngineApi.h>
 
-#include <iostream>
+#include <Core/SharedLib.h>
+#include <Core/PluginsApi.h>
 
-using namespace Raptor;
 using namespace Core;
 using namespace Graphics;
 
-namespace
-{
-	struct Vertex
-	{
-		Vector3f position;
-
-		static VertexFormat format;
-
-		static void Init ()
-		{
-			format
-				.AddAttribute({ 3 })
-				.End();
-		}
-	};
-
-	VertexFormat Vertex::format;
-
-	Vertex vertices [] =
-	{
-		{ {0.5f,   0.5f, 0.0f} },
-		{ {0.5f,  -0.5f, 0.0f} },
-		{ {-0.5f, -0.5f, 0.0f} },
-		{ {-0.5f,  0.5f, 0.0f} }
-	};
-
-	uint32 indices [] =
-	{
-		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
-
-	cchar vertex =
-		"#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;\n"
-		"void main()\n"
-		"{\n"
-		"  gl_Position = vec4(aPos, 1.0);\n"
-		"}\0";
-
-	cchar fragment =
-		"#version 330 core\n"
-		"out vec4 FragColor;\n"
-		"uniform vec3 color;\n"
-		"void main()\n"
-		"{\n"
-		"  FragColor = vec4(color, 1.0);\n"
-		"}\0";
-}
-
 int32 main (int32 argc, cchar * argv)
 {
-	// Expiremental Javascript Engine
+	// Test Playgound Area
 
-	v8::Locker locker;
-	v8::HandleScope scope;
+	// Open Library
 
-	v8::Handle<v8::ObjectTemplate> globalTemplate = v8::ObjectTemplate::New();
+	SharedLibrary lib;
+	lib.Open("/home/cellman123/Desktop/Raptor/Engine/Plugins/Basic/libbasic.so");
 
-	globalTemplate -> Set(v8::String::New("RAPTOR"), v8::Boolean::New(true));
-	globalTemplate -> Set(v8::String::New("print"), v8::FunctionTemplate::New(JS::Print));
+	const PluginDescriptor * desc = (PluginDescriptor *) lib.ProcAddress("Exports");
 
-	v8::Handle<v8::Context> context = v8::Context::New(nullptr, globalTemplate);
+	// Initialize
 
-	v8::Handle<v8::String> source = JS::ReadFile(
-		"/home/cellman123/Desktop/Raptor/Engine/Plugins/startup.js"
-	);
+	Plugin * plugin = desc -> CreatePlugin();
 
-	v8::Context::Scope contextScope(context);
+	Display::Window window({ "Hello, Raptor!", 800, 600 });
 
-	v8::Handle<v8::Script> script = v8::Script::Compile(source, v8::String::New("FILE"));
+	RenderDevice::Initialize({ true });
 
-	script -> Run();
+	RenderDevice::Resize(window.FrameWidth(), window.FrameHeight());
 
-	v8::Handle<v8::Object> global = context -> Global();
+	ApiRegistry registry;
 
-	global -> Set (v8::String::New("VERSION"), v8::Number::New(0.1));
+	Graphics::Api::EngineApi api;
 
-	v8::Handle<v8::Value> initFunc = global -> Get(v8::String::New("Init"));
-	if (initFunc -> IsFunction())
+	registry.RegisterApi(GRAPHICS_API, & api);
+
+	plugin -> Init(registry);
+
+	// Run
+
+	float32 delta = 0.0f;	// Time between current frame and last frame
+	float32 lastFrame = 0.0f;
+
+	while (!window.ShouldClose())
 	{
-		v8::Handle<v8::Function> func = v8::Handle<v8::Function>::Cast(initFunc);
+		window.PollEvents();
 
-		v8::Handle<v8::Value> args[2];
+		float32 currentFrame = window.CurrentTime();
+		delta = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
-		args[0] = v8::String::New("value1");
-		args[1] = v8::String::New("value2");
+		plugin -> Update(delta);
 
-		func -> Call(global, 2, args);
+		window.SwapBuffers();
 	}
 
-	// Display & Swapchain Creation
+	// Shut Down
 
-	Display::WindowHandle window = Display::Create
-	({
-		.title          = "Hello, Raptor!",
-		.width          = 800,
-		.height         = 600,
-		.vsync          = 1,
-		.fullscreen     = false,
-		.glVersionMajor = 3,
-		.glVersionMinor = 3
-	});
+	plugin -> Shutdown();
 
-	// Render Device Initialization
-
-	RenderDevice::Initialize
-	({
-		.debug = true
-	});
-
-	RenderDevice::Resize(Display::FrameWidth(window), Display::FrameHeight(window));
-
-	// Shader Program Creation
-
-	RenderResource shaders [] =
-	{
-		RenderDevice::AllocateShader(vertex,   ShaderType::VERTEX),
-		RenderDevice::AllocateShader(fragment, ShaderType::FRAGMENT)
-	};
-
-	RenderResource program = RenderDevice::AllocateShaderProgram(shaders, 2);
-
-	RenderDevice::DestroyShader(shaders[0]);
-	RenderDevice::DestroyShader(shaders[1]);
-
-	// Vertex Array & Buffer Creation
-
-	Vertex::Init(); // Compile the vertex format
-
-	RenderResource VAO, VBO, EBO;
-
-	uint32 indexCount = sizeof(indices) / sizeof(indices[0]);
-
-	BufferDescriptor vertDesc   = { BufferType::VERTEX, sizeof(vertices), Vertex::format };
-	BufferDescriptor idexDesc   = { BufferType::INDEX,  sizeof(indices) };
-
-	VAO = RenderDevice::AllocateVertexArray();
-	VBO = RenderDevice::AllocateBuffer(VAO, vertices, vertDesc);
-	EBO = RenderDevice::AllocateBuffer(VAO, indices, idexDesc);
-
-	// Uniforms and Dynamic Render Data
-
-	float32 clear [4] { 0.2f, 0.2f, 0.2f, 1.0f };
-	float32 color [3] { 1.0f, 0.2f, 0.5f };
-
-	while (!Display::Closed(window))
-	{
-		// Listen
-
-		Display::PollEvents();
-
-		// Debug
-
-		float32 FPS = 60.0f; // sshhhh.... ;)
-
-		v8::Handle<v8::Value> updateFunc = global -> Get(v8::String::New("Update"));
-		if (updateFunc -> IsFunction())
-		{
-			v8::Handle<v8::Function> func = v8::Handle<v8::Function>::Cast(updateFunc);
-
-			v8::Handle<v8::Value> args[1];
-
-			args[0] = v8::Number::New(FPS);
-
-			func -> Call(global, 1, args);
-		}
-
-		// Draw
-
-		RenderDevice::Clear(clear);
-
-		RenderDevice::ShaderUniform(program, "color", color);
-		RenderDevice::DrawIndexed(program, VAO, indexCount, 0);
-
-		// Present
-
-		Display::SwapBuffers(window);
-	}
-
-	// Resource Destruction
-
-	RenderDevice::DestroyVertexArray(VAO);
-	RenderDevice::DestroyBuffer(VBO);
-	RenderDevice::DestroyBuffer(EBO);
-	RenderDevice::DestroyShaderProgram(program);
+	lib.Close();
 
 	return 0;
 }
