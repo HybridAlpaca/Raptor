@@ -1,133 +1,69 @@
-#####################################
-#                                   #
-#      (c) 2018 HybridAlpaca        #
-#                                   #
-#            CMake v.3.5            #
-#                                   #
-# See README for Build Instructions #
-#                                   #
-#####################################
+#####################
+# Core Build Script #
+#####################
 
 cmake_minimum_required (VERSION 3.5)
 
-project (RaptorEngine LANGUAGES CXX)
+project (Raptor VERSION 1.0 LANGUAGES CXX)
 
-######################
-# Extern CMake Files #
-######################
+#######################
+# Options & Variables #
+#######################
 
-include (GNUInstallDirs)
-
-######################
-# Options and Params #
-######################
-
-# set (CMAKE_CXX_STANDARD 17)
-set (CMAKE_CXX_STANDARD_REQUIRED ON)
+# configure compiler to use
 
 set (CMAKE_CXX_COMPILER /usr/bin/g++-8)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -fno-exceptions")
 
-set (RAPTOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/../..)
-set (ENGINE_ROOT_DIR ${CMAKE_SOURCE_DIR}/..)
-set (SOURCE_ROOT_DIR ${ENGINE_ROOT_DIR}/Source)
-set (RUNTIME_ROOT_DIR ${SOURCE_ROOT_DIR}/Runtime)
+# configure userul directory aliases
 
-if (NOT CMAKE_BUILD_TYPE)
-    set (CMAKE_BUILD_TYPE Release)
-endif (NOT CMAKE_BUILD_TYPE)
-if (CMAKE_BUILD_TYPE STREQUAL Debug)
-	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
-endif ()
+set (MODULE_PATH ${CMAKE_SOURCE_DIR}/..)
+set (ENGINE_PATH ${CMAKE_SOURCE_DIR}/../..)
+set (EXTERN_PATH ${CMAKE_SOURCE_DIR}/../Source/External)
+set (SOURCE_PATH ${CMAKE_SOURCE_DIR}/../Source/Runtime)
 
-######################
-# Inlcudes & Linking #
-######################
+#################
+# External Libs #
+#################
 
-include_directories ("${SOURCE_ROOT_DIR}/External")
+set (GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set (GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set (GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
-link_directories ("${ENGINE_ROOT_DIR}/Binaries")
+add_subdirectory (${EXTERN_PATH}/glfw ${EXTERN_PATH}/glfw/Temp EXCLUDE_FROM_ALL)
 
 ################
-# Dependancies #
+# Core Modules #
 ################
 
-# opengl
+add_library (Kernel STATIC
+	${SOURCE_PATH}/Kernel/Private/Kernel.cpp
+)
+target_include_directories (Kernel PUBLIC
+	${SOURCE_PATH}/Kernel/Private
+	${SOURCE_PATH}/Kernel/Public/Kernel
+)
 
-find_package (OpenGL REQUIRED)
-if (OPENGL_FOUND)
-	include_directories (${OPENGL_INCLUDE_DIRS})
-endif ()
+include_directories (${SOURCE_PATH}/Kernel/Public)
 
-# glew
+add_library (IO STATIC
+	${SOURCE_PATH}/IO/Private/X11/Window.cpp
+)
+target_include_directories (IO PUBLIC
+	${SOURCE_PATH}/IO/Private
+	${SOURCE_PATH}/IO/Public/IO
+)
 
-find_package (GLEW REQUIRED)
-if (GLEW_FOUND)
-	include_directories (${GLEW_INCLUDE_DIRS})
-endif()
+include_directories (${SOURCE_PATH}/IO/Public)
 
 ####################
-# Static Libraries #
+# Build Executable #
 ####################
 
-# raptor standard library
+add_executable (Raptor ${SOURCE_PATH}/Entry/Private/Main.cpp)
 
-# add_library (LibRaptor STATIC
-	# ${RUNTIME_ROOT_DIR}/Raptor/Private/POSIX/Console.cpp
-# )
-# target_include_directories (LibRaptor PUBLIC
-	# ${RUNTIME_ROOT_DIR}/Raptor/Private
-	# ${RUNTIME_ROOT_DIR}/Raptor/Public/Raptor
-# )
+target_link_libraries (Raptor Kernel IO glfw)
 
-include_directories (${RUNTIME_ROOT_DIR}/Raptor/Public)
+# Install to appropriate binaries directory
 
-# Core
-
-add_library (Core STATIC
-	${RUNTIME_ROOT_DIR}/Core/Private/SharedLib.cpp
-)
-target_include_directories (Core PUBLIC
-	${RUNTIME_ROOT_DIR}/Core/Private
-	${RUNTIME_ROOT_DIR}/Core/Public/Core
-)
-
-include_directories (${RUNTIME_ROOT_DIR}/Core/Public)
-
-# graphics
-
-add_library (Graphics STATIC
-	${RUNTIME_ROOT_DIR}/Graphics/Private/Display.cpp
-	${RUNTIME_ROOT_DIR}/Graphics/Private/GL/RenderDevice.cpp
-)
-target_include_directories (Graphics PUBLIC
-	${RUNTIME_ROOT_DIR}/Graphics/Private
-	${RUNTIME_ROOT_DIR}/Graphics/Public/Graphics
-)
-target_link_libraries (Graphics
-	${OPENGL_gl_LIBRARY}
-	${OPENGL_LIBRARIES}
-	${GLEW_LIBRARIES}
-	glfw
-	X11
-	pthread
-	Xrandr
-	Xi
-)
-include_directories (${RUNTIME_ROOT_DIR}/Graphics/Public)
-
-install (TARGETS Core Graphics DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
-
-#####################
-# Create Executable #
-#####################
-
-add_executable (Raptor ${RUNTIME_ROOT_DIR}/main.cpp)
-target_link_libraries (Raptor
-	# LibRaptor
-	Core
-	Graphics
-	dl
-)
-
-install (TARGETS Raptor DESTINATION ${ENGINE_ROOT_DIR}/Binaries)
+install (TARGETS Raptor DESTINATION ${ENGINE_PATH}/Binaries/Debug)
