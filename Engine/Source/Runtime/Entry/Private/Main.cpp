@@ -1,10 +1,21 @@
 #include <Kernel/Kernel.h>
+#include <IO/Window.h>
+
+#include <iostream>
 
 int main (int argc, char ** argv)
 {
-	Core::Kernel kernel;
+	Core::Kernel kernel(std::thread::hardware_concurrency() - 1);
 
-	kernel.Create();
+	IO::Window window;
 
-	return kernel.Destroy();
+	while (!window.ShouldClose())
+	{
+		window.PollEvents();
+		window.SwapBuffers();
+	}
+
+	kernel.Wait();
+
+	return 0;
 }

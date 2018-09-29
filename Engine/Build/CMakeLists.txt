@@ -47,7 +47,7 @@ target_include_directories (Kernel PUBLIC
 include_directories (${SOURCE_PATH}/Kernel/Public)
 
 add_library (IO STATIC
-	${SOURCE_PATH}/IO/Private/X11/Window.cpp
+	${SOURCE_PATH}/IO/Private/Window.cpp
 )
 target_include_directories (IO PUBLIC
 	${SOURCE_PATH}/IO/Private
@@ -56,13 +56,15 @@ target_include_directories (IO PUBLIC
 
 include_directories (${SOURCE_PATH}/IO/Public)
 
+target_link_libraries (IO glfw)
+
 ####################
 # Build Executable #
 ####################
 
 add_executable (Raptor ${SOURCE_PATH}/Entry/Private/Main.cpp)
 
-target_link_libraries (Raptor Kernel IO glfw)
+target_link_libraries (Raptor Kernel IO)
 
 # Install to appropriate binaries directory
 
