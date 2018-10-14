@@ -2,37 +2,37 @@
 
 #include <GLFW/glfw3.h>
 
-#include <iostream>
+using namespace Graphics;
 
-using namespace IO;
-
-Window::Window ()
+Window::Window (const WindowDescriptor & desc)
 {
 	glfwInit();
-
-	std::cout << "[IO] Creating window" << '\n';
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(800, 600, "Hello, Kernel!", nullptr, nullptr);
+	glfwSwapInterval(1);
+	window = glfwCreateWindow(desc.width, desc.height, desc.title, nullptr, nullptr);
 }
 
-Window::~Window ()
+Window::~Window()
 {
-	std::cout << "[IO] Destroying window" << '\n';
-
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
 
-void Window::PollEvents ()
+void Window::BindContext () const
+{
+	glfwMakeContextCurrent(window);
+}
+
+void Window::PollEvents () const
 {
 	glfwPollEvents();
 }
 
-void Window::SwapBuffers ()
+void Window::SwapBuffers () const
 {
 	glfwSwapBuffers(window);
 }
