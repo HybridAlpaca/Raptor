@@ -44,8 +44,8 @@ namespace Kernel
 
 		void WaitOne (Task * pendingTask);
 
-		inline uint32 LogicalThreadCount () const { return logicalThreadCount; }
+		uint32 LogicalThreadCount () const { return logicalThreadCount; }
 
-		inline uint32 WorkerThreadCount () const { return workerThreadCount; }
+		uint32 WorkerThreadCount () const { return workerThreadCount; }
 	};
 }

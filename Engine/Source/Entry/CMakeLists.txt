@@ -10,9 +10,10 @@ PRIVATE
 target_include_directories (Raptor
 PRIVATE
 	../Kernel
+	../Graphics
 )
 
 target_compile_features (Raptor PUBLIC cxx_std_17)
 set_target_properties (Raptor PROPERTIES CXX_EXTENSIONS OFF)
 
-install (TARGETS Raptor DESTINATION ${ENGINE_PATH}/Binaries/Debug)
+install (TARGETS Raptor DESTINATION ${ENGINE_PATH}/../Binaries/Debug)

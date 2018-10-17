@@ -1,17 +1,6 @@
 #pragma once
 
-namespace Graphics
+struct DrawContext
 {
-	class DrawContext
-	{
-
-	public:
-
-		DrawContext ();
-		~DrawContext ();
-
-		/// Execute the recorded draw calls on the GPU
-		/// @note Externally synchronized
-		void Dispatch ();
-	};
-}
+	virtual void Foo () = 0;
+};
