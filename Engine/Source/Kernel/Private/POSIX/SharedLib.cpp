@@ -6,22 +6,15 @@ using namespace Kernel;
 
 SharedLib::SharedLib (cchar path)
 {
-	handle = dlopen(path, RTLD_LAZY);
-	if (!handle)
-	{
-		// Requested DLL cannot be opened
-		loaded = false;
-	}
-	else
-	{
-		loaded = true;
-	}
+	handle = (uint64) dlopen(path, RTLD_LAZY);
+
+	if (handle) loaded = true;
 }
 
 SharedLib::SharedLib (SharedLib && rvalue)
 {
 	handle = rvalue.handle;
-	rvalue.handle = nullptr;
+	rvalue.handle = 0;
 
 	loaded = rvalue.loaded;
 	rvalue.loaded = false;
@@ -29,13 +22,16 @@ SharedLib::SharedLib (SharedLib && rvalue)
 
 SharedLib::~SharedLib ()
 {
-	if (loaded) dlclose(handle);
+	if (loaded)
+	{
+		dlclose((void *) handle);
+	}
 }
 
 SharedLib & SharedLib::operator= (SharedLib && rhs)
 {
 	handle = rhs.handle;
-	rhs.handle = nullptr;
+	rhs.handle = 0;
 
 	loaded = rhs.loaded;
 	rhs.loaded = false;
@@ -47,14 +43,9 @@ void * SharedLib::ProcAddress (cchar symbol)
 {
 	if (!loaded) return nullptr;
 
-	void * addr = dlsym(handle, symbol);
+	void * addr = dlsym((void *) handle, symbol);
 
-	cchar dlsym_error = dlerror();
-	if (dlsym_error)
-	{
-		// Requested symbol cannot be found in the opened DLL
-		return nullptr;
-	}
+	cchar error = dlerror();
 
-	return addr;
+	return (error) ? nullptr : addr;
 }

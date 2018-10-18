@@ -6,7 +6,7 @@ namespace Kernel
 {
 	class SharedLib
 	{
-		void * handle = nullptr;
+		uint64 handle = 0;
 
 		bool loaded = false;
 
