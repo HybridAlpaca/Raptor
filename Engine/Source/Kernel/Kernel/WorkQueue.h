@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Common/Required.h>
+#include <Common/Array.h>
 #include <Task.h>
 
 #include <atomic>
@@ -14,8 +15,8 @@ namespace Kernel
 
 		std::mutex criticalSection;
 
-		Task   taskPool  [Task::MAX_TASKS]; /// Free list of empty tasks
-		Task * taskQueue [Task::MAX_TASKS]; /// List of tasks queue'd for execution
+		Std::Array<Task, Task::MAX_TASKS> taskPool;    /// Free list of empty tasks
+		Std::Array<Task *, Task::MAX_TASKS> taskQueue; /// List of tasks queue'd for execution
 
 		uint32 front;
 		uint32 back;

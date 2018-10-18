@@ -4,7 +4,10 @@
 
 /**
  *
- * CONSTANT EXPRESSION / COMPILE TIME STRINGS
+ * @file String.h
+ * @author Seth Traman
+ *
+ * @brief Provides an API for working with constant, compile-time string expressions and literals
  *
  **/
 
@@ -101,5 +104,4 @@ namespace Std
 	{
 		return StringLiteral<N - 1>(str);
 	}
-
 }
