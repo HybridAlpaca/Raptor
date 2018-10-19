@@ -1,26 +1,10 @@
-#include <DrawContext.h>
+#include <SwapChain.h>
 
 #include <iostream>
 
-struct Oof : DrawContext
+using namespace Graphics;
+
+void CreateSwapChain (const SwapChainDesc & desc)
 {
-	void Foo () override
-	{
-		std::cout << "Foo\n";
-	}
-};
-
-extern "C"
-{
-	DrawContext * CreateDrawContext ()
-	{
-		static Oof oof;
-
-		return & oof;
-	}
-
-	void DestroyDrawContext (DrawContext * ctx)
-	{
-		// Do nothing
-	}
+	std::cout << "Creating swapchain\n";
 }

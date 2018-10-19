@@ -4,7 +4,7 @@
 #include <Kernel/SharedLib.h>
 #include <Kernel/ThreadPool.h>
 
-#include <Graphics/DrawContext.h>
+#include <Graphics/SwapChain.h>
 
 int32 main (int32 argc, cchar * argv)
 {
@@ -13,15 +13,13 @@ int32 main (int32 argc, cchar * argv)
 
 	Kernel::SharedLib graphics{graphicsPath.Data()};
 
-	using CreateT = DrawContext * ();
+	using CreateT = void (const Graphics::SwapChainDesc &);
 
-	CreateT * create = (CreateT *) graphics.ProcAddress("CreateDrawContext");
+	CreateT * foo = (CreateT *) graphics.ProcAddress("CreateSwapChain");
 
-	DrawContext * ctx;
+	Graphics::SwapChainDesc desc{800, 600, "Foo"};
 
-	if (create) ctx = create();
-
-	ctx -> Foo();
+	if (foo) foo(desc);
 
 	Kernel::ThreadPool pool{3};
 
