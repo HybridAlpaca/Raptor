@@ -1,21 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-##################
-# Compile Raptor #
-##################
+BASEDIR=$(dirname "$0")
 
-cd ./Engine/Build
+cd $BASEDIR
 
 mkdir -p Temp
-cd ./Temp
 
-# compile
-
-cmake .. -DCMAKE_BUILD_TYPE=Debug
-make -j4
-
-# install
-
+cd Temp
+cmake ../../Source/
+make -j6
 make install
-
-cd ..
